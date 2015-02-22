@@ -1,4 +1,6 @@
-package com.grapple.mamba.tutorial;
+package  com.mamba.grapple;
+//package com.grapple.mamba.tutorial; this is where the app is looking for the "R" object thingy
+
 
 // *android imports*
 
