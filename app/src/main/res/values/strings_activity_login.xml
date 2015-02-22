@@ -11,6 +11,7 @@
         <string name="plus_sign_out">Switch Google+ account</string>
         <string name="plus_disconnect">Disconnect from Google+</string>
         <string name="action_log_in">Sign In</string>
+        <string name="action_register">Register</string>
     <!--
         <string name="error_invalid_email">This email address is invalid</string>
         <string name="error_invalid_password">This password is too short</string>
