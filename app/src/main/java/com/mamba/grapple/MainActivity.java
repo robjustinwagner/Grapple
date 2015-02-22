@@ -25,6 +25,7 @@ import java.net.*; // for URIexception
 
 // *json imports*
 import com.google.gson.Gson;
+import com.mamba.grapple.LoginActivity;
 
 // *HTTP imports*
 import java.net.URLConnection;
@@ -70,7 +71,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void submitUserPass(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         EditText userLogin = (EditText) findViewById(R.id.userLogin);
         String login = userLogin.getText().toString();
         EditText userPass = (EditText) findViewById(R.id.userPass);
