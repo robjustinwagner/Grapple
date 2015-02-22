@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.mamba.grapple"
+        applicationId "com.grapple.mamba.tutorial"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
@@ -22,5 +22,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.android.gms:play-services:6.1.71'
+    compile 'com.github.nkzawa:socket.io-client:0.4.1'
+    compile files('libs/gson-2.2.4.jar')
 }
