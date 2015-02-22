@@ -1,4 +1,4 @@
-package com.grapple.mamba.tutorial;
+package com.mamba.grapple;
 
 // *android imports*
 
@@ -70,7 +70,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void submitUserPass(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         EditText userLogin = (EditText) findViewById(R.id.userLogin);
         String login = userLogin.getText().toString();
         EditText userPass = (EditText) findViewById(R.id.userPass);
