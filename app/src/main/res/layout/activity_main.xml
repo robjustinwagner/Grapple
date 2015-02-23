@@ -20,4 +20,12 @@
         android:layout_marginBottom="117dp"
         android:typeface="serif"
         android:layout_gravity="left|bottom" />
+
+    <TextView
+        android:layout_width="126dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="!CHECK 1!"
+        android:id="@+id/textView4"
+        android:layout_gravity="center_horizontal|top" />
 </FrameLayout>
