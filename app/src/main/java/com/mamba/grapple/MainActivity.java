@@ -1,5 +1,5 @@
 package  com.mamba.grapple;
-//package com.grapple.mamba.tutorial; this is where the app is looking for the "R" object thingy
+//package com.grapple.mamba.tutorial; //this is where the app is looking for the "R" object thingy
 
 
 // *android imports*
@@ -74,9 +74,9 @@ public class MainActivity extends ActionBarActivity {
 
     public void submitUserPass(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
-        EditText userLogin = (EditText) findViewById(R.id.userLogin);
+        EditText userLogin = (EditText) findViewById(R.id.email);
         String login = userLogin.getText().toString();
-        EditText userPass = (EditText) findViewById(R.id.userPass);
+        EditText userPass = (EditText) findViewById(R.id.password);
         String pass = userPass.getText().toString();
 
     //  intent.putExtra(EXTRA_MESSAGE, login);
