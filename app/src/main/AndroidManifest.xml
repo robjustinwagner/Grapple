@@ -23,11 +23,14 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:exported="true"
+            >
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +40,8 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            android:exported="true">
         </activity>
 
         <meta-data
@@ -46,7 +50,13 @@
 
         <activity
             android:name=".Search"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_activity_search"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".results"
+            android:label="@string/title_activity_results"
+            android:exported="true">
         </activity>
     </application>
 
