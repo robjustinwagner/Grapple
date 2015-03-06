@@ -43,7 +43,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 public class MainActivity extends ActionBarActivity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     public final Gson gson = new Gson();
     public final static String EXTRA_MESSAGE = "com.mamba.grapple.MESSAGE";
