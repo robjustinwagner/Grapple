@@ -6,6 +6,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_search">Search</string>
+    <string name="title_activity_results">results</string>
     <string name="title_activity_account">Account</string>
+    <string name="title_activity_tutor">Tutor</string>
+    <string name="title_activity_pre__session">Pre_Session</string>
+    <string name="title_activity_in__session">In_Session</string>
 
 </resources>

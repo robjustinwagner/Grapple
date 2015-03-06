@@ -23,13 +23,11 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/app_name"
-            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:exported="true" >
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,8 +36,8 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
             android:exported="true"
+            android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
 
@@ -49,13 +47,30 @@
 
         <activity
             android:name=".Search"
-            android:label="@string/title_activity_search"
-            android:exported="true" >
+            android:exported="true"
+            android:label="@string/title_activity_search" >
         </activity>
         <activity
             android:name=".Account"
-            android:label="@string/title_activity_account"
-            android:exported="true" >
+            android:exported="true"
+            android:label="@string/title_activity_account" >
+        </activity>
+        <activity
+            android:name=".results"
+            android:exported="true"
+            android:label="@string/title_activity_results" >
+        </activity>
+        <activity
+            android:name=".Tutor"
+            android:label="@string/title_activity_tutor" >
+        </activity>
+        <activity
+            android:name=".Pre_Session"
+            android:label="@string/title_activity_pre__session" >
+        </activity>
+        <activity
+            android:name=".In_Session"
+            android:label="@string/title_activity_in__session" >
         </activity>
     </application>
 
