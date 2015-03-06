@@ -45,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * Duration of wait *
      */
-    private final int SPLASH_DISPLAY_LENGTH = 2000;
+    private final int SPLASH_DISPLAY_LENGTH = 5000;
 
     public final Gson gson = new Gson();
     public final static String EXTRA_MESSAGE = "com.mamba.grapple.MESSAGE";
