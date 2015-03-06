@@ -42,7 +42,9 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class MainActivity extends ActionBarActivity {
 
-    /** Duration of wait **/
+    /**
+     * Duration of wait *
+     */
     private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     public final Gson gson = new Gson();
@@ -55,18 +57,18 @@ public class MainActivity extends ActionBarActivity {
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
-        new Handler().postDelayed(new Runnable(){
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(MainActivity.this,LoginActivity.class);
+                Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
                 MainActivity.this.startActivity(mainIntent);
                 MainActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
-
-
+}
+/* REMOVE THE ABOVE } TO FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -249,3 +251,5 @@ abstract class Networking extends AsyncTask<String, Void, Void>{
         this.pass=pass;
         }
  }
+
+*/
