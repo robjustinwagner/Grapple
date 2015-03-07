@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.mamba.grapple.Splash"
     tools:ignore="MergeRootFrame"
-    android:background="@drawable/splash_bg">
+    android:background="@drawable/grapple_logo_v3">
 
-    <ImageView
-        android:layout_width="629dp"
-        android:layout_height="773dp"
-        android:id="@+id/imageView"
-        android:layout_gravity="center"
-        android:background="@drawable/grapple_logo" />
 </FrameLayout>
