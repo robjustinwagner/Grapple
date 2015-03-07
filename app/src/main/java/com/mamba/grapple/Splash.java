@@ -3,44 +3,20 @@ package com.mamba.grapple;
 // *android imports*
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 
 // *socket.io imports*
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.Socket;
-import com.github.nkzawa.socketio.client.IO;
-
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.*; // for URIexception
 
 // *json imports*
 import com.google.gson.Gson;
 
 // *HTTP imports*
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.cert.Certificate;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLPeerUnverifiedException;
 
-public class MainActivity extends ActionBarActivity {
+public class Splash extends ActionBarActivity {
 
     /**
      * Duration of wait *
@@ -53,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
@@ -61,9 +37,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
-                MainActivity.this.startActivity(mainIntent);
-                MainActivity.this.finish();
+                Intent mainIntent = new Intent(Splash.this, SignInGooglePlus.class);
+                Splash.this.startActivity(mainIntent);
+                Splash.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
@@ -72,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_splash, menu);
         return true;
     }
 
@@ -92,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void submitUserPass(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, SignInGooglePlus.class);
         EditText userLogin = (EditText) findViewById(R.id.email);
         String login = userLogin.getText().toString();
         EditText userPass = (EditText) findViewById(R.id.password);
