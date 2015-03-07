@@ -111,6 +111,7 @@ public class SignInGooglePlus extends GooglePlusBase implements LoaderCallbacks<
             }
         });
 
+        //register button
         Button mRegisterButton = (Button) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
