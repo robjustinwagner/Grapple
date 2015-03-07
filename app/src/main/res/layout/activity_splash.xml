@@ -7,9 +7,10 @@
     tools:ignore="MergeRootFrame"
     android:background="@drawable/splash_bg">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="427dp"
+    <ImageView
+        android:layout_width="629dp"
+        android:layout_height="773dp"
+        android:id="@+id/imageView"
         android:layout_gravity="center"
-        android:background="@drawable/grapple_logo"></FrameLayout>
+        android:background="@drawable/grapple_logo" />
 </FrameLayout>
