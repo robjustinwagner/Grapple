@@ -92,6 +92,10 @@ public class SignInGooglePlus extends GooglePlusBase implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        final String user = mEmailView.toString();
+        final String pass = mPasswordView.toString();
+        final Credentials credentials = new Credentials(user, pass);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -107,7 +111,7 @@ public class SignInGooglePlus extends GooglePlusBase implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                LoginController.attemptLogin(credentials);
             }
         });
 

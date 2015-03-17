@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
+
 public class Results extends ActionBarActivity {
 
     @Override
@@ -20,6 +21,7 @@ public class Results extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_results, menu);
         return true;
+
     }
 
     @Override
