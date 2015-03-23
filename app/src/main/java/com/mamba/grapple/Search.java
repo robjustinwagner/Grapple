@@ -22,14 +22,12 @@ public class Search extends ExpandableListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_search);
-
         ExpandableListView expandableList = getExpandableListView();
 
         expandableList.setDividerHeight(2);
         expandableList.setGroupIndicator(null);
         expandableList.setClickable(true);
-
+        expandableList.setId(R.id.list);
         setGroupParents();
         setChildData();
 
@@ -38,6 +36,8 @@ public class Search extends ExpandableListActivity {
         adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
         expandableList.setAdapter(adapter);
         expandableList.setOnChildClickListener(this);
+
+        setContentView(R.layout.activity_search);
 
     }
 
