@@ -1,17 +1,77 @@
 package com.mamba.grapple;
 
+import java.util.ArrayList;
+
 import android.support.v7.app.ActionBarActivity;
+import android.app.ExpandableListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.widget.ExpandableListView;
 
 
-public class Search extends ActionBarActivity {
+public class Search extends ExpandableListActivity {
+
+    private ArrayList<String> parentItems = new ArrayList<String>();
+    private ArrayList<Object> childItems = new ArrayList<Object>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+
+        //setContentView(R.layout.activity_search);
+
+        ExpandableListView expandableList = getExpandableListView();
+
+        expandableList.setDividerHeight(2);
+        expandableList.setGroupIndicator(null);
+        expandableList.setClickable(true);
+
+        setGroupParents();
+        setChildData();
+
+        ExpandableAdapter adapter = new ExpandableAdapter(parentItems, childItems);
+
+        adapter.setInflater((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE), this);
+        expandableList.setAdapter(adapter);
+        expandableList.setOnChildClickListener(this);
+
+    }
+
+    public void setGroupParents() {
+        parentItems.add("Computer Sciences");
+        parentItems.add("Mathematics");
+        parentItems.add("Physics");
+        parentItems.add("etc.");
+    }
+
+    public void setChildData() {
+
+        // Computer Sciences
+        ArrayList<String> child = new ArrayList<String>();
+        child.add("CS302- Intro to Java");
+        //child.add("");
+        child.add("CS540- Intro to AI");
+        child.add("CS577- Into to Algorithms");
+        childItems.add(child);
+
+        // Mathematics
+        child = new ArrayList<String>();
+        child.add("MATH221-Calc I");
+        childItems.add(child);
+
+        // Physics
+        child = new ArrayList<String>();
+        child.add("PHYS201- Physics I");
+        childItems.add(child);
+
+        // etc.
+        child = new ArrayList<String>();
+        child.add("test");
+        childItems.add(child);
     }
 
 
