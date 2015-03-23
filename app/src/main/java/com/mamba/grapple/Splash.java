@@ -1,20 +1,14 @@
 package com.mamba.grapple;
 
 // *android imports*
-
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
 import android.os.Handler;
+import android.util.Log;
 
-// *socket.io imports*
-
-// *json imports*
-import com.google.gson.Gson;
-
-// *HTTP imports*
-
+import com.mamba.grapple.DBService;
 
 public class Splash extends ActionBarActivity {
 
@@ -23,13 +17,18 @@ public class Splash extends ActionBarActivity {
      */
     private final int SPLASH_DISPLAY_LENGTH = 5000;
 
-    public final Gson gson = new Gson();
     public final static String EXTRA_MESSAGE = "com.mamba.grapple.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        // start the background networking thread
+        Intent intent = new Intent(this, DBService.class);
+        Log.v("DBService", "started DBService");
+        startService(intent);
+        Log.v("DBService", "got past DBService");
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
