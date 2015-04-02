@@ -1,0 +1,1953 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007ff36c198c36, pid=6446, tid=140683640956672
+#
+# JRE version: OpenJDK Runtime Environment (7.0_75-b13) (build 1.7.0_75-b13)
+# Java VM: OpenJDK 64-Bit Server VM (24.75-b04 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea 2.5.4
+# Distribution: Ubuntu 14.04 LTS, package 7u75-2.5.4-1~trusty1
+# Problematic frame:
+# j  com.android.dx.merge.InstructionTransformer$FieldVisitor.visit([Lcom/android/dx/io/instructions/DecodedInstruction;Lcom/android/dx/io/instructions/DecodedInstruction;)V+58
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please include
+# instructions on how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007ff37000a000):  JavaThread "main" [_thread_in_Java, id=6454, stack(0x00007ff37661e000,0x00007ff37671f000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x0000000004ef0364
+
+Registers:
+RAX=0x00000000b5ff0060, RBX=0x0000000004ef02ec, RCX=0x00000000ee073970, RDX=0x00000000b5ffd168
+RSP=0x00007ff37671d348, RBP=0x00007ff37671d3b0, RSI=0x00000000ffffffff, RDI=0x00007ff37671d2c0
+R8 =0x0000000000000000, R9 =0x00007ff37037f770, R10=0x00007ff375903e00, R11=0x0000000000000000
+R12=0x0000000000000000, R13=0x00007ff37671d350, R14=0x00000000b60684f0, R15=0x00007ff37000a000
+RIP=0x00007ff36c198c36, EFLAGS=0x0000000000010206, CSGSFS=0x0000000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007ff37671d348)
+0x00007ff37671d348:   00007ff36c181233 deaddeaf00001ade
+0x00007ff37671d358:   00000000ee073970 deaddeaf00000007
+0x00007ff37671d368:   00000000ee074328 00007ff37671d370
+0x00007ff37671d378:   00000000b5fc2f32 00007ff37671d3e8
+0x00007ff37671d388:   00000000b5fc3380 00000000b60684f0
+0x00007ff37671d398:   00000000b5fc2f90 00007ff37671d350
+0x00007ff37671d3a8:   00007ff37671d3f0 000000000000000d
+0x00007ff37671d3b8:   00007ff36c24b694 0000000000000000
+0x00007ff37671d3c8:   0000000000000000 0000000000000000
+0x00007ff37671d3d8:   0000000000000000 0000000000000000
+0x00007ff37671d3e8:   0000000000000000 00000000ed1b1938
+0x00007ff37671d3f8:   ed1b195800000237 0000000000000237
+0x00007ff37671d408:   00000000ee072ed8 00000000ed1b1958
+0x00007ff37671d418:   00000000ee072ed8 00000000ee0737c8
+0x00007ff37671d428:   00000000ee0742f0 00000000000001b2
+0x00007ff37671d438:   00007ff37671d4b8 00007ff36c181058
+0x00007ff37671d448:   00000000ee072968 00000000ecdc5e70
+0x00007ff37671d458:   00007ff36c29ab90 00000000ecdc5370
+0x00007ff37671d468:   00000000ee0725b8 0000000000000000
+0x00007ff37671d478:   00000000ee072e88 0000000000003ad7
+0x00007ff37671d488:   0014b4f0ecdd66c8 00000000ee0729e8
+0x00007ff37671d498:   000d454100000000 0000000000000000
+0x00007ff37671d4a8:   0000000000000000 00000000ecdc5370
+0x00007ff37671d4b8:   00000000ecdc6348 0000000300000021
+0x00007ff37671d4c8:   00000000ecdc5e70 0000000100000000
+0x00007ff37671d4d8:   0011506a00000000 00000000ee072e68
+0x00007ff37671d4e8:   00000000ee072e78 00000000ecdc6348
+0x00007ff37671d4f8:   00001af2ee072590 00007ff37671d580
+0x00007ff37671d508:   00007ff36c181058 00007ff37671d580
+0x00007ff37671d518:   00007ff36c181058 00000000ee0725b8
+0x00007ff37671d528:   00000000ecdc6348 00000000ecdc5370
+0x00007ff37671d538:   00000000ecdc5e70 00007ff37671d540 
+
+Instructions: (pc=0x00007ff36c198c36)
+0x00007ff36c198c16:   00 00 00 49 89 56 18 49 83 c6 30 4c 89 75 e0 48
+0x00007ff36c198c26:   8b 9c d8 f0 01 00 00 4c 8d 6c 24 08 4c 89 6d f0
+0x00007ff36c198c36:   ff 63 78 0f 1f 80 00 00 00 00 80 01 00 00 00 00
+0x00007ff36c198c46:   00 00 1c 97 47 75 f3 7f 00 00 b7 00 00 00 00 00 
+
+Register to memory mapping:
+
+RAX=0x00000000b5ff0060 is pointing into object: 0x00000000b5feea30
+{constant pool} 
+ - klass: {other class}
+ - holder: 0x00000000b5ff42f0
+ - cache: 0x00000000b5ff4518
+ -   1 :  : klass_index=499 name_and_type_index=755
+ -   2 :  : klass_index=498 name_and_type_index=756
+ -   3 :  : 'java/lang/ArrayIndexOutOfBoundsException'
+ -   4 :  : 'java/lang/IllegalArgumentException'
+ -   5 :  : 'java/lang/StringBuilder'
+ -   6 :  : klass_index=5 name_and_type_index=755
+ -   7 :  : "bogus opcode: " {0xef107b70}
+ -   8 :  : klass_index=5 name_and_type_index=761
+ -   9 :  : klass_index=762 name_and_type_index=763
+ -  10 :  : klass_index=5 name_and_type_index=764
+ -  11 :  : klass_index=4 name_and_type_index=765
+ -  12 :  : klass_index=498 name_and_type_index=766
+ -  13 :  : klass_index=17 name_and_type_index=767
+ -  14 :  : klass_index=17 name_and_type_index=768
+ -  15 :  : klass_index=17 name_and_type_index=769
+ -  16 :  : klass_index=17 name_and_type_index=770
+ -  17 :  : 'com/android/dx/io/OpcodeInfo$Info' {0xb5ff6dd0}
+ -  18 :  : "<special>" {0xeebe5c90}
+ -  19 :  : klass_index=773 name_and_type_index=774
+ -  20 :  : klass_index=775 name_and_type_index=776
+ -  21 :  : klass_index=17 name_and_type_index=777
+ -  22 :  : klass_index=498 name_and_type_index=778
+ -  23 :  : "packed-switch-payload" {0xeebe5c18}
+ -  24 :  : klass_index=773 name_and_type_index=780
+ -  25 :  : klass_index=498 name_and_type_index=781
+ -  26 :  : "sparse-switch-payload" {0xeebe5ba0}
+ -  27 :  : klass_index=773 name_and_type_index=783
+ -  28 :  : klass_index=498 name_and_type_index=784
+ -  29 :  : "fill-array-data-payload" {0xeebe5b28}
+ -  30 :  : klass_index=773 name_and_type_index=786
+ -  31 :  : klass_index=498 name_and_type_index=787
+ -  32 :  : "nop" {0xeebe5ad8}
+ -  33 :  : klass_index=773 name_and_type_index=789
+ -  34 :  : klass_index=498 name_and_type_index=790
+ -  35 :  : "move" {0xeebe5a88}
+ -  36 :  : klass_index=773 name_and_type_index=792
+ -  37 :  : klass_index=498 name_and_type_index=793
+ -  38 :  : "move/from16" {0xeebe5a28}
+ -  39 :  : klass_index=773 name_and_type_index=795
+ -  40 :  : klass_index=498 name_and_type_index=796
+ -  41 :  : "move/16" {0xeebe59d0}
+ -  42 :  : klass_index=773 name_and_type_index=798
+ -  43 :  : klass_index=498 name_and_type_index=799
+ -  44 :  : "move-wide" {0xeebe5970}
+ -  45 :  : klass_index=498 name_and_type_index=801
+ -  46 :  : "move-wide/from16" {0xeebe5908}
+ -  47 :  : klass_index=498 name_and_type_index=803
+ -  48 :  : "move-wide/16" {0xeebe58a8}
+ -  49 :  : klass_index=498 name_and_type_index=805
+ -  50 :  : "move-object" {0xeebe5848}
+ -  51 :  : klass_index=498 name_and_type_index=807
+ -  52 :  : "move-object/from16" {0xeebe57d8}
+ -  53 :  : klass_index=498 name_and_type_index=809
+ -  54 :  : "move-object/16" {0xeebe5770}
+ -  55 :  : klass_index=498 name_and_type_index=811
+ -  56 :  : "move-result" {0xeebe5710}
+ -  57 :  : klass_index=773 name_and_type_index=813
+ -  58 :  : klass_index=498 name_and_type_index=814
+ -  59 :  : "move-result-wide" {0xeebe56a8}
+ -  60 :  : klass_index=498 name_and_type_index=816
+ -  61 :  : "move-result-object" {0xeebe5638}
+ -  62 :  : klass_index=498 name_and_type_index=818
+ -  63 :  : "move-exception" {0xeebe55d0}
+ -  64 :  : klass_index=498 name_and_type_index=820
+ -  65 :  : "return-void" {0xeebe5570}
+ -  66 :  : klass_index=498 name_and_type_index=822
+ -  67 :  : "return" {0xeebe5518}
+ -  68 :  : klass_index=498 name_and_type_index=824
+ -  69 :  : "return-wide" {0xeebe54b8}
+ -  70 :  : klass_index=498 name_and_type_index=826
+ -  71 :  : "return-object" {0xeebe5450}
+ -  72 :  : klass_index=498 name_and_type_index=828
+ -  73 :  : "const/4" {0xeebe53f8}
+ -  74 :  : klass_index=773 name_and_type_index=830
+ -  75 :  : klass_index=498 name_and_type_index=831
+ -  76 :  : "const/16" {0xeebe53a0}
+ -  77 :  : klass_index=773 name_and_type_index=833
+ -  78 :  : klass_index=498 name_and_type_index=834
+ -  79 :  : "const" {0xeebe5348}
+ -  80 :  : klass_index=773 name_and_type_index=836
+ -  81 :  : klass_index=498 name_and_type_index=837
+ -  82 :  : "const/high16" {0xeebe52e8}
+ -  83 :  : klass_index=773 name_and_type_index=839
+ -  84 :  : klass_index=498 name_and_type_index=840
+ -  85 :  : "const-wide/16" {0xeebe5280}
+ -  86 :  : klass_index=498 name_and_type_index=842
+ -  87 :  : "const-wide/32" {0xeebe5218}
+ -  88 :  : klass_index=498 name_and_type_index=844
+ -  89 :  : "const-wide" {0xeebe51b8}
+ -  90 :  : klass_index=773 name_and_type_index=846
+ -  91 :  : klass_index=498 name_and_type_index=847
+ -  92 :  : "const-wide/high16" {0xeebe5148}
+ -  93 :  : klass_index=498 name_and_type_index=849
+ -  94 :  : "const-string" {0xeebe50e8}
+ -  95 :  : klass_index=773 name_and_type_index=851
+ -  96 :  : klass_index=775 name_and_type_index=852
+ -  97 :  : klass_index=498 name_and_type_index=853
+ -  98 :  : "const-string/jumbo" {0xeebe5078}
+ -  99 :  : klass_index=773 name_and_type_index=855
+ - 100 :  : klass_index=498 name_and_type_index=856
+ - 101 :  : "const-class" {0xeebe5018}
+ - 102 :  : klass_index=775 name_and_type_index=858
+ - 103 :  : klass_index=498 name_and_type_index=859
+ - 104 :  : "monitor-enter" {0xeebe4fb0}
+ - 105 :  : klass_index=498 name_and_type_index=861
+ - 106 :  : "monitor-exit" {0xeebe4f50}
+ - 107 :  : klass_index=498 name_and_type_index=863
+ - 108 :  : "check-cast" {0xeebe4ef0}
+ - 109 :  : klass_index=498 name_and_type_index=865
+ - 110 :  : "instance-of" {0xeebe4e90}
+ - 111 :  : klass_index=773 name_and_type_index=867
+ - 112 :  : klass_index=498 name_and_type_index=868
+ - 113 :  : "array-length" {0xeebe4e30}
+ - 114 :  : klass_index=498 name_and_type_index=870
+ - 115 :  : "new-instance" {0xeebe4dd0}
+ - 116 :  : klass_index=498 name_and_type_index=872
+ - 117 :  : "new-array" {0xeebe4d70}
+ - 118 :  : klass_index=498 name_and_type_index=874
+ - 119 :  : "filled-new-array" {0xeebe4d08}
+ - 120 :  : klass_index=773 name_and_type_index=876
+ - 121 :  : klass_index=498 name_and_type_index=877
+ - 122 :  : "filled-new-array/range" {0xeebe4c90}
+ - 123 :  : klass_index=773 name_and_type_index=879
+ - 124 :  : klass_index=498 name_and_type_index=880
+ - 125 :  : "fill-array-data" {0xeebe4c28}
+ - 126 :  : klass_index=773 name_and_type_index=882
+ - 127 :  : klass_index=498 name_and_type_index=883
+ - 128 :  : "throw" {0xeebe4bd0}
+ - 129 :  : klass_index=498 name_and_type_index=885
+ - 130 :  : "goto" {0xeebe4b80}
+ - 131 :  : klass_index=773 name_and_type_index=887
+ - 132 :  : klass_index=498 name_and_type_index=888
+ - 133 :  : "goto/16" {0xeebe4b28}
+ - 134 :  : klass_index=773 name_and_type_index=890
+ - 135 :  : klass_index=498 name_and_type_index=891
+ - 136 :  : "goto/32" {0xeebe4ad0}
+ - 137 :  : klass_index=773 name_and_type_index=893
+ - 138 :  : klass_index=498 name_and_type_index=894
+ - 139 :  : "packed-switch" {0xeebe4a68}
+ - 140 :  : klass_index=498 name_and_type_index=896
+ - 141 :  : "sparse-switch" {0xeebe4a00}
+ - 142 :  : klass_index=498 name_and_type_index=898
+ - 143 :  : "cmpl-float" {0xeebe49a0}
+ - 144 :  : klass_index=773 name_and_type_index=900
+ - 145 :  : klass_index=498 name_and_type_index=901
+ - 146 :  : "cmpg-float" {0xeebe4940}
+ - 147 :  : klass_index=498 name_and_type_index=903
+ - 148 :  : "cmpl-double" {0xeebe48e0}
+ - 149 :  : klass_index=498 name_and_type_index=905
+ - 150 :  : "cmpg-double" {0xeebe4880}
+ - 151 :  : klass_index=498 name_and_type_index=907
+ - 152 :  : "cmp-long" {0xeebe4828}
+ - 153 :  : klass_index=498 name_and_type_index=909
+ - 154 :  : "if-eq" {0xeebe47d0}
+ - 155 :  : klass_index=773 name_and_type_index=911
+ - 156 :  : klass_index=498 name_and_type_index=912
+ - 157 :  : "if-ne" {0xeebe4778}
+ - 158 :  : klass_index=498 name_and_type_index=914
+ - 159 :  : "if-lt" {0xeebe4720}
+ - 160 :  : klass_index=498 name_and_type_index=916
+ - 161 :  : "if-ge" {0xeebe46c8}
+ - 162 :  : klass_index=498 name_and_type_index=918
+ - 163 :  : "if-gt" {0xeebe4670}
+ - 164 :  : klass_index=498 name_and_type_index=920
+ - 165 :  : "if-le" {0xeebe4618}
+ - 166 :  : klass_index=498 name_and_type_index=922
+ - 167 :  : "if-eqz" {0xeebe45c0}
+ - 168 :  : klass_index=773 name_and_type_index=924
+ - 169 :  : klass_index=498 name_and_type_index=925
+ - 170 :  : "if-nez" {0xeebe4568}
+ - 171 :  : klass_index=498 name_and_type_index=927
+ - 172 :  : "if-ltz" {0xeebe4510}
+ - 173 :  : klass_index=498 name_and_type_index=929
+ - 174 :  : "if-gez" {0xeebe44b8}
+ - 175 :  : klass_index=498 name_and_type_index=931
+ - 176 :  : "if-gtz" {0xeebe4460}
+ - 177 :  : klass_index=498 name_and_type_index=933
+ - 178 :  : "if-lez" {0xeebe4408}
+ - 179 :  : klass_index=498 name_and_type_index=935
+ - 180 :  : "aget" {0xeebe43b8}
+ - 181 :  : klass_index=498 name_and_type_index=937
+ - 182 :  : "aget-wide" {0xeebe4358}
+ - 183 :  : klass_index=498 name_and_type_index=939
+ - 184 :  : "aget-object" {0xeebe42f8}
+ - 185 :  : klass_index=498 name_and_type_index=941
+ - 186 :  : "aget-boolean" {0xeebe4298}
+ - 187 :  : klass_index=498 name_and_type_index=943
+ - 188 :  : "aget-byte" {0xeebe4238}
+ - 189 :  : klass_index=498 name_and_type_index=945
+ - 190 :  : "aget-char" {0xeebe41d8}
+ - 191 :  : klass_index=498 name_and_type_index=947
+ - 192 :  : "aget-short" {0xeebe4178}
+ - 193 :  : klass_index=498 name_and_type_index=949
+ - 194 :  : "aput" {0xeebe4128}
+ - 195 :  : klass_index=498 name_and_type_index=951
+ - 196 :  : "aput-wide" {0xeebe40c8}
+ - 197 :  : klass_index=498 name_and_type_index=953
+ - 198 :  : "aput-object" {0xeebe4068}
+ - 199 :  : klass_index=498 name_and_type_index=955
+ - 200 :  : "aput-boolean" {0xeebe4008}
+ - 201 :  : klass_index=498 name_and_type_index=957
+ - 202 :  : "aput-byte" {0xeebe3fa8}
+ - 203 :  : klass_index=498 name_and_type_index=959
+ - 204 :  : "aput-char" {0xeebe3f48}
+ - 205 :  : klass_index=498 name_and_type_index=961
+ - 206 :  : "aput-short" {0xeebe3ee8}
+ - 207 :  : klass_index=498 name_and_type_index=963
+ - 208 :  : "iget" {0xeebe3e98}
+ - 209 :  : klass_index=775 name_and_type_index=965
+ - 210 :  : klass_index=498 name_and_type_index=966
+ - 211 :  : "iget-wide" {0xeebe3e38}
+ - 212 :  : klass_index=498 name_and_type_index=968
+ - 213 :  : "iget-object" {0xeebe3dd8}
+ - 214 :  : klass_index=498 name_and_type_index=970
+ - 215 :  : "iget-boolean" {0xeebe3d78}
+ - 216 :  : klass_index=498 name_and_type_index=972
+ - 217 :  : "iget-byte" {0xeebe3d18}
+ - 218 :  : klass_index=498 name_and_type_index=974
+ - 219 :  : "iget-char" {0xeebe3cb8}
+ - 220 :  : klass_index=498 name_and_type_index=976
+ - 221 :  : "iget-short" {0xeebe3c58}
+ - 222 :  : klass_index=498 name_and_type_index=978
+ - 223 :  : "iput" {0xeebe3c08}
+ - 224 :  : klass_index=498 name_and_type_index=980
+ - 225 :  : "iput-wide" {0xeebe3ba8}
+ - 226 :  : klass_index=498 name_and_type_index=982
+ - 227 :  : "iput-object" {0xeebe3b48}
+ - 228 :  : klass_index=498 name_and_type_index=984
+ - 229 :  : "iput-boolean" {0xeebe3ae8}
+ - 230 :  : klass_index=498 name_and_type_index=986
+ - 231 :  : "iput-byte" {0xeebe3a88}
+ - 232 :  : klass_index=498 name_and_type_index=988
+ - 233 :  : "iput-char" {0xeebe3a28}
+ - 234 :  : klass_index=498 name_and_type_index=990
+ - 235 :  : "iput-short" {0xeebe39c8}
+ - 236 :  : klass_index=498 name_and_type_index=992
+ - 237 :  : "sget" {0xeebe3978}
+ - 238 :  : klass_index=498 name_and_type_index=994
+ - 239 :  : "sget-wide" {0xeebe3918}
+ - 240 :  : klass_index=498 name_and_type_index=996
+ - 241 :  : "sget-object" {0xeebe38b8}
+ - 242 :  : klass_index=498 name_and_type_index=998
+ - 243 :  : "sget-boolean" {0xeebe3858}
+ - 244 :  : klass_index=498 name_and_type_index=1000
+ - 245 :  : "sget-byte" {0xeebe37f8}
+ - 246 :  : klass_index=498 name_and_type_index=1002
+ - 247 :  : "sget-char" {0xeebe3798}
+ - 248 :  : klass_index=498 name_and_type_index=1004
+ - 249 :  : "sget-short" {0xeebe3738}
+ - 250 :  : klass_index=498 name_and_type_index=1006
+ - 251 :  : "sput" {0xeebe36e8}
+ - 252 :  : klass_index=498 name_and_type_index=1008
+ - 253 :  : "sput-wide" {0xeebe3688}
+ - 254 :  : klass_index=498 name_and_type_index=1010
+ - 255 :  : "sput-object" {0xeebe3628}
+ - 256 :  : klass_index=498 name_and_type_index=1012
+ - 257 :  : "sput-boolean" {0xeebe35c8}
+ - 258 :  : klass_index=498 name_and_type_index=1014
+ - 259 :  : "sput-byte" {0xeebe3568}
+ - 260 :  : klass_index=498 name_and_type_index=1016
+ - 261 :  : "sput-char" {0xeebe3508}
+ - 262 :  : klass_index=498 name_and_type_index=1018
+ - 263 :  : "sput-short" {0xeebe34a8}
+ - 264 :  : klass_index=498 name_and_type_index=1020
+ - 265 :  : "invoke-virtual" {0xeebe3430}
+ - 266 :  : klass_index=775 name_and_type_index=1022
+ - 267 :  : klass_index=498 name_and_type_index=1023
+ - 268 :  : "invoke-super" {0xeebe33d0}
+ - 269 :  : klass_index=498 name_and_type_index=1025
+ - 270 :  : "invoke-direct" {0xeebe3368}
+ - 271 :  : klass_index=498 name_and_type_index=1027
+ - 272 :  : "invoke-static" {0xeebe3300}
+ - 273 :  : klass_index=498 name_and_type_index=1029
+ - 274 :  : "invoke-interface" {0xeebe3298}
+ - 275 :  : klass_index=498 name_and_type_index=1031
+ - 276 :  : "invoke-virtual/range" {0xeebe3228}
+ - 277 :  : klass_index=498 name_and_type_index=1033
+ - 278 :  : "invoke-super/range" {0xeebe31b8}
+ - 279 :  : klass_index=498 name_and_type_index=1035
+ - 280 :  : "invoke-direct/range" {0xeebe3148}
+ - 281 :  : klass_index=498 name_and_type_index=1037
+ - 282 :  : "invoke-static/range" {0xeebe30d8}
+ - 283 :  : klass_index=498 name_and_type_index=1039
+ - 284 :  : "invoke-interface/range" {0xeebe3060}
+ - 285 :  : klass_index=498 name_and_type_index=1041
+ - 286 :  : "neg-int" {0xeebe3008}
+ - 287 :  : klass_index=498 name_and_type_index=1043
+ - 288 :  : "not-int" {0xeebe2fb0}
+ - 289 :  : klass_index=498 name_and_type_index=1045
+ - 290 :  : "neg-long" {0xeebe2f58}
+ - 291 :  : klass_index=498 name_and_type_index=1047
+ - 292 :  : "not-long" {0xeebe2f00}
+ - 293 :  : klass_index=498 name_and_type_index=1049
+ - 294 :  : "neg-float" {0xeebe2ea0}
+ - 295 :  : klass_index=498 name_and_type_index=1051
+ - 296 :  : "neg-double" {0xeebe2e40}
+ - 297 :  : klass_index=498 name_and_type_index=1053
+ - 298 :  : "int-to-long" {0xeebe2de0}
+ - 299 :  : klass_index=498 name_and_type_index=1055
+ - 300 :  : "int-to-float" {0xeebe2d80}
+ - 301 :  : klass_index=498 name_and_type_index=1057
+ - 302 :  : "int-to-double" {0xeebe2d18}
+ - 303 :  : klass_index=498 name_and_type_index=1059
+ - 304 :  : "long-to-int" {0xeebe2cb8}
+ - 305 :  : klass_index=498 name_and_type_index=1061
+ - 306 :  : "long-to-float" {0xeebe2c50}
+ - 307 :  : klass_index=498 name_and_type_index=1063
+ - 308 :  : "long-to-double" {0xeebe2be8}
+ - 309 :  : klass_index=498 name_and_type_index=1065
+ - 310 :  : "float-to-int" {0xeebe2b88}
+ - 311 :  : klass_index=498 name_and_type_index=1067
+ - 312 :  : "float-to-long" {0xeebe2b20}
+ - 313 :  : klass_index=498 name_and_type_index=1069
+ - 314 :  : "float-to-double" {0xeebe2ab8}
+ - 315 :  : klass_index=498 name_and_type_index=1071
+ - 316 :  : "double-to-int" {0xeebe2a50}
+ - 317 :  : klass_index=498 name_and_type_index=1073
+ - 318 :  : "double-to-long" {0xeebe29e8}
+ - 319 :  : klass_index=498 name_and_type_index=1075
+ - 320 :  : "double-to-float" {0xeebe2980}
+ - 321 :  : klass_index=498 name_and_type_index=1077
+ - 322 :  : "int-to-byte" {0xeebe2920}
+ - 323 :  : klass_index=498 name_and_type_index=1079
+ - 324 :  : "int-to-char" {0xeebe28c0}
+ - 325 :  : klass_index=498 name_and_type_index=1081
+ - 326 :  : "int-to-short" {0xeebe2860}
+ - 327 :  : klass_index=498 name_and_type_index=1083
+ - 328 :  : "add-int" {0xeebe2808}
+ - 329 :  : klass_index=498 name_and_type_index=1085
+ - 330 :  : "sub-int" {0xeebe27b0}
+ - 331 :  : klass_index=498 name_and_type_index=1087
+ - 332 :  : "mul-int" {0xeebe2758}
+ - 333 :  : klass_index=498 name_and_type_index=1089
+ - 334 :  : "div-int" {0xeebe2700}
+ - 335 :  : klass_index=498 name_and_type_index=1091
+ - 336 :  : "rem-int" {0xeebe26a8}
+ - 337 :  : klass_index=498 name_and_type_index=1093
+ - 338 :  : "and-int" {0xeebe2650}
+ - 339 :  : klass_index=498 name_and_type_index=1095
+ - 340 :  : "or-int" {0xeebe25f8}
+ - 341 :  : klass_index=498 name_and_type_index=1097
+ - 342 :  : "xor-int" {0xeebe25a0}
+ - 343 :  : klass_index=498 name_and_type_index=1099
+ - 344 :  : "shl-int" {0xeebe2548}
+ - 345 :  : klass_index=498 name_and_type_index=1101
+ - 346 :  : "shr-int" {0xeebe24f0}
+ - 347 :  : klass_index=498 name_and_type_index=1103
+ - 348 :  : "ushr-int" {0xeebe2498}
+ - 349 :  : klass_index=498 name_and_type_index=1105
+ - 350 :  : "add-long" {0xeebe2440}
+ - 351 :  : klass_index=498 name_and_type_index=1107
+ - 352 :  : "sub-long" {0xeebe23e8}
+ - 353 :  : klass_index=498 name_and_type_index=1109
+ - 354 :  : "mul-long" {0xeebe2390}
+ - 355 :  : klass_index=498 name_and_type_index=1111
+ - 356 :  : "div-long" {0xeebe2338}
+ - 357 :  : klass_index=498 name_and_type_index=1113
+ - 358 :  : "rem-long" {0xeebe22e0}
+ - 359 :  : klass_index=498 name_and_type_index=1115
+ - 360 :  : "and-long" {0xeebe2288}
+ - 361 :  : klass_index=498 name_and_type_index=1117
+ - 362 :  : "or-long" {0xeebe2230}
+ - 363 :  : klass_index=498 name_and_type_index=1119
+ - 364 :  : "xor-long" {0xeebe21d8}
+ - 365 :  : klass_index=498 name_and_type_index=1121
+ - 366 :  : "shl-long" {0xeebe2180}
+ - 367 :  : klass_index=498 name_and_type_index=1123
+ - 368 :  : "shr-long" {0xeebe2128}
+ - 369 :  : klass_index=498 name_and_type_index=1125
+ - 370 :  : "ushr-long" {0xeebe20c8}
+ - 371 :  : klass_index=498 name_and_type_index=1127
+ - 372 :  : "add-float" {0xeebe2068}
+ - 373 :  : klass_index=498 name_and_type_index=1129
+ - 374 :  : "sub-float" {0xeebe2008}
+ - 375 :  : klass_index=498 name_and_type_index=1131
+ - 376 :  : "mul-float" {0xeebe1fa8}
+ - 377 :  : klass_index=498 name_and_type_index=1133
+ - 378 :  : "div-float" {0xeebe1f48}
+ - 379 :  : klass_index=498 name_and_type_index=1135
+ - 380 :  : "rem-float" {0xeebe1ee8}
+ - 381 :  : klass_index=498 name_and_type_index=1137
+ - 382 :  : "add-double" {0xeebe1e88}
+ - 383 :  : klass_index=498 name_and_type_index=1139
+ - 384 :  : "sub-double" {0xeebe1e28}
+ - 385 :  : klass_index=498 name_and_type_index=1141
+ - 386 :  : "mul-double" {0xeebe1dc8}
+ - 387 :  : klass_index=498 name_and_type_index=1143
+ - 388 :  : "div-double" {0xeebe1d68}
+ - 389 :  : klass_index=498 name_and_type_index=1145
+ - 390 :  : "rem-double" {0xeebe1d08}
+ - 391 :  : klass_index=498 name_and_type_index=1147
+ - 392 :  : "add-int/2addr" {0xeebe1ca0}
+ - 393 :  : klass_index=498 name_and_type_index=1149
+ - 394 :  : "sub-int/2addr" {0xeebe1c38}
+ - 395 :  : klass_index=498 name_and_type_index=1151
+ - 396 :  : "mul-int/2addr" {0xeebe1bd0}
+ - 397 :  : klass_index=498 name_and_type_index=1153
+ - 398 :  : "div-int/2addr" {0xeebe1b68}
+ - 399 :  : klass_index=498 name_and_type_index=1155
+ - 400 :  : "rem-int/2addr" {0xeebe1b00}
+ - 401 :  : klass_index=498 name_and_type_index=1157
+ - 402 :  : "and-int/2addr" {0xeebe1a98}
+ - 403 :  : klass_index=498 name_and_type_index=1159
+ - 404 :  : "or-int/2addr" {0xeebe1a38}
+ - 405 :  : klass_index=498 name_and_type_index=1161
+ - 406 :  : "xor-int/2addr" {0xeebe19d0}
+ - 407 :  : klass_index=498 name_and_type_index=1163
+ - 408 :  : "shl-int/2addr" {0xeebe1968}
+ - 409 :  : klass_index=498 name_and_type_index=1165
+ - 410 :  : "shr-int/2addr" {0xeebe1900}
+ - 411 :  : klass_index=498 name_and_type_index=1167
+ - 412 :  : "ushr-int/2addr" {0xeebe1898}
+ - 413 :  : klass_index=498 name_and_type_index=1169
+ - 414 :  : "add-long/2addr" {0xeebe1830}
+ - 415 :  : klass_index=498 name_and_type_index=1171
+ - 416 :  : "sub-long/2addr" {0xeebe17c8}
+ - 417 :  : klass_index=498 name_and_type_index=1173
+ - 418 :  : "mul-long/2addr" {0xeebe1760}
+ - 419 :  : klass_index=498 name_and_type_index=1175
+ - 420 :  : "div-long/2addr" {0xeebe16f8}
+ - 421 :  : klass_index=498 name_and_type_index=1177
+ - 422 :  : "rem-long/2addr" {0xeebe1690}
+ - 423 :  : klass_index=498 name_and_type_index=1179
+ - 424 :  : "and-long/2addr" {0xeebe1628}
+ - 425 :  : klass_index=498 name_and_type_index=1181
+ - 426 :  : "or-long/2addr" {0xeebe15c0}
+ - 427 :  : klass_index=498 name_and_type_index=1183
+ - 428 :  : "xor-long/2addr" {0xeebe1558}
+ - 429 :  : klass_index=498 name_and_type_index=1185
+ - 430 :  : "shl-long/2addr" {0xeebe14f0}
+ - 431 :  : klass_index=498 name_and_type_index=1187
+ - 432 :  : "shr-long/2addr" {0xeebe1488}
+ - 433 :  : klass_index=498 name_and_type_index=1189
+ - 434 :  : "ushr-long/2addr" {0xeebe1420}
+ - 435 :  : klass_index=498 name_and_type_index=1191
+ - 436 :  : "add-float/2addr" {0xeebe13b8}
+ - 437 :  : klass_index=498 name_and_type_index=1193
+ - 438 :  : "sub-float/2addr" {0xeebe1350}
+ - 439 :  : klass_index=498 name_and_type_index=1195
+ - 440 :  : "mul-float/2addr" {0xeebe12e8}
+ - 441 :  : klass_index=498 name_and_type_index=1197
+ - 442 :  : "div-float/2addr" {0xeebe1280}
+ - 443 :  : klass_index=498 name_and_type_index=1199
+ - 444 :  : "rem-float/2addr" {0xeebe1218}
+ - 445 :  : klass_index=498 name_and_type_index=1201
+ - 446 :  : "add-double/2addr" {0xeebe11b0}
+ - 447 :  : klass_index=498 name_and_type_index=1203
+ - 448 :  : "sub-double/2addr" {0xeebe1148}
+ - 449 :  : klass_index=498 name_and_type_index=1205
+ - 450 :  : "mul-double/2addr" {0xeebe10e0}
+ - 451 :  : klass_index=498 name_and_type_index=1207
+ - 452 :  : "div-double/2addr" {0xeebe1078}
+ - 453 :  : klass_index=498 name_and_type_index=1209
+ - 454 :  : "rem-double/2addr" {0xeebe1010}
+ - 455 :  : klass_index=498 name_and_type_index=1211
+ - 456 :  : "add-int/lit16" {0xeebe0fa8}
+ - 457 :  : klass_index=773 name_and_type_index=1213
+ - 458 :  : klass_index=498 name_and_type_index=1214
+ - 459 :  : "rsub-int" {0xeebe0f50}
+ - 460 :  : klass_index=498 name_and_type_index=1216
+ - 461 :  : "mul-int/lit16" {0xeebe0ee8}
+ - 462 :  : klass_index=498 name_and_type_index=1218
+ - 463 :  : "div-int/lit16" {0xeebe0e80}
+ - 464 :  : klass_index=498 name_and_type_index=1220
+ - 465 :  : "rem-int/lit16" {0xeebe0e18}
+ - 466 :  : klass_index=498 name_and_type_index=1222
+ - 467 :  : "and-int/lit16" {0xeebe0db0}
+ - 468 :  : klass_index=498 name_and_type_index=1224
+ - 469 :  : "or-int/lit16" {0xeebe0d50}
+ - 470 :  : klass_index=498 name_and_type_index=1226
+ - 471 :  : "xor-int/lit16" {0xeebe0ce8}
+ - 472 :  : klass_index=498 name_and_type_index=1228
+ - 473 :  : "add-int/lit8" {0xeebe0c88}
+ - 474 :  : klass_index=773 name_and_type_index=1230
+ - 475 :  : klass_index=498 name_and_type_index=1231
+ - 476 :  : "rsub-int/lit8" {0xeebe0c20}
+ - 477 :  : klass_index=498 name_and_type_index=1233
+ - 478 :  : "mul-int/lit8" {0xeebe0bc0}
+ - 479 :  : klass_index=498 name_and_type_index=1235
+ - 480 :  : "div-int/lit8" {0xeebe0b60}
+ - 481 :  : klass_index=498 name_and_type_index=1237
+ - 482 :  : "rem-int/lit8" {0xeebe0b00}
+ - 483 :  : klass_index=498 name_and_type_index=1239
+ - 484 :  : "and-int/lit8" {0xeebe0aa0}
+ - 485 :  : klass_index=498 name_and_type_index=1241
+ - 486 :  : "or-int/lit8" {0xeebe0a40}
+ - 487 :  : klass_index=498 name_and_type_index=1243
+ - 488 :  : "xor-int/lit8" {0xeebe09e0}
+ - 489 :  : klass_index=498 name_and_type_index=1245
+ - 490 :  : "shl-int/lit8" {0xeebe0980}
+ - 491 :  : klass_index=498 name_and_type_index=1247
+ - 492 :  : "shr-int/lit8" {0xeebe0920}
+ - 493 :  : klass_index=498 name_and_type_index=1249
+ - 494 :  : "ushr-int/lit8" {0xeebe08b8}
+ - 495 :  : klass_index=498 name_and_type_index=1251
+ - 496 :  : 65537
+ - 497 :  : klass_index=498 name_and_type_index=1252
+ - 498 :  : 'com/android/dx/io/OpcodeInfo' {0xb5ff42f0}
+ - 499 :  : 'java/lang/Object'
+ - 500 :  : 'Info'
+ - 501 :  : 'InnerClasses'
+ - 502 :  : 'INFO'
+ - 503 :  : '[Lcom/android/dx/io/OpcodeInfo$Info;'
+ - 504 :  : 'SPECIAL_FORMAT'
+ - 505 :  : 'Lcom/android/dx/io/OpcodeInfo$Info;'
+ - 506 :  : 'PACKED_SWITCH_PAYLOAD'
+ - 507 :  : 'SPARSE_SWITCH_PAYLOAD'
+ - 508 :  : 'FILL_ARRAY_DATA_PAYLOAD'
+ - 509 :  : 'NOP'
+ - 510 :  : 'MOVE'
+ - 511 :  : 'MOVE_FROM16'
+ - 512 :  : 'MOVE_16'
+ - 513 :  : 'MOVE_WIDE'
+ - 514 :  : 'MOVE_WIDE_FROM16'
+ - 515 :  : 'MOVE_WIDE_16'
+ - 516 :  : 'MOVE_OBJECT'
+ - 517 :  : 'MOVE_OBJECT_FROM16'
+ - 518 :  : 'MOVE_OBJECT_16'
+ - 519 :  : 'MOVE_RESULT'
+ - 520 :  : 'MOVE_RESULT_WIDE'
+ - 521 :  : 'MOVE_RESULT_OBJECT'
+ - 522 :  : 'MOVE_EXCEPTION'
+ - 523 :  : 'RETURN_VOID'
+ - 524 :  : 'RETURN'
+ - 525 :  : 'RETURN_WIDE'
+ - 526 :  : 'RETURN_OBJECT'
+ - 527 :  : 'CONST_4'
+ - 528 :  : 'CONST_16'
+ - 529 :  : 'CONST'
+ - 530 :  : 'CONST_HIGH16'
+ - 531 :  : 'CONST_WIDE_16'
+ - 532 :  : 'CONST_WIDE_32'
+ - 533 :  : 'CONST_WIDE'
+ - 534 :  : 'CONST_WIDE_HIGH16'
+ - 535 :  : 'CONST_STRING'
+ - 536 :  : 'CONST_STRING_JUMBO'
+ - 537 :  : 'CONST_CLASS'
+ - 538 :  : 'MONITOR_ENTER'
+ - 539 :  : 'MONITOR_EXIT'
+ - 540 :  : 'CHECK_CAST'
+ - 541 :  : 'INSTANCE_OF'
+ - 542 :  : 'ARRAY_LENGTH'
+ - 543 :  : 'NEW_INSTANCE'
+ - 544 :  : 'NEW_ARRAY'
+ - 545 :  : 'FILLED_NEW_ARRAY'
+ - 546 :  : 'FILLED_NEW_ARRAY_RANGE'
+ - 547 :  : 'FILL_ARRAY_DATA'
+ - 548 :  : 'THROW'
+ - 549 :  : 'GOTO'
+ - 550 :  : 'GOTO_16'
+ - 551 :  : 'GOTO_32'
+ - 552 :  : 'PACKED_SWITCH'
+ - 553 :  : 'SPARSE_SWITCH'
+ - 554 :  : 'CMPL_FLOAT'
+ - 555 :  : 'CMPG_FLOAT'
+ - 556 :  : 'CMPL_DOUBLE'
+ - 557 :  : 'CMPG_DOUBLE'
+ - 558 :  : 'CMP_LONG'
+ - 559 :  : 'IF_EQ'
+ - 560 :  : 'IF_NE'
+ - 561 :  : 'IF_LT'
+ - 562 :  : 'IF_GE'
+ - 563 :  : 'IF_GT'
+ - 564 :  : 'IF_LE'
+ - 565 :  : 'IF_EQZ'
+ - 566 :  : 'IF_NEZ'
+ - 567 :  : 'IF_LTZ'
+ - 568 :  : 'IF_GEZ'
+ - 569 :  : 'IF_GTZ'
+ - 570 :  : 'IF_LEZ'
+ - 571 :  : 'AGET'
+ - 572 :  : 'AGET_WIDE'
+ - 573 :  : 'AGET_OBJECT'
+ - 574 :  : 'AGET_BOOLEAN'
+ - 575 :  : 'AGET_BYTE'
+ - 576 :  : 'AGET_CHAR'
+ - 577 :  : 'AGET_SHORT'
+ - 578 :  : 'APUT'
+ - 579 :  : 'APUT_WIDE'
+ - 580 :  : 'APUT_OBJECT'
+ - 581 :  : 'APUT_BOOLEAN'
+ - 582 :  : 'APUT_BYTE'
+ - 583 :  : 'APUT_CHAR'
+ - 584 :  : 'APUT_SHORT'
+ - 585 :  : 'IGET'
+ - 586 :  : 'IGET_WIDE'
+ - 587 :  : 'IGET_OBJECT'
+ - 588 :  : 'IGET_BOOLEAN'
+ - 589 :  : 'IGET_BYTE'
+ - 590 :  : 'IGET_CHAR'
+ - 591 :  : 'IGET_SHORT'
+ - 592 :  : 'IPUT'
+ - 593 :  : 'IPUT_WIDE'
+ - 594 :  : 'IPUT_OBJECT'
+ - 595 :  : 'IPUT_BOOLEAN'
+ - 596 :  : 'IPUT_BYTE'
+ - 597 :  : 'IPUT_CHAR'
+ - 598 :  : 'IPUT_SHORT'
+ - 599 :  : 'SGET'
+ - 600 :  : 'SGET_WIDE'
+ - 601 :  : 'SGET_OBJECT'
+ - 602 :  : 'SGET_BOOLEAN'
+ - 603 :  : 'SGET_BYTE'
+ - 604 :  : 'SGET_CHAR'
+ - 605 :  : 'SGET_SHORT'
+ - 606 :  : 'SPUT'
+ - 607 :  : 'SPUT_WIDE'
+ - 608 :  : 'SPUT_OBJECT'
+ - 609 :  : 'SPUT_BOOLEAN'
+ - 610 :  : 'SPUT_BYTE'
+ - 611 :  : 'SPUT_CHAR'
+ - 612 :  : 'SPUT_SHORT'
+ - 613 :  : 'INVOKE_VIRTUAL'
+ - 614 :  : 'INVOKE_SUPER'
+ - 615 :  : 'INVOKE_DIRECT'
+ - 616 :  : 'INVOKE_STATIC'
+ - 617 :  : 'INVOKE_INTERFACE'
+ - 618 :  : 'INVOKE_VIRTUAL_RANGE'
+ - 619 :  : 'INVOKE_SUPER_RANGE'
+ - 620 :  : 'INVOKE_DIRECT_RANGE'
+ - 621 :  : 'INVOKE_STATIC_RANGE'
+ - 622 :  : 'INVOKE_INTERFACE_RANGE'
+ - 623 :  : 'NEG_INT'
+ - 624 :  : 'NOT_INT'
+ - 625 :  : 'NEG_LONG'
+ - 626 :  : 'NOT_LONG'
+ - 627 :  : 'NEG_FLOAT'
+ - 628 :  : 'NEG_DOUBLE'
+ - 629 :  : 'INT_TO_LONG'
+ - 630 :  : 'INT_TO_FLOAT'
+ - 631 :  : 'INT_TO_DOUBLE'
+ - 632 :  : 'LONG_TO_INT'
+ - 633 :  : 'LONG_TO_FLOAT'
+ - 634 :  : 'LONG_TO_DOUBLE'
+ - 635 :  : 'FLOAT_TO_INT'
+ - 636 :  : 'FLOAT_TO_LONG'
+ - 637 :  : 'FLOAT_TO_DOUBLE'
+ - 638 :  : 'DOUBLE_TO_INT'
+ - 639 :  : 'DOUBLE_TO_LONG'
+ - 640 :  : 'DOUBLE_TO_FLOAT'
+ - 641 :  : 'INT_TO_BYTE'
+ - 642 :  : 'INT_TO_CHAR'
+ - 643 :  : 'INT_TO_SHORT'
+ - 644 :  : 'ADD_INT'
+ - 645 :  : 'SUB_INT'
+ - 646 :  : 'MUL_INT'
+ - 647 :  : 'DIV_INT'
+ - 648 :  : 'REM_INT'
+ - 649 :  : 'AND_INT'
+ - 650 :  : 'OR_INT'
+ - 651 :  : 'XOR_INT'
+ - 652 :  : 'SHL_INT'
+ - 653 :  : 'SHR_INT'
+ - 654 :  : 'USHR_INT'
+ - 655 :  : 'ADD_LONG'
+ - 656 :  : 'SUB_LONG'
+ - 657 :  : 'MUL_LONG'
+ - 658 :  : 'DIV_LONG'
+ - 659 :  : 'REM_LONG'
+ - 660 :  : 'AND_LONG'
+ - 661 :  : 'OR_LONG'
+ - 662 :  : 'XOR_LONG'
+ - 663 :  : 'SHL_LONG'
+ - 664 :  : 'SHR_LONG'
+ - 665 :  : 'USHR_LONG'
+ - 666 :  : 'ADD_FLOAT'
+ - 667 :  : 'SUB_FLOAT'
+ - 668 :  : 'MUL_FLOAT'
+ - 669 :  : 'DIV_FLOAT'
+ - 670 :  : 'REM_FLOAT'
+ - 671 :  : 'ADD_DOUBLE'
+ - 672 :  : 'SUB_DOUBLE'
+ - 673 :  : 'MUL_DOUBLE'
+ - 674 :  : 'DIV_DOUBLE'
+ - 675 :  : 'REM_DOUBLE'
+ - 676 :  : 'ADD_INT_2ADDR'
+ - 677 :  : 'SUB_INT_2ADDR'
+ - 678 :  : 'MUL_INT_2ADDR'
+ - 679 :  : 'DIV_INT_2ADDR'
+ - 680 :  : 'REM_INT_2ADDR'
+ - 681 :  : 'AND_INT_2ADDR'
+ - 682 :  : 'OR_INT_2ADDR'
+ - 683 :  : 'XOR_INT_2ADDR'
+ - 684 :  : 'SHL_INT_2ADDR'
+ - 685 :  : 'SHR_INT_2ADDR'
+ - 686 :  : 'USHR_INT_2ADDR'
+ - 687 :  : 'ADD_LONG_2ADDR'
+ - 688 :  : 'SUB_LONG_2ADDR'
+ - 689 :  : 'MUL_LONG_2ADDR'
+ - 690 :  : 'DIV_LONG_2ADDR'
+ - 691 :  : 'REM_LONG_2ADDR'
+ - 692 :  : 'AND_LONG_2ADDR'
+ - 693 :  : 'OR_LONG_2ADDR'
+ - 694 :  : 'XOR_LONG_2ADDR'
+ - 695 :  : 'SHL_LONG_2ADDR'
+ - 696 :  : 'SHR_LONG_2ADDR'
+ - 697 :  : 'USHR_LONG_2ADDR'
+ - 698 :  : 'ADD_FLOAT_2ADDR'
+ - 699 :  : 'SUB_FLOAT_2ADDR'
+ - 700 :  : 'MUL_FLOAT_2ADDR'
+ - 701 :  : 'DIV_FLOAT_2ADDR'
+ - 702 :  : 'REM_FLOAT_2ADDR'
+ - 703 :  : 'ADD_DOUBLE_2ADDR'
+ - 704 :  : 'SUB_DOUBLE_2ADDR'
+ - 705 :  : 'MUL_DOUBLE_2ADDR'
+ - 706 :  : 'DIV_DOUBLE_2ADDR'
+ - 707 :  : 'REM_DOUBLE_2ADDR'
+ - 708 :  : 'ADD_INT_LIT16'
+ - 709 :  : 'RSUB_INT'
+ - 710 :  : 'MUL_INT_LIT16'
+ - 711 :  : 'DIV_INT_LIT16'
+ - 712 :  : 'REM_INT_LIT16'
+ - 713 :  : 'AND_INT_LIT16'
+ - 714 :  : 'OR_INT_LIT16'
+ - 715 :  : 'XOR_INT_LIT16'
+ - 716 :  : 'ADD_INT_LIT8'
+ - 717 :  : 'RSUB_INT_LIT8'
+ - 718 :  : 'MUL_INT_LIT8'
+ - 719 :  : 'DIV_INT_LIT8'
+ - 720 :  : 'REM_INT_LIT8'
+ - 721 :  : 'AND_INT_LIT8'
+ - 722 :  : 'OR_INT_LIT8'
+ - 723 :  : 'XOR_INT_LIT8'
+ - 724 :  : 'SHL_INT_LIT8'
+ - 725 :  : 'SHR_INT_LIT8'
+ - 726 :  : 'USHR_INT_LIT8'
+ - 727 :  : '<init>'
+ - 728 :  : '()V'
+ - 729 :  : 'Code'
+ - 730 :  : 'LineNumberTable'
+ - 731 :  : 'LocalVariableTable'
+ - 732 :  : 'this'
+ - 733 :  : 'Lcom/android/dx/io/OpcodeInfo;'
+ - 734 :  : 'get'
+ - 735 :  : '(I)Lcom/android/dx/io/OpcodeInfo$Info;'
+ - 736 :  : 'result'
+ - 737 :  : 'ex'
+ - 738 :  : 'Ljava/lang/ArrayIndexOutOfBoundsException;'
+ - 739 :  : 'opcode'
+ - 740 :  : 'I'
+ - 741 :  : 'idx'
+ - 742 :  : 'StackMapTable'
+ - 743 :  : 'java/lang/ArrayIndexOutOfBoundsException'
+ - 744 :  : 'getName'
+ - 745 :  : '(I)Ljava/lang/String;'
+ - 746 :  : 'getFormat'
+ - 747 :  : '(I)Lcom/android/dx/io/instructions/InstructionCodec;'
+ - 748 :  : 'getIndexType'
+ - 749 :  : '(I)Lcom/android/dx/io/IndexType;'
+ - 750 :  : 'set'
+ - 751 :  : '(Lcom/android/dx/io/OpcodeInfo$Info;)V'
+ - 752 :  : '<clinit>'
+ - 753 :  : 'SourceFile'
+ - 754 :  : 'OpcodeInfo.java'
+ - 755 :  : name_index=727 signature_index=728
+ - 756 :  : name_index=502 signature_index=503
+ - 757 :  : 'java/lang/ArrayIndexOutOfBoundsException'
+ - 758 :  : 'java/lang/IllegalArgumentException'
+ - 759 :  : 'java/lang/StringBuilder'
+ - 760 :  : 'bogus opcode: '
+ - 761 :  : name_index=1255 signature_index=1256
+ - 762 :  : 'com/android/dx/util/Hex'
+ - 763 :  : name_index=1258 signature_index=745
+ - 764 :  : name_index=1259 signature_index=1260
+ - 765 :  : name_index=727 signature_index=1261
+ - 766 :  : name_index=734 signature_index=735
+ - 767 :  : name_index=744 signature_index=1260
+ - 768 :  : name_index=746 signature_index=1262
+ - 769 :  : name_index=748 signature_index=1263
+ - 770 :  : name_index=1264 signature_index=1265
+ - 771 :  : 'com/android/dx/io/OpcodeInfo$Info'
+ - 772 :  : '<special>'
+ - 773 :  : 'com/android/dx/io/instructions/InstructionCodec' {0xb5ffb6c0}
+ - 774 :  : name_index=1267 signature_index=1268
+ - 775 :  : 'com/android/dx/io/IndexType' {0xb601b0d8}
+ - 776 :  : name_index=1270 signature_index=1271
+ - 777 :  : name_index=727 signature_index=1272
+ - 778 :  : name_index=504 signature_index=505
+ - 779 :  : 'packed-switch-payload'
+ - 780 :  : name_index=1273 signature_index=1268
+ - 781 :  : name_index=506 signature_index=505
+ - 782 :  : 'sparse-switch-payload'
+ - 783 :  : name_index=1274 signature_index=1268
+ - 784 :  : name_index=507 signature_index=505
+ - 785 :  : 'fill-array-data-payload'
+ - 786 :  : name_index=1275 signature_index=1268
+ - 787 :  : name_index=508 signature_index=505
+ - 788 :  : 'nop'
+ - 789 :  : name_index=1276 signature_index=1268
+ - 790 :  : name_index=509 signature_index=505
+ - 791 :  : 'move'
+ - 792 :  : name_index=1277 signature_index=1268
+ - 793 :  : name_index=510 signature_index=505
+ - 794 :  : 'move/from16'
+ - 795 :  : name_index=1278 signature_index=1268
+ - 796 :  : name_index=511 signature_index=505
+ - 797 :  : 'move/16'
+ - 798 :  : name_index=1279 signature_index=1268
+ - 799 :  : name_index=512 signature_index=505
+ - 800 :  : 'move-wide'
+ - 801 :  : name_index=513 signature_index=505
+ - 802 :  : 'move-wide/from16'
+ - 803 :  : name_index=514 signature_index=505
+ - 804 :  : 'move-wide/16'
+ - 805 :  : name_index=515 signature_index=505
+ - 806 :  : 'move-object'
+ - 807 :  : name_index=516 signature_index=505
+ - 808 :  : 'move-object/from16'
+ - 809 :  : name_index=517 signature_index=505
+ - 810 :  : 'move-object/16'
+ - 811 :  : name_index=518 signature_index=505
+ - 812 :  : 'move-result'
+ - 813 :  : name_index=1280 signature_index=1268
+ - 814 :  : name_index=519 signature_index=505
+ - 815 :  : 'move-result-wide'
+ - 816 :  : name_index=520 signature_index=505
+ - 817 :  : 'move-result-object'
+ - 818 :  : name_index=521 signature_index=505
+ - 819 :  : 'move-exception'
+ - 820 :  : name_index=522 signature_index=505
+ - 821 :  : 'return-void'
+ - 822 :  : name_index=523 signature_index=505
+ - 823 :  : 'return'
+ - 824 :  : name_index=524 signature_index=505
+ - 825 :  : 'return-wide'
+ - 826 :  : name_index=525 signature_index=505
+ - 827 :  : 'return-object'
+ - 828 :  : name_index=526 signature_index=505
+ - 829 :  : 'const/4'
+ - 830 :  : name_index=1281 signature_index=1268
+ - 831 :  : name_index=527 signature_index=505
+ - 832 :  : 'const/16'
+ - 833 :  : name_index=1282 signature_index=1268
+ - 834 :  : name_index=528 signature_index=505
+ - 835 :  : 'const'
+ - 836 :  : name_index=1283 signature_index=1268
+ - 837 :  : name_index=529 signature_index=505
+ - 838 :  : 'const/high16'
+ - 839 :  : name_index=1284 signature_index=1268
+ - 840 :  : name_index=530 signature_index=505
+ - 841 :  : 'const-wide/16'
+ - 842 :  : name_index=531 signature_index=505
+ - 843 :  : 'const-wide/32'
+ - 844 :  : name_index=532 signature_index=505
+ - 845 :  : 'const-wide'
+ - 846 :  : name_index=1285 signature_index=1268
+ - 847 :  : name_index=533 signature_index=505
+ - 848 :  : 'const-wide/high16'
+ - 849 :  : name_index=534 signature_index=505
+ - 850 :  : 'const-string'
+ - 851 :  : name_index=1286 signature_index=1268
+ - 852 :  : name_index=1287 signature_index=1271
+ - 853 :  : name_index=535 signature_index=505
+ - 854 :  : 'const-string/jumbo'
+ - 855 :  : name_index=1288 signature_index=1268
+ - 856 :  : name_index=536 signature_index=505
+ - 857 :  : 'const-class'
+ - 858 :  : name_index=1289 signature_index=1271
+ - 859 :  : name_index=537 signature_index=505
+ - 860 :  : 'monitor-enter'
+ - 861 :  : name_index=538 signature_index=505
+ - 862 :  : 'monitor-exit'
+ - 863 :  : name_index=539 signature_index=505
+ - 864 :  : 'check-cast'
+ - 865 :  : name_index=540 signature_index=505
+ - 866 :  : 'instance-of'
+ - 867 :  : name_index=1290 signature_index=1268
+ - 868 :  : name_index=541 signature_index=505
+ - 869 :  : 'array-length'
+ - 870 :  : name_index=542 signature_index=505
+ - 871 :  : 'new-instance'
+ - 872 :  : name_index=543 signature_index=505
+ - 873 :  : 'new-array'
+ - 874 :  : name_index=544 signature_index=505
+ - 875 :  : 'filled-new-array'
+ - 876 :  : name_index=1291 signature_index=1268
+ - 877 :  : name_index=545 signature_index=505
+ - 878 :  : 'filled-new-array/range'
+ - 879 :  : name_index=1292 signature_index=1268
+ - 880 :  : name_index=546 signature_index=505
+ - 881 :  : 'fill-array-data'
+ - 882 :  : name_index=1293 signature_index=1268
+ - 883 :  : name_index=547 signature_index=505
+ - 884 :  : 'throw'
+ - 885 :  : name_index=548 signature_index=505
+ - 886 :  : 'goto'
+ - 887 :  : name_index=1294 signature_index=1268
+ - 888 :  : name_index=549 signature_index=505
+ - 889 :  : 'goto/16'
+ - 890 :  : name_index=1295 signature_index=1268
+ - 891 :  : name_index=550 signature_index=505
+ - 892 :  : 'goto/32'
+ - 893 :  : name_index=1296 signature_index=1268
+ - 894 :  : name_index=551 signature_index=505
+ - 895 :  : 'packed-switch'
+ - 896 :  : name_index=552 signature_index=505
+ - 897 :  : 'sparse-switch'
+ - 898 :  : name_index=553 signature_index=505
+ - 899 :  : 'cmpl-float'
+ - 900 :  : name_index=1297 signature_index=1268
+ - 901 :  : name_index=554 signature_index=505
+ - 902 :  : 'cmpg-float'
+ - 903 :  : name_index=555 signature_index=505
+ - 904 :  : 'cmpl-double'
+ - 905 :  : name_index=556 signature_index=505
+ - 906 :  : 'cmpg-double'
+ - 907 :  : name_index=557 signature_index=505
+ - 908 :  : 'cmp-long'
+ - 909 :  : name_index=558 signature_index=505
+ - 910 :  : 'if-eq'
+ - 911 :  : name_index=1298 signature_index=1268
+ - 912 :  : name_index=559 signature_index=505
+ - 913 :  : 'if-ne'
+ - 914 :  : name_index=560 signature_index=505
+ - 915 :  : 'if-lt'
+ - 916 :  : name_index=561 signature_index=505
+ - 917 :  : 'if-ge'
+ - 918 :  : name_index=562 signature_index=505
+ - 919 :  : 'if-gt'
+ - 920 :  : name_index=563 signature_index=505
+ - 921 :  : 'if-le'
+ - 922 :  : name_index=564 signature_index=505
+ - 923 :  : 'if-eqz'
+ - 924 :  : name_index=1299 signature_index=1268
+ - 925 :  : name_index=565 signature_index=505
+ - 926 :  : 'if-nez'
+ - 927 :  : name_index=566 signature_index=505
+ - 928 :  : 'if-ltz'
+ - 929 :  : name_index=567 signature_index=505
+ - 930 :  : 'if-gez'
+ - 931 :  : name_index=568 signature_index=505
+ - 932 :  : 'if-gtz'
+ - 933 :  : name_index=569 signature_index=505
+ - 934 :  : 'if-lez'
+ - 935 :  : name_index=570 signature_index=505
+ - 936 :  : 'aget'
+ - 937 :  : name_index=571 signature_index=505
+ - 938 :  : 'aget-wide'
+ - 939 :  : name_index=572 signature_index=505
+ - 940 :  : 'aget-object'
+ - 941 :  : name_index=573 signature_index=505
+ - 942 :  : 'aget-boolean'
+ - 943 :  : name_index=574 signature_index=505
+ - 944 :  : 'aget-byte'
+ - 945 :  : name_index=575 signature_index=505
+ - 946 :  : 'aget-char'
+ - 947 :  : name_index=576 signature_index=505
+ - 948 :  : 'aget-short'
+ - 949 :  : name_index=577 signature_index=505
+ - 950 :  : 'aput'
+ - 951 :  : name_index=578 signature_index=505
+ - 952 :  : 'aput-wide'
+ - 953 :  : name_index=579 signature_index=505
+ - 954 :  : 'aput-object'
+ - 955 :  : name_index=580 signature_index=505
+ - 956 :  : 'aput-boolean'
+ - 957 :  : name_index=581 signature_index=505
+ - 958 :  : 'aput-byte'
+ - 959 :  : name_index=582 signature_index=505
+ - 960 :  : 'aput-char'
+ - 961 :  : name_index=583 signature_index=505
+ - 962 :  : 'aput-short'
+ - 963 :  : name_index=584 signature_index=505
+ - 964 :  : 'iget'
+ - 965 :  : name_index=1300 signature_index=1271
+ - 966 :  : name_index=585 signature_index=505
+ - 967 :  : 'iget-wide'
+ - 968 :  : name_index=586 signature_index=505
+ - 969 :  : 'iget-object'
+ - 970 :  : name_index=587 signature_index=505
+ - 971 :  : 'iget-boolean'
+ - 972 :  : name_index=588 signature_index=505
+ - 973 :  : 'iget-byte'
+ - 974 :  : name_index=589 signature_index=505
+ - 975 :  : 'iget-char'
+ - 976 :  : name_index=590 signature_index=505
+ - 977 :  : 'iget-short'
+ - 978 :  : name_index=591 signature_index=505
+ - 979 :  : 'iput'
+ - 980 :  : name_index=592 signature_index=505
+ - 981 :  : 'iput-wide'
+ - 982 :  : name_index=593 signature_index=505
+ - 983 :  : 'iput-object'
+ - 984 :  : name_index=594 signature_index=505
+ - 985 :  : 'iput-boolean'
+ - 986 :  : name_index=595 signature_index=505
+ - 987 :  : 'iput-byte'
+ - 988 :  : name_index=596 signature_index=505
+ - 989 :  : 'iput-char'
+ - 990 :  : name_index=597 signature_index=505
+ - 991 :  : 'iput-short'
+ - 992 :  : name_index=598 signature_index=505
+ - 993 :  : 'sget'
+ - 994 :  : name_index=599 signature_index=505
+ - 995 :  : 'sget-wide'
+ - 996 :  : name_index=600 signature_index=505
+ - 997 :  : 'sget-object'
+ - 998 :  : name_index=601 signature_index=505
+ - 999 :  : 'sget-boolean'
+ - 1000 :  : name_index=602 signature_index=505
+ - 1001 :  : 'sget-byte'
+ - 1002 :  : name_index=603 signature_index=505
+ - 1003 :  : 'sget-char'
+ - 1004 :  : name_index=604 signature_index=505
+ - 1005 :  : 'sget-short'
+ - 1006 :  : name_index=605 signature_index=505
+ - 1007 :  : 'sput'
+ - 1008 :  : name_index=606 signature_index=505
+ - 1009 :  : 'sput-wide'
+ - 1010 :  : name_index=607 signature_index=505
+ - 1011 :  : 'sput-object'
+ - 1012 :  : name_index=608 signature_index=505
+ - 1013 :  : 'sput-boolean'
+ - 1014 :  : name_index=609 signature_index=505
+ - 1015 :  : 'sput-byte'
+ - 1016 :  : name_index=610 signature_index=505
+ - 1017 :  : 'sput-char'
+ - 1018 :  : name_index=611 signature_index=505
+ - 1019 :  : 'sput-short'
+ - 1020 :  : name_index=612 signature_index=505
+ - 1021 :  : 'invoke-virtual'
+ - 1022 :  : name_index=1301 signature_index=1271
+ - 1023 :  : name_index=613 signature_index=505
+ - 1024 :  : 'invoke-super'
+ - 1025 :  : name_index=614 signature_index=505
+ - 1026 :  : 'invoke-direct'
+ - 1027 :  : name_index=615 signature_index=505
+ - 1028 :  : 'invoke-static'
+ - 1029 :  : name_index=616 signature_index=505
+ - 1030 :  : 'invoke-interface'
+ - 1031 :  : name_index=617 signature_index=505
+ - 1032 :  : 'invoke-virtual/range'
+ - 1033 :  : name_index=618 signature_index=505
+ - 1034 :  : 'invoke-super/range'
+ - 1035 :  : name_index=619 signature_index=505
+ - 1036 :  : 'invoke-direct/range'
+ - 1037 :  : name_index=620 signature_index=505
+ - 1038 :  : 'invoke-static/range'
+ - 1039 :  : name_index=621 signature_index=505
+ - 1040 :  : 'invoke-interface/range'
+ - 1041 :  : name_index=622 signature_index=505
+ - 1042 :  : 'neg-int'
+ - 1043 :  : name_index=623 signature_index=505
+ - 1044 :  : 'not-int'
+ - 1045 :  : name_index=624 signature_index=505
+ - 1046 :  : 'neg-long'
+ - 1047 :  : name_index=625 signature_index=505
+ - 1048 :  : 'not-long'
+ - 1049 :  : name_index=626 signature_index=505
+ - 1050 :  : 'neg-float'
+ - 1051 :  : name_index=627 signature_index=505
+ - 1052 :  : 'neg-double'
+ - 1053 :  : name_index=628 signature_index=505
+ - 1054 :  : 'int-to-long'
+ - 1055 :  : name_index=629 signature_index=505
+ - 1056 :  : 'int-to-float'
+ - 1057 :  : name_index=630 signature_index=505
+ - 1058 :  : 'int-to-double'
+ - 1059 :  : name_index=631 signature_index=505
+ - 1060 :  : 'long-to-int'
+ - 1061 :  : name_index=632 signature_index=505
+ - 1062 :  : 'long-to-float'
+ - 1063 :  : name_index=633 signature_index=505
+ - 1064 :  : 'long-to-double'
+ - 1065 :  : name_index=634 signature_index=505
+ - 1066 :  : 'float-to-int'
+ - 1067 :  : name_index=635 signature_index=505
+ - 1068 :  : 'float-to-long'
+ - 1069 :  : name_index=636 signature_index=505
+ - 1070 :  : 'float-to-double'
+ - 1071 :  : name_index=637 signature_index=505
+ - 1072 :  : 'double-to-int'
+ - 1073 :  : name_index=638 signature_index=505
+ - 1074 :  : 'double-to-long'
+ - 1075 :  : name_index=639 signature_index=505
+ - 1076 :  : 'double-to-float'
+ - 1077 :  : name_index=640 signature_index=505
+ - 1078 :  : 'int-to-byte'
+ - 1079 :  : name_index=641 signature_index=505
+ - 1080 :  : 'int-to-char'
+ - 1081 :  : name_index=642 signature_index=505
+ - 1082 :  : 'int-to-short'
+ - 1083 :  : name_index=643 signature_index=505
+ - 1084 :  : 'add-int'
+ - 1085 :  : name_index=644 signature_index=505
+ - 1086 :  : 'sub-int'
+ - 1087 :  : name_index=645 signature_index=505
+ - 1088 :  : 'mul-int'
+ - 1089 :  : name_index=646 signature_index=505
+ - 1090 :  : 'div-int'
+ - 1091 :  : name_index=647 signature_index=505
+ - 1092 :  : 'rem-int'
+ - 1093 :  : name_index=648 signature_index=505
+ - 1094 :  : 'and-int'
+ - 1095 :  : name_index=649 signature_index=505
+ - 1096 :  : 'or-int'
+ - 1097 :  : name_index=650 signature_index=505
+ - 1098 :  : 'xor-int'
+ - 1099 :  : name_index=651 signature_index=505
+ - 1100 :  : 'shl-int'
+ - 1101 :  : name_index=652 signature_index=505
+ - 1102 :  : 'shr-int'
+ - 1103 :  : name_index=653 signature_index=505
+ - 1104 :  : 'ushr-int'
+ - 1105 :  : name_index=654 signature_index=505
+ - 1106 :  : 'add-long'
+ - 1107 :  : name_index=655 signature_index=505
+ - 1108 :  : 'sub-long'
+ - 1109 :  : name_index=656 signature_index=505
+ - 1110 :  : 'mul-long'
+ - 1111 :  : name_index=657 signature_index=505
+ - 1112 :  : 'div-long'
+ - 1113 :  : name_index=658 signature_index=505
+ - 1114 :  : 'rem-long'
+ - 1115 :  : name_index=659 signature_index=505
+ - 1116 :  : 'and-long'
+ - 1117 :  : name_index=660 signature_index=505
+ - 1118 :  : 'or-long'
+ - 1119 :  : name_index=661 signature_index=505
+ - 1120 :  : 'xor-long'
+ - 1121 :  : name_index=662 signature_index=505
+ - 1122 :  : 'shl-long'
+ - 1123 :  : name_index=663 signature_index=505
+ - 1124 :  : 'shr-long'
+ - 1125 :  : name_index=664 signature_index=505
+ - 1126 :  : 'ushr-long'
+ - 1127 :  : name_index=665 signature_index=505
+ - 1128 :  : 'add-float'
+ - 1129 :  : name_index=666 signature_index=505
+ - 1130 :  : 'sub-float'
+ - 1131 :  : name_index=667 signature_index=505
+ - 1132 :  : 'mul-float'
+ - 1133 :  : name_index=668 signature_index=505
+ - 1134 :  : 'div-float'
+ - 1135 :  : name_index=669 signature_index=505
+ - 1136 :  : 'rem-float'
+ - 1137 :  : name_index=670 signature_index=505
+ - 1138 :  : 'add-double'
+ - 1139 :  : name_index=671 signature_index=505
+ - 1140 :  : 'sub-double'
+ - 1141 :  : name_index=672 signature_index=505
+ - 1142 :  : 'mul-double'
+ - 1143 :  : name_index=673 signature_index=505
+ - 1144 :  : 'div-double'
+ - 1145 :  : name_index=674 signature_index=505
+ - 1146 :  : 'rem-double'
+ - 1147 :  : name_index=675 signature_index=505
+ - 1148 :  : 'add-int/2addr'
+ - 1149 :  : name_index=676 signature_index=505
+ - 1150 :  : 'sub-int/2addr'
+ - 1151 :  : name_index=677 signature_index=505
+ - 1152 :  : 'mul-int/2addr'
+ - 1153 :  : name_index=678 signature_index=505
+ - 1154 :  : 'div-int/2addr'
+ - 1155 :  : name_index=679 signature_index=505
+ - 1156 :  : 'rem-int/2addr'
+ - 1157 :  : name_index=680 signature_index=505
+ - 1158 :  : 'and-int/2addr'
+ - 1159 :  : name_index=681 signature_index=505
+ - 1160 :  : 'or-int/2addr'
+ - 1161 :  : name_index=682 signature_index=505
+ - 1162 :  : 'xor-int/2addr'
+ - 1163 :  : name_index=683 signature_index=505
+ - 1164 :  : 'shl-int/2addr'
+ - 1165 :  : name_index=684 signature_index=505
+ - 1166 :  : 'shr-int/2addr'
+ - 1167 :  : name_index=685 signature_index=505
+ - 1168 :  : 'ushr-int/2addr'
+ - 1169 :  : name_index=686 signature_index=505
+ - 1170 :  : 'add-long/2addr'
+ - 1171 :  : name_index=687 signature_index=505
+ - 1172 :  : 'sub-long/2addr'
+ - 1173 :  : name_index=688 signature_index=505
+ - 1174 :  : 'mul-long/2addr'
+ - 1175 :  : name_index=689 signature_index=505
+ - 1176 :  : 'div-long/2addr'
+ - 1177 :  : name_index=690 signature_index=505
+ - 1178 :  : 'rem-long/2addr'
+ - 1179 :  : name_index=691 signature_index=505
+ - 1180 :  : 'and-long/2addr'
+ - 1181 :  : name_index=692 signature_index=505
+ - 1182 :  : 'or-long/2addr'
+ - 1183 :  : name_index=693 signature_index=505
+ - 1184 :  : 'xor-long/2addr'
+ - 1185 :  : name_index=694 signature_index=505
+ - 1186 :  : 'shl-long/2addr'
+ - 1187 :  : name_index=695 signature_index=505
+ - 1188 :  : 'shr-long/2addr'
+ - 1189 :  : name_index=696 signature_index=505
+ - 1190 :  : 'ushr-long/2addr'
+ - 1191 :  : name_index=697 signature_index=505
+ - 1192 :  : 'add-float/2addr'
+ - 1193 :  : name_index=698 signature_index=505
+ - 1194 :  : 'sub-float/2addr'
+ - 1195 :  : name_index=699 signature_index=505
+ - 1196 :  : 'mul-float/2addr'
+ - 1197 :  : name_index=700 signature_index=505
+ - 1198 :  : 'div-float/2addr'
+ - 1199 :  : name_index=701 signature_index=505
+ - 1200 :  : 'rem-float/2addr'
+ - 1201 :  : name_index=702 signature_index=505
+ - 1202 :  : 'add-double/2addr'
+ - 1203 :  : name_index=703 signature_index=505
+ - 1204 :  : 'sub-double/2addr'
+ - 1205 :  : name_index=704 signature_index=505
+ - 1206 :  : 'mul-double/2addr'
+ - 1207 :  : name_index=705 signature_index=505
+ - 1208 :  : 'div-double/2addr'
+ - 1209 :  : name_index=706 signature_index=505
+ - 1210 :  : 'rem-double/2addr'
+ - 1211 :  : name_index=707 signature_index=505
+ - 1212 :  : 'add-int/lit16'
+ - 1213 :  : name_index=1302 signature_index=1268
+ - 1214 :  : name_index=708 signature_index=505
+ - 1215 :  : 'rsub-int'
+ - 1216 :  : name_index=709 signature_index=505
+ - 1217 :  : 'mul-int/lit16'
+ - 1218 :  : name_index=710 signature_index=505
+ - 1219 :  : 'div-int/lit16'
+ - 1220 :  : name_index=711 signature_index=505
+ - 1221 :  : 'rem-int/lit16'
+ - 1222 :  : name_index=712 signature_index=505
+ - 1223 :  : 'and-int/lit16'
+ - 1224 :  : name_index=713 signature_index=505
+ - 1225 :  : 'or-int/lit16'
+ - 1226 :  : name_index=714 signature_index=505
+ - 1227 :  : 'xor-int/lit16'
+ - 1228 :  : name_index=715 signature_index=505
+ - 1229 :  : 'add-int/lit8'
+ - 1230 :  : name_index=1303 signature_index=1268
+ - 1231 :  : name_index=716 signature_index=505
+ - 1232 :  : 'rsub-int/lit8'
+ - 1233 :  : name_index=717 signature_index=505
+ - 1234 :  : 'mul-int/lit8'
+ - 1235 :  : name_index=718 signature_index=505
+ - 1236 :  : 'div-int/lit8'
+ - 1237 :  : name_index=719 signature_index=505
+ - 1238 :  : 'rem-int/lit8'
+ - 1239 :  : name_index=720 signature_index=505
+ - 1240 :  : 'and-int/lit8'
+ - 1241 :  : name_index=721 signature_index=505
+ - 1242 :  : 'or-int/lit8'
+ - 1243 :  : name_index=722 signature_index=505
+ - 1244 :  : 'xor-int/lit8'
+ - 1245 :  : name_index=723 signature_index=505
+ - 1246 :  : 'shl-int/lit8'
+ - 1247 :  : name_index=724 signature_index=505
+ - 1248 :  : 'shr-int/lit8'
+ - 1249 :  : name_index=725 signature_index=505
+ - 1250 :  : 'ushr-int/lit8'
+ - 1251 :  : name_index=726 signature_index=505
+ - 1252 :  : name_index=750 signature_index=751
+ - 1253 :  : 'com/android/dx/io/OpcodeInfo'
+ - 1254 :  : 'java/lang/Object'
+ - 1255 :  : 'append'
+ - 1256 :  : '(Ljava/lang/String;)Ljava/lang/StringBuilder;'
+ - 1257 :  : 'com/android/dx/util/Hex'
+ - 1258 :  : 'u2or4'
+ - 1259 :  : 'toString'
+ - 1260 :  : '()Ljava/lang/String;'
+ - 1261 :  : '(Ljava/lang/String;)V'
+ - 1262 :  : '()Lcom/android/dx/io/instructions/InstructionCodec;'
+ - 1263 :  : '()Lcom/android/dx/io/IndexType;'
+ - 1264 :  : 'getOpcode'
+ - 1265 :  : '()I'
+ - 1266 :  : 'com/android/dx/io/instructions/InstructionCodec'
+ - 1267 :  : 'FORMAT_00X'
+ - 1268 :  : 'Lcom/android/dx/io/instructions/InstructionCodec;'
+ - 1269 :  : 'com/android/dx/io/IndexType'
+ - 1270 :  : 'NONE'
+ - 1271 :  : 'Lcom/android/dx/io/IndexType;'
+ - 1272 :  : '(ILjava/lang/String;Lcom/android/dx/io/instructions/InstructionCodec;Lcom/android/dx/io/IndexType;)V'
+ - 1273 :  : 'FORMAT_PACKED_SWITCH_PAYLOAD'
+ - 1274 :  : 'FORMAT_SPARSE_SWITCH_PAYLOAD'
+ - 1275 :  : 'FORMAT_FILL_ARRAY_DATA_PAYLOAD'
+ - 1276 :  : 'FORMAT_10X'
+ - 1277 :  : 'FORMAT_12X'
+ - 1278 :  : 'FORMAT_22X'
+ - 1279 :  : 'FORMAT_32X'
+ - 1280 :  : 'FORMAT_11X'
+ - 1281 :  : 'FORMAT_11N'
+ - 1282 :  : 'FORMAT_21S'
+ - 1283 :  : 'FORMAT_31I'
+ - 1284 :  : 'FORMAT_21H'
+ - 1285 :  : 'FORMAT_51L'
+ - 1286 :  : 'FORMAT_21C'
+ - 1287 :  : 'STRING_REF'
+ - 1288 :  : 'FORMAT_31C'
+ - 1289 :  : 'TYPE_REF'
+ - 1290 :  : 'FORMAT_22C'
+ - 1291 :  : 'FORMAT_35C'
+ - 1292 :  : 'FORMAT_3RC'
+ - 1293 :  : 'FORMAT_31T'
+ - 1294 :  : 'FORMAT_10T'
+ - 1295 :  : 'FORMAT_20T'
+ - 1296 :  : 'FORMAT_30T'
+ - 1297 :  : 'FORMAT_23X'
+ - 1298 :  : 'FORMAT_22T'
+ - 1299 :  : 'FORMAT_21T'
+ - 1300 :  : 'FIELD_REF'
+ - 1301 :  : 'METHOD_REF'
+ - 1302 :  : 'FORMAT_22S'
+ - 1303 :  : 'FORMAT_22B'
+
+RBX=0x0000000004ef02ec is an unknown value
+RCX=0x00000000ee073970 is an unknown value
+RDX=0x00000000b5ffd168 is an oop
+{instance class} 
+ - klass: {other class}
+RSP=0x00007ff37671d348 is pointing into the stack for thread: 0x00007ff37000a000
+RBP=0x00007ff37671d3b0 is pointing into the stack for thread: 0x00007ff37000a000
+RSI=0x00000000ffffffff is an unallocated location in the heap
+RDI=0x00007ff37671d2c0 is pointing into the stack for thread: 0x00007ff37000a000
+R8 =0x0000000000000000 is an unknown value
+R9 =0x00007ff37037f770 is an unknown value
+R10=0x00007ff375903e00: <offset 0xdf7e00> in /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so at 0x00007ff374b0c000
+R11=0x0000000000000000 is an unknown value
+R12=0x0000000000000000 is an unknown value
+R13=0x00007ff37671d350 is pointing into the stack for thread: 0x00007ff37000a000
+R14=0x00000000b60684f0 is pointing into object: 0x00000000b6068330
+{method data} 
+ - klass: {other class}
+R15=0x00007ff37000a000 is a thread
+
+
+Stack: [0x00007ff37661e000,0x00007ff37671f000],  sp=0x00007ff37671d348,  free space=1020k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+j  com.android.dx.merge.InstructionTransformer$FieldVisitor.visit([Lcom/android/dx/io/instructions/DecodedInstruction;Lcom/android/dx/io/instructions/DecodedInstruction;)V+58
+J 246 C2 com.android.dx.merge.InstructionTransformer.transform([S)[S (91 bytes) @ 0x00007ff36c24b694 [0x00007ff36c24b260+0x434]
+J 399 C2 com.android.dx.merge.DexMerger.transformMethods(Lcom/android/dex/Dex;Lcom/android/dx/merge/IndexMap;[Lcom/android/dex/ClassData$Method;)V (126 bytes) @ 0x00007ff36c29ab90 [0x00007ff36c299be0+0xfb0]
+j  com.android.dx.merge.DexMerger.transformClassData(Lcom/android/dex/Dex;Lcom/android/dex/ClassData;Lcom/android/dx/merge/IndexMap;)V+99
+j  com.android.dx.merge.DexMerger.transformClassDef(Lcom/android/dex/Dex;Lcom/android/dex/ClassDef;Lcom/android/dx/merge/IndexMap;)V+137
+j  com.android.dx.merge.DexMerger.mergeClassDefs()V+93
+j  com.android.dx.merge.DexMerger.mergeDexes()Lcom/android/dex/Dex;+33
+j  com.android.dx.merge.DexMerger.merge()Lcom/android/dex/Dex;+5
+j  com.android.dx.command.dexer.Main.mergeLibraryDexBuffers([B)[B+69
+j  com.android.dx.command.dexer.Main.runMonoDex()I+129
+j  com.android.dx.command.dexer.Main.run(Lcom/android/dx/command/dexer/Main$Arguments;)I+76
+j  com.android.dx.command.dexer.Main.main([Ljava/lang/String;)V+14
+j  com.android.dx.command.Main.main([Ljava/lang/String;)V+61
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x5e7fc9]  JavaCalls::call_helper(JavaValue*, methodHandle*, JavaCallArguments*, Thread*)+0x339
+V  [libjvm.so+0x5e7a68]  JavaCalls::call(JavaValue*, methodHandle, JavaCallArguments*, Thread*)+0x28
+V  [libjvm.so+0x5f6b9b]  jni_invoke_static(JNIEnv_*, JavaValue*, _jobject*, JNICallType, _jmethodID*, JNI_ArgumentPusher*, Thread*) [clone .isra.124] [clone .constprop.156]+0x28b
+V  [libjvm.so+0x607e08]  jni_CallStaticVoidMethod+0x118
+C  [libjli.so+0x31f9]
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007ff370176000 JavaThread "Service Thread" daemon [_thread_blocked, id=6465, stack(0x00007ff35b217000,0x00007ff35b318000)]
+  0x00007ff370173800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=6464, stack(0x00007ff35b318000,0x00007ff35b419000)]
+  0x00007ff370170800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=6463, stack(0x00007ff35b419000,0x00007ff35b51a000)]
+  0x00007ff37016e800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=6462, stack(0x00007ff35b51a000,0x00007ff35b61b000)]
+  0x00007ff370143000 JavaThread "Finalizer" daemon [_thread_blocked, id=6461, stack(0x00007ff35bcfd000,0x00007ff35bdfe000)]
+  0x00007ff370141000 JavaThread "Reference Handler" daemon [_thread_blocked, id=6460, stack(0x00007ff35bdfe000,0x00007ff35beff000)]
+=>0x00007ff37000a000 JavaThread "main" [_thread_in_Java, id=6454, stack(0x00007ff37661e000,0x00007ff37671f000)]
+
+Other Threads:
+  0x00007ff37013c800 VMThread [stack: 0x00007ff35beff000,0x00007ff35c000000] [id=6459]
+  0x00007ff370180800 WatcherThread [stack: 0x00007ff35b116000,0x00007ff35b217000] [id=6466]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ PSYoungGen      total 75264K, used 66384K [0x00000000eaa80000, 0x00000000efe00000, 0x0000000100000000)
+  eden space 65024K, 86% used [0x00000000eaa80000,0x00000000ee15b3f0,0x00000000eea00000)
+  from space 10240K, 99% used [0x00000000eea00000,0x00000000ef3f8db0,0x00000000ef400000)
+  to   space 10240K, 0% used [0x00000000ef400000,0x00000000ef400000,0x00000000efe00000)
+ ParOldGen       total 170496K, used 2446K [0x00000000c0000000, 0x00000000ca680000, 0x00000000eaa80000)
+  object space 170496K, 1% used [0x00000000c0000000,0x00000000c0263b10,0x00000000ca680000)
+ PSPermGen       total 21504K, used 6636K [0x00000000b5a00000, 0x00000000b6f00000, 0x00000000c0000000)
+  object space 21504K, 30% used [0x00000000b5a00000,0x00000000b607b2c0,0x00000000b6f00000)
+
+Card table byte_map: [0x00007ff36bf27000,0x00007ff36c17b000] byte_map_base: 0x00007ff36b97a000
+
+Polling page: 0x00007ff37673c000
+
+Code Cache  [0x00007ff36c17b000, 0x00007ff36c3eb000, 0x00007ff36f17b000)
+ total_blobs=732 nmethods=484 adapters=201 free_code_cache=47794Kb largest_free_block=48896896
+
+Compilation events (10 events):
+Event: 1.161 Thread 0x00007ff370170800 nmethod 463 0x00007ff36c2c2490 code [0x00007ff36c2c2640, 0x00007ff36c2c2ba8]
+Event: 1.161 Thread 0x00007ff370170800  465             com.android.dex.EncodedValueReader::<init> (20 bytes)
+Event: 1.161 Thread 0x00007ff370170800 nmethod 465 0x00007ff36c2b9110 code [0x00007ff36c2b9240, 0x00007ff36c2b92b8]
+Event: 1.161 Thread 0x00007ff370170800  466             com.android.dex.EncodedValue::<init> (10 bytes)
+Event: 1.162 Thread 0x00007ff370170800 nmethod 466 0x00007ff36c2b8e50 code [0x00007ff36c2b8f80, 0x00007ff36c2b8ff8]
+Event: 1.162 Thread 0x00007ff370170800  467             com.android.dx.merge.IndexMap$EncodedValueTransformer::transformAnnotation (68 bytes)
+Event: 1.165 Thread 0x00007ff370170800 nmethod 467 0x00007ff36c2c1710 code [0x00007ff36c2c18e0, 0x00007ff36c2c1d00]
+Event: 1.165 Thread 0x00007ff370170800  468             com.android.dex.Annotation::<init> (20 bytes)
+Event: 1.165 Thread 0x00007ff370170800 nmethod 468 0x00007ff36c2b71d0 code [0x00007ff36c2b7300, 0x00007ff36c2b7378]
+Event: 1.165 Thread 0x00007ff370170800  469             java.util.ComparableTimSort::mergeHi (716 bytes)
+
+GC Heap History (2 events):
+Event: 0.915 GC heap before
+{Heap before GC invocations=1 (full 0):
+ PSYoungGen      total 75264K, used 64091K [0x00000000eaa80000, 0x00000000efe00000, 0x0000000100000000)
+  eden space 65024K, 98% used [0x00000000eaa80000,0x00000000ee916e00,0x00000000eea00000)
+  from space 10240K, 0% used [0x00000000ef400000,0x00000000ef400000,0x00000000efe00000)
+  to   space 10240K, 0% used [0x00000000eea00000,0x00000000eea00000,0x00000000ef400000)
+ ParOldGen       total 170496K, used 0K [0x00000000c0000000, 0x00000000ca680000, 0x00000000eaa80000)
+  object space 170496K, 0% used [0x00000000c0000000,0x00000000c0000000,0x00000000ca680000)
+ PSPermGen       total 21504K, used 6579K [0x00000000b5a00000, 0x00000000b6f00000, 0x00000000c0000000)
+  object space 21504K, 30% used [0x00000000b5a00000,0x00000000b606cd20,0x00000000b6f00000)
+Event: 0.922 GC heap after
+Heap after GC invocations=1 (full 0):
+ PSYoungGen      total 75264K, used 10211K [0x00000000eaa80000, 0x00000000efe00000, 0x0000000100000000)
+  eden space 65024K, 0% used [0x00000000eaa80000,0x00000000eaa80000,0x00000000eea00000)
+  from space 10240K, 99% used [0x00000000eea00000,0x00000000ef3f8db0,0x00000000ef400000)
+  to   space 10240K, 0% used [0x00000000ef400000,0x00000000ef400000,0x00000000efe00000)
+ ParOldGen       total 170496K, used 2446K [0x00000000c0000000, 0x00000000ca680000, 0x00000000eaa80000)
+  object space 170496K, 1% used [0x00000000c0000000,0x00000000c0263b10,0x00000000ca680000)
+ PSPermGen       total 21504K, used 6579K [0x00000000b5a00000, 0x00000000b6f00000, 0x00000000c0000000)
+  object space 21504K, 30% used [0x00000000b5a00000,0x00000000b606cd20,0x00000000b6f00000)
+}
+
+Deoptimization events (10 events):
+Event: 0.588 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c223ea4 method=com.android.dex.Leb128.writeUnsignedLeb128(Lcom/android/dex/util/ByteOutput;I)V @ 40
+Event: 0.588 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c223ea4 method=com.android.dex.Leb128.writeUnsignedLeb128(Lcom/android/dex/util/ByteOutput;I)V @ 40
+Event: 0.707 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c23628c method=com.android.dex.Leb128.readUnsignedLeb128(Lcom/android/dex/util/ByteInput;)I @ 5
+Event: 0.707 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c23628c method=com.android.dex.Leb128.readUnsignedLeb128(Lcom/android/dex/util/ByteInput;)I @ 5
+Event: 0.707 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c23628c method=com.android.dex.Leb128.readUnsignedLeb128(Lcom/android/dex/util/ByteInput;)I @ 5
+Event: 0.707 Thread 0x00007ff37000a000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007ff36c23628c method=com.android.dex.Leb128.readUnsignedLeb128(Lcom/android/dex/util/ByteInput;)I @ 5
+Event: 0.756 Thread 0x00007ff37000a000 Uncommon trap: reason=predicate action=maybe_recompile pc=0x00007ff36c24ac50 method=com.android.dex.Leb128.readUnsignedLeb128(Lcom/android/dex/util/ByteInput;)I @ 41
+Event: 0.870 Thread 0x00007ff37000a000 Uncommon trap: reason=unloaded action=reinterpret pc=0x00007ff36c268dfc method=com.android.dx.merge.IndexMap$EncodedValueTransformer.transform(Lcom/android/dex/EncodedValueReader;)V @ 263
+Event: 1.122 Thread 0x00007ff37000a000 Uncommon trap: reason=predicate action=maybe_recompile pc=0x00007ff36c2aea58 method=java.util.TimSort.binarySort([Ljava/lang/Object;IIILjava/util/Comparator;)V @ 37
+Event: 1.142 Thread 0x00007ff37000a000 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00007ff36c284f88 method=com.android.dx.merge.InstructionTransformer$FieldVisitor.visit([Lcom/android/dx/io/instructions/DecodedInstruction;Lcom/android/dx/io/instructions/DecodedInstruction;)V @ 
+
+Internal exceptions (10 events):
+Event: 0.648 Thread 0x00007ff37000a000 Threw 0x00000000ed332500 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.648 Thread 0x00007ff37000a000 Threw 0x00000000ed336498 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.648 Thread 0x00007ff37000a000 Threw 0x00000000ed33a580 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.649 Thread 0x00007ff37000a000 Threw 0x00000000ed340868 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.649 Thread 0x00007ff37000a000 Threw 0x00000000ed344658 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.650 Thread 0x00007ff37000a000 Threw 0x00000000ed348640 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.650 Thread 0x00007ff37000a000 Threw 0x00000000ed34c378 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.651 Thread 0x00007ff37000a000 Threw 0x00000000ed393ec0 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.651 Thread 0x00007ff37000a000 Threw 0x00000000ed396d80 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+Event: 0.896 Thread 0x00007ff37000a000 Threw 0x00000000ee54fda8 at /build/buildd/openjdk-7-7u75-2.5.4/build/openjdk/hotspot/src/share/vm/prims/jvm.cpp:1284
+
+Events (10 events):
+Event: 0.915 Executing VM operation: ParallelGCFailedAllocation
+Event: 0.922 Executing VM operation: ParallelGCFailedAllocation done
+Event: 0.996 loading class 0x00007ff37406fb90
+Event: 0.996 loading class 0x00007ff37406fb90 done
+Event: 1.122 Thread 0x00007ff37000a000 Uncommon trap: trap_request=0xffffff86 fr.pc=0x00007ff36c2aea58
+Event: 1.122 Thread 0x00007ff37000a000 DEOPT PACKING pc=0x00007ff36c2aea58 sp=0x00007ff37671d480
+Event: 1.122 Thread 0x00007ff37000a000 DEOPT UNPACKING pc=0x00007ff36c1b4445 sp=0x00007ff37671d470 mode 2
+Event: 1.142 Thread 0x00007ff37000a000 Uncommon trap: trap_request=0xffffffc6 fr.pc=0x00007ff36c284f88
+Event: 1.142 Thread 0x00007ff37000a000 DEOPT PACKING pc=0x00007ff36c284f88 sp=0x00007ff37671d390
+Event: 1.142 Thread 0x00007ff37000a000 DEOPT UNPACKING pc=0x00007ff36c1b4445 sp=0x00007ff37671d340 mode 2
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 08:01 8010052                            /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+00600000-00601000 r--p 00000000 08:01 8010052                            /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+00601000-00602000 rw-p 00001000 08:01 8010052                            /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+01323000-01344000 rw-p 00000000 00:00 0                                  [heap]
+b5a00000-b6f00000 rw-p 00000000 00:00 0 
+b6f00000-c0000000 rw-p 00000000 00:00 0 
+c0000000-ca680000 rw-p 00000000 00:00 0 
+ca680000-eaa80000 rw-p 00000000 00:00 0 
+eaa80000-efe00000 rw-p 00000000 00:00 0 
+efe00000-100000000 rw-p 00000000 00:00 0 
+7ff330000000-7ff330021000 rw-p 00000000 00:00 0 
+7ff330021000-7ff334000000 ---p 00000000 00:00 0 
+7ff338000000-7ff33863e000 rw-p 00000000 00:00 0 
+7ff33863e000-7ff33c000000 ---p 00000000 00:00 0 
+7ff33c000000-7ff33c021000 rw-p 00000000 00:00 0 
+7ff33c021000-7ff340000000 ---p 00000000 00:00 0 
+7ff340000000-7ff340021000 rw-p 00000000 00:00 0 
+7ff340021000-7ff344000000 ---p 00000000 00:00 0 
+7ff344000000-7ff344a05000 rw-p 00000000 00:00 0 
+7ff344a05000-7ff348000000 ---p 00000000 00:00 0 
+7ff348000000-7ff348021000 rw-p 00000000 00:00 0 
+7ff348021000-7ff34c000000 ---p 00000000 00:00 0 
+7ff34c000000-7ff34c021000 rw-p 00000000 00:00 0 
+7ff34c021000-7ff350000000 ---p 00000000 00:00 0 
+7ff350000000-7ff350021000 rw-p 00000000 00:00 0 
+7ff350021000-7ff354000000 ---p 00000000 00:00 0 
+7ff354000000-7ff354021000 rw-p 00000000 00:00 0 
+7ff354021000-7ff358000000 ---p 00000000 00:00 0 
+7ff359837000-7ff359998000 rw-p 00000000 00:00 0 
+7ff359998000-7ff3599d5000 r-xp 00000000 08:01 8131830                    /lib/x86_64-linux-gnu/libpcre.so.3.13.1
+7ff3599d5000-7ff359bd4000 ---p 0003d000 08:01 8131830                    /lib/x86_64-linux-gnu/libpcre.so.3.13.1
+7ff359bd4000-7ff359bd5000 r--p 0003c000 08:01 8131830                    /lib/x86_64-linux-gnu/libpcre.so.3.13.1
+7ff359bd5000-7ff359bd6000 rw-p 0003d000 08:01 8131830                    /lib/x86_64-linux-gnu/libpcre.so.3.13.1
+7ff359bd6000-7ff359bdd000 r-xp 00000000 08:01 28845994                   /usr/lib/x86_64-linux-gnu/libffi.so.6.0.1
+7ff359bdd000-7ff359ddc000 ---p 00007000 08:01 28845994                   /usr/lib/x86_64-linux-gnu/libffi.so.6.0.1
+7ff359ddc000-7ff359ddd000 r--p 00006000 08:01 28845994                   /usr/lib/x86_64-linux-gnu/libffi.so.6.0.1
+7ff359ddd000-7ff359dde000 rw-p 00007000 08:01 28845994                   /usr/lib/x86_64-linux-gnu/libffi.so.6.0.1
+7ff359dde000-7ff359df5000 r-xp 00000000 08:01 8126479                    /lib/x86_64-linux-gnu/libresolv-2.19.so
+7ff359df5000-7ff359ff5000 ---p 00017000 08:01 8126479                    /lib/x86_64-linux-gnu/libresolv-2.19.so
+7ff359ff5000-7ff359ff6000 r--p 00017000 08:01 8126479                    /lib/x86_64-linux-gnu/libresolv-2.19.so
+7ff359ff6000-7ff359ff7000 rw-p 00018000 08:01 8126479                    /lib/x86_64-linux-gnu/libresolv-2.19.so
+7ff359ff7000-7ff359ff9000 rw-p 00000000 00:00 0 
+7ff359ff9000-7ff35a019000 r-xp 00000000 08:01 8131857                    /lib/x86_64-linux-gnu/libselinux.so.1
+7ff35a019000-7ff35a218000 ---p 00020000 08:01 8131857                    /lib/x86_64-linux-gnu/libselinux.so.1
+7ff35a218000-7ff35a219000 r--p 0001f000 08:01 8131857                    /lib/x86_64-linux-gnu/libselinux.so.1
+7ff35a219000-7ff35a21a000 rw-p 00020000 08:01 8131857                    /lib/x86_64-linux-gnu/libselinux.so.1
+7ff35a21a000-7ff35a21c000 rw-p 00000000 00:00 0 
+7ff35a21c000-7ff35a21f000 r-xp 00000000 08:01 28846111                   /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4000.0
+7ff35a21f000-7ff35a41e000 ---p 00003000 08:01 28846111                   /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4000.0
+7ff35a41e000-7ff35a41f000 r--p 00002000 08:01 28846111                   /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4000.0
+7ff35a41f000-7ff35a420000 rw-p 00003000 08:01 28846111                   /usr/lib/x86_64-linux-gnu/libgmodule-2.0.so.0.4000.0
+7ff35a420000-7ff35a526000 r-xp 00000000 08:01 8131758                    /lib/x86_64-linux-gnu/libglib-2.0.so.0.4000.0
+7ff35a526000-7ff35a725000 ---p 00106000 08:01 8131758                    /lib/x86_64-linux-gnu/libglib-2.0.so.0.4000.0
+7ff35a725000-7ff35a726000 r--p 00105000 08:01 8131758                    /lib/x86_64-linux-gnu/libglib-2.0.so.0.4000.0
+7ff35a726000-7ff35a727000 rw-p 00106000 08:01 8131758                    /lib/x86_64-linux-gnu/libglib-2.0.so.0.4000.0
+7ff35a727000-7ff35a728000 rw-p 00000000 00:00 0 
+7ff35a728000-7ff35a777000 r-xp 00000000 08:01 28846127                   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4000.0
+7ff35a777000-7ff35a977000 ---p 0004f000 08:01 28846127                   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4000.0
+7ff35a977000-7ff35a978000 r--p 0004f000 08:01 28846127                   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4000.0
+7ff35a978000-7ff35a979000 rw-p 00050000 08:01 28846127                   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.4000.0
+7ff35a979000-7ff35aae4000 r-xp 00000000 08:01 28846097                   /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4000.0
+7ff35aae4000-7ff35ace4000 ---p 0016b000 08:01 28846097                   /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4000.0
+7ff35ace4000-7ff35ace8000 r--p 0016b000 08:01 28846097                   /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4000.0
+7ff35ace8000-7ff35acea000 rw-p 0016f000 08:01 28846097                   /usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.4000.0
+7ff35acea000-7ff35acec000 rw-p 00000000 00:00 0 
+7ff35acec000-7ff35ad03000 r-xp 00000000 08:01 8010024                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnet.so
+7ff35ad03000-7ff35af02000 ---p 00017000 08:01 8010024                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnet.so
+7ff35af02000-7ff35af03000 r--p 00016000 08:01 8010024                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnet.so
+7ff35af03000-7ff35af04000 rw-p 00017000 08:01 8010024                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnet.so
+7ff35af04000-7ff35af14000 r-xp 00000000 08:01 8010020                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnio.so
+7ff35af14000-7ff35b114000 ---p 00010000 08:01 8010020                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnio.so
+7ff35b114000-7ff35b115000 r--p 00010000 08:01 8010020                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnio.so
+7ff35b115000-7ff35b116000 rw-p 00011000 08:01 8010020                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libnio.so
+7ff35b116000-7ff35b117000 ---p 00000000 00:00 0 
+7ff35b117000-7ff35b217000 rw-p 00000000 00:00 0                          [stack:6466]
+7ff35b217000-7ff35b21a000 ---p 00000000 00:00 0 
+7ff35b21a000-7ff35b318000 rw-p 00000000 00:00 0                          [stack:6465]
+7ff35b318000-7ff35b31b000 ---p 00000000 00:00 0 
+7ff35b31b000-7ff35b419000 rw-p 00000000 00:00 0                          [stack:6464]
+7ff35b419000-7ff35b41c000 ---p 00000000 00:00 0 
+7ff35b41c000-7ff35b51a000 rw-p 00000000 00:00 0                          [stack:6463]
+7ff35b51a000-7ff35b51d000 ---p 00000000 00:00 0 
+7ff35b51d000-7ff35b61b000 rw-p 00000000 00:00 0                          [stack:6462]
+7ff35b61b000-7ff35bcfd000 r--p 00000000 08:01 28844142                   /usr/lib/locale/locale-archive
+7ff35bcfd000-7ff35bd00000 ---p 00000000 00:00 0 
+7ff35bd00000-7ff35bdfe000 rw-p 00000000 00:00 0                          [stack:6461]
+7ff35bdfe000-7ff35be01000 ---p 00000000 00:00 0 
+7ff35be01000-7ff35beff000 rw-p 00000000 00:00 0                          [stack:6460]
+7ff35beff000-7ff35bf00000 ---p 00000000 00:00 0 
+7ff35bf00000-7ff35c000000 rw-p 00000000 00:00 0                          [stack:6459]
+7ff35c000000-7ff35c021000 rw-p 00000000 00:00 0 
+7ff35c021000-7ff360000000 ---p 00000000 00:00 0 
+7ff360000000-7ff360021000 rw-p 00000000 00:00 0 
+7ff360021000-7ff364000000 ---p 00000000 00:00 0 
+7ff364000000-7ff364021000 rw-p 00000000 00:00 0 
+7ff364021000-7ff368000000 ---p 00000000 00:00 0 
+7ff3680ca000-7ff369022000 rw-p 00000000 00:00 0 
+7ff369022000-7ff3691d4000 r--s 01d23000 08:01 7871752                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rt.jar
+7ff3691d4000-7ff36b9cd000 rw-p 00000000 00:00 0 
+7ff36b9cd000-7ff36b9ce000 ---p 00000000 00:00 0 
+7ff36b9ce000-7ff36bace000 rw-p 00000000 00:00 0                          [stack:6458]
+7ff36bace000-7ff36bacf000 ---p 00000000 00:00 0 
+7ff36bacf000-7ff36bbcf000 rw-p 00000000 00:00 0                          [stack:6457]
+7ff36bbcf000-7ff36bbd0000 ---p 00000000 00:00 0 
+7ff36bbd0000-7ff36bcd0000 rw-p 00000000 00:00 0                          [stack:6456]
+7ff36bcd0000-7ff36bcd1000 ---p 00000000 00:00 0 
+7ff36bcd1000-7ff36be25000 rw-p 00000000 00:00 0                          [stack:6455]
+7ff36be25000-7ff36bf27000 rw-p 00000000 00:00 0 
+7ff36bf27000-7ff36bf32000 rw-p 00000000 00:00 0 
+7ff36bf32000-7ff36bf7a000 rw-p 00000000 00:00 0 
+7ff36bf7a000-7ff36bfce000 rw-p 00000000 00:00 0 
+7ff36bfce000-7ff36c0cf000 rw-p 00000000 00:00 0 
+7ff36c0cf000-7ff36c0f9000 rw-p 00000000 00:00 0 
+7ff36c0f9000-7ff36c17a000 rw-p 00000000 00:00 0 
+7ff36c17a000-7ff36c17b000 rw-p 00000000 00:00 0 
+7ff36c17b000-7ff36c3eb000 rwxp 00000000 00:00 0 
+7ff36c3eb000-7ff36f17b000 rw-p 00000000 00:00 0 
+7ff36f17b000-7ff36f183000 r-xp 00000000 08:01 8010050                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libzip.so
+7ff36f183000-7ff36f382000 ---p 00008000 08:01 8010050                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libzip.so
+7ff36f382000-7ff36f383000 r--p 00007000 08:01 8010050                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libzip.so
+7ff36f383000-7ff36f384000 rw-p 00008000 08:01 8010050                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libzip.so
+7ff36f384000-7ff36f38f000 r-xp 00000000 08:01 8126490                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7ff36f38f000-7ff36f58e000 ---p 0000b000 08:01 8126490                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7ff36f58e000-7ff36f58f000 r--p 0000a000 08:01 8126490                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7ff36f58f000-7ff36f590000 rw-p 0000b000 08:01 8126490                    /lib/x86_64-linux-gnu/libnss_files-2.19.so
+7ff36f590000-7ff36f59b000 r-xp 00000000 08:01 8131697                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7ff36f59b000-7ff36f79a000 ---p 0000b000 08:01 8131697                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7ff36f79a000-7ff36f79b000 r--p 0000a000 08:01 8131697                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7ff36f79b000-7ff36f79c000 rw-p 0000b000 08:01 8131697                    /lib/x86_64-linux-gnu/libnss_nis-2.19.so
+7ff36f79c000-7ff36f7b3000 r-xp 00000000 08:01 8126559                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7ff36f7b3000-7ff36f9b2000 ---p 00017000 08:01 8126559                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7ff36f9b2000-7ff36f9b3000 r--p 00016000 08:01 8126559                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7ff36f9b3000-7ff36f9b4000 rw-p 00017000 08:01 8126559                    /lib/x86_64-linux-gnu/libnsl-2.19.so
+7ff36f9b4000-7ff36f9b6000 rw-p 00000000 00:00 0 
+7ff36f9b6000-7ff36f9bf000 r-xp 00000000 08:01 8126558                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7ff36f9bf000-7ff36fbbe000 ---p 00009000 08:01 8126558                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7ff36fbbe000-7ff36fbbf000 r--p 00008000 08:01 8126558                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7ff36fbbf000-7ff36fbc0000 rw-p 00009000 08:01 8126558                    /lib/x86_64-linux-gnu/libnss_compat-2.19.so
+7ff36fbc0000-7ff36fbeb000 r-xp 00000000 08:01 8010034                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libjava.so
+7ff36fbeb000-7ff36fdeb000 ---p 0002b000 08:01 8010034                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libjava.so
+7ff36fdeb000-7ff36fdec000 r--p 0002b000 08:01 8010034                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libjava.so
+7ff36fdec000-7ff36fdee000 rw-p 0002c000 08:01 8010034                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libjava.so
+7ff36fdee000-7ff36fdfe000 r-xp 00000000 08:01 8010033                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libverify.so
+7ff36fdfe000-7ff36fffd000 ---p 00010000 08:01 8010033                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libverify.so
+7ff36fffd000-7ff36ffff000 r--p 0000f000 08:01 8010033                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libverify.so
+7ff36ffff000-7ff370000000 rw-p 00011000 08:01 8010033                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/libverify.so
+7ff370000000-7ff37046e000 rw-p 00000000 00:00 0 
+7ff37046e000-7ff374000000 ---p 00000000 00:00 0 
+7ff374023000-7ff374027000 r--s 0004d000 08:01 7871755                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/jsse.jar
+7ff374027000-7ff374036000 r--s 000dd000 08:01 5385693                    /home/vash/codeProjects/adt-bundle-linux-x86_64-20131030/sdk/build-tools/21.1.2/lib/dx.jar
+7ff374036000-7ff37409c000 rw-p 00000000 00:00 0 
+7ff37409c000-7ff3740e4000 rw-p 00000000 00:00 0 
+7ff3740e4000-7ff3740eb000 r-xp 00000000 08:01 8126567                    /lib/x86_64-linux-gnu/librt-2.19.so
+7ff3740eb000-7ff3742ea000 ---p 00007000 08:01 8126567                    /lib/x86_64-linux-gnu/librt-2.19.so
+7ff3742ea000-7ff3742eb000 r--p 00006000 08:01 8126567                    /lib/x86_64-linux-gnu/librt-2.19.so
+7ff3742eb000-7ff3742ec000 rw-p 00007000 08:01 8126567                    /lib/x86_64-linux-gnu/librt-2.19.so
+7ff3742ec000-7ff374302000 r-xp 00000000 08:01 8126469                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff374302000-7ff374501000 ---p 00016000 08:01 8126469                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff374501000-7ff374502000 rw-p 00015000 08:01 8126469                    /lib/x86_64-linux-gnu/libgcc_s.so.1
+7ff374502000-7ff374607000 r-xp 00000000 08:01 8126483                    /lib/x86_64-linux-gnu/libm-2.19.so
+7ff374607000-7ff374806000 ---p 00105000 08:01 8126483                    /lib/x86_64-linux-gnu/libm-2.19.so
+7ff374806000-7ff374807000 r--p 00104000 08:01 8126483                    /lib/x86_64-linux-gnu/libm-2.19.so
+7ff374807000-7ff374808000 rw-p 00105000 08:01 8126483                    /lib/x86_64-linux-gnu/libm-2.19.so
+7ff374808000-7ff3748ee000 r-xp 00000000 08:01 28846692                   /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7ff3748ee000-7ff374aed000 ---p 000e6000 08:01 28846692                   /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7ff374aed000-7ff374af5000 r--p 000e5000 08:01 28846692                   /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7ff374af5000-7ff374af7000 rw-p 000ed000 08:01 28846692                   /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.19
+7ff374af7000-7ff374b0c000 rw-p 00000000 00:00 0 
+7ff374b0c000-7ff375624000 r-xp 00000000 08:01 8010039                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7ff375624000-7ff375824000 ---p 00b18000 08:01 8010039                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7ff375824000-7ff3758be000 r--p 00b18000 08:01 8010039                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7ff3758be000-7ff3758e1000 rw-p 00bb2000 08:01 8010039                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/server/libjvm.so
+7ff3758e1000-7ff37590f000 rw-p 00000000 00:00 0 
+7ff37590f000-7ff375927000 r-xp 00000000 08:01 8131890                    /lib/x86_64-linux-gnu/libz.so.1.2.8
+7ff375927000-7ff375b26000 ---p 00018000 08:01 8131890                    /lib/x86_64-linux-gnu/libz.so.1.2.8
+7ff375b26000-7ff375b27000 r--p 00017000 08:01 8131890                    /lib/x86_64-linux-gnu/libz.so.1.2.8
+7ff375b27000-7ff375b28000 rw-p 00018000 08:01 8131890                    /lib/x86_64-linux-gnu/libz.so.1.2.8
+7ff375b28000-7ff375b41000 r-xp 00000000 08:01 8126565                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7ff375b41000-7ff375d40000 ---p 00019000 08:01 8126565                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7ff375d40000-7ff375d41000 r--p 00018000 08:01 8126565                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7ff375d41000-7ff375d42000 rw-p 00019000 08:01 8126565                    /lib/x86_64-linux-gnu/libpthread-2.19.so
+7ff375d42000-7ff375d46000 rw-p 00000000 00:00 0 
+7ff375d46000-7ff375d49000 r-xp 00000000 08:01 8126553                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7ff375d49000-7ff375f48000 ---p 00003000 08:01 8126553                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7ff375f48000-7ff375f49000 r--p 00002000 08:01 8126553                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7ff375f49000-7ff375f4a000 rw-p 00003000 08:01 8126553                    /lib/x86_64-linux-gnu/libdl-2.19.so
+7ff375f4a000-7ff376105000 r-xp 00000000 08:01 8126564                    /lib/x86_64-linux-gnu/libc-2.19.so
+7ff376105000-7ff376304000 ---p 001bb000 08:01 8126564                    /lib/x86_64-linux-gnu/libc-2.19.so
+7ff376304000-7ff376308000 r--p 001ba000 08:01 8126564                    /lib/x86_64-linux-gnu/libc-2.19.so
+7ff376308000-7ff37630a000 rw-p 001be000 08:01 8126564                    /lib/x86_64-linux-gnu/libc-2.19.so
+7ff37630a000-7ff37630f000 rw-p 00000000 00:00 0 
+7ff37630f000-7ff37631c000 r-xp 00000000 08:01 8010016                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7ff37631c000-7ff37651b000 ---p 0000d000 08:01 8010016                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7ff37651b000-7ff37651c000 r--p 0000c000 08:01 8010016                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7ff37651c000-7ff37651d000 rw-p 0000d000 08:01 8010016                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64/jli/libjli.so
+7ff37651d000-7ff376540000 r-xp 00000000 08:01 8126561                    /lib/x86_64-linux-gnu/ld-2.19.so
+7ff376540000-7ff376542000 rw-p 00000000 00:00 0 
+7ff376542000-7ff376546000 r--s 0003c000 08:01 8009997                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/sunpkcs11.jar
+7ff376546000-7ff376568000 rw-p 00000000 00:00 0 
+7ff376568000-7ff37661e000 rw-p 00000000 00:00 0 
+7ff37661e000-7ff376621000 ---p 00000000 00:00 0 
+7ff376621000-7ff376724000 rw-p 00000000 00:00 0                          [stack:6454]
+7ff376724000-7ff376726000 r--s 00012000 08:01 8009999                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/zipfs.jar
+7ff376726000-7ff376729000 r--s 0000f000 08:01 8009996                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/icedtea-sound.jar
+7ff376729000-7ff37672a000 r--s 00002000 08:01 8010000                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/dnsns.jar
+7ff37672a000-7ff37672c000 r--s 00006000 08:01 4730954                    /usr/share/java/java-atk-wrapper.jar
+7ff37672c000-7ff37672f000 r--s 00086000 08:01 8010001                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/localedata.jar
+7ff37672f000-7ff376733000 r--s 00034000 08:01 8009998                    /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/ext/sunjce_provider.jar
+7ff376733000-7ff37673b000 rw-s 00000000 08:01 19661283                   /tmp/hsperfdata_vash/6446
+7ff37673b000-7ff37673c000 rw-p 00000000 00:00 0 
+7ff37673c000-7ff37673d000 r--p 00000000 00:00 0 
+7ff37673d000-7ff37673f000 rw-p 00000000 00:00 0 
+7ff37673f000-7ff376740000 r--p 00022000 08:01 8126561                    /lib/x86_64-linux-gnu/ld-2.19.so
+7ff376740000-7ff376741000 rw-p 00023000 08:01 8126561                    /lib/x86_64-linux-gnu/ld-2.19.so
+7ff376741000-7ff376742000 rw-p 00000000 00:00 0 
+7fff9a213000-7fff9a234000 rw-p 00000000 00:00 0                          [stack]
+7fff9a33a000-7fff9a33c000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+jvm_args: -Xmx1024M 
+java_command: /home/vash/codeProjects/adt-bundle-linux-x86_64-20131030/sdk/build-tools/21.1.2/lib/dx.jar --dex --no-optimize --output /home/vash/codeProjects/Grapple-master/app/build/intermediates/dex/debug --input-list=/home/vash/codeProjects/Grapple-master/app/build/intermediates/tmp/dex/debug/inputList.txt
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+CLASSPATH=/opt/android-studio/bin/../lib/bootstrap.jar:/opt/android-studio/bin/../lib/extensions.jar:/opt/android-studio/bin/../lib/util.jar:/opt/android-studio/bin/../lib/jdom.jar:/opt/android-studio/bin/../lib/log4j.jar:/opt/android-studio/bin/../lib/trove4j.jar:/opt/android-studio/bin/../lib/jna.jar:/usr/lib/jvm/java-7-openjdk-amd64/lib/tools.jar
+PATH=/home/vash/adt-bundle-linux/sdk/tools:/home/vash/adt-bundle-linux/sdk/platform-tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+LD_LIBRARY_PATH=/opt/android-studio/bin:
+SHELL=/bin/bash
+DISPLAY=:0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0x94b4b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0x94b4b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x7c3390], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: [libjvm.so+0x7c3390], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGXFSZ: [libjvm.so+0x7c3390], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x7c3390], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x7c3230], sa_mask[0]=0x00000004, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x7c3410], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: [libjvm.so+0x7c3410], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTERM: [libjvm.so+0x7c3410], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x7c3410], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGTRAP: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+
+
+---------------  S Y S T E M  ---------------
+
+OS:Ubuntu 14.04 (trusty)
+uname:Linux 3.13.0-48-generic #80-Ubuntu SMP Thu Mar 12 11:16:15 UTC 2015 x86_64
+libc:glibc 2.19 NPTL 2.19 
+rlimit: STACK 8192k, CORE 0k, NPROC 127964, NOFILE 4096, AS infinity
+load average:1.50 1.31 1.26
+
+/proc/meminfo:
+MemTotal:       16401064 kB
+MemFree:          166456 kB
+Buffers:          391732 kB
+Cached:          7332764 kB
+SwapCached:            0 kB
+Active:          8837484 kB
+Inactive:        6629560 kB
+Active(anon):    6998528 kB
+Inactive(anon):   848440 kB
+Active(file):    1838956 kB
+Inactive(file):  5781120 kB
+Unevictable:          32 kB
+Mlocked:              32 kB
+SwapTotal:      16742396 kB
+SwapFree:       16742396 kB
+Dirty:              4884 kB
+Writeback:             0 kB
+AnonPages:       7742968 kB
+Mapped:           441324 kB
+Shmem:            104232 kB
+Slab:             446120 kB
+SReclaimable:     400916 kB
+SUnreclaim:        45204 kB
+KernelStack:        5920 kB
+PageTables:        56588 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:    24942928 kB
+Committed_AS:   13466156 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:      125964 kB
+VmallocChunk:   34359529916 kB
+HardwareCorrupted:     0 kB
+AnonHugePages:   2107392 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       71200 kB
+DirectMap2M:    16672768 kB
+
+
+CPU:total 4 (4 cores per cpu, 1 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, tsc, tscinvbit
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 42
+model name	: Intel(R) Core(TM) i5-2500K CPU @ 3.30GHz
+stepping	: 7
+microcode	: 0x25
+cpu MHz		: 3301.000
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 4
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 popcnt tsc_deadline_timer aes xsave avx lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid
+bogomips	: 6621.39
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 42
+model name	: Intel(R) Core(TM) i5-2500K CPU @ 3.30GHz
+stepping	: 7
+microcode	: 0x25
+cpu MHz		: 3301.000
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 4
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 popcnt tsc_deadline_timer aes xsave avx lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid
+bogomips	: 6621.39
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 42
+model name	: Intel(R) Core(TM) i5-2500K CPU @ 3.30GHz
+stepping	: 7
+microcode	: 0x25
+cpu MHz		: 3301.000
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 2
+cpu cores	: 4
+apicid		: 4
+initial apicid	: 4
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 popcnt tsc_deadline_timer aes xsave avx lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid
+bogomips	: 6621.39
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 42
+model name	: Intel(R) Core(TM) i5-2500K CPU @ 3.30GHz
+stepping	: 7
+microcode	: 0x25
+cpu MHz		: 3301.000
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 3
+cpu cores	: 4
+apicid		: 6
+initial apicid	: 6
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 cx16 xtpr pdcm pcid sse4_1 sse4_2 popcnt tsc_deadline_timer aes xsave avx lahf_lm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid
+bogomips	: 6621.39
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 36 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 16401064k(166456k free), swap 16742396k(16742396k free)
+
+vm_info: OpenJDK 64-Bit Server VM (24.75-b04) for linux-amd64 JRE (1.7.0_75-b13), built on Jan 27 2015 00:38:59 by "buildd" with gcc 4.8.2
+
+time: Wed Apr  1 22:35:03 2015
+elapsed time: 1 seconds
+

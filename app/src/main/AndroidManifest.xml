@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mamba.grapple" >
+
+    <!-- To auto-complete the email text field in the login form with the user's emails. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- To check if a network connection exists -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--
+ To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
+     option is required to comply with the Google+ Sign-In developer policies
+    -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+
+    <!-- to access GPS polling -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+      <service android:name=".DBService" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".Register"
+            android:label="@string/app_name"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name=".Splash"
+            android:label="@string/title_activity_splash"
+            android:exported="true">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SignInGooglePlus"
+            android:label="@string/title_activity_signin"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name=".Search"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+            android:label="@string/title_activity_search"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Account"
+            android:label="@string/title_activity_account"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Results"
+            android:label="@string/title_activity_results"
+            android:exported="true"></activity>
+        <activity
+            android:name=".Tutor"
+            android:label="@string/title_activity_tutor"
+            android:exported="true"></activity>
+        <activity
+            android:name=".PreSession"
+            android:label="@string/title_activity_presession"
+            android:exported="true"></activity>
+        <activity
+            android:name=".InSession"
+            android:label="@string/title_activity_insession"
+            android:exported="true"></activity>
+    </application>
+
+</manifest>
