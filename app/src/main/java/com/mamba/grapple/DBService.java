@@ -2,6 +2,8 @@ package com.mamba.grapple;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,34 +29,64 @@ import java.util.Properties;
 public class DBService extends Service {
 
     private Socket socket;
+    private String token;
+    private final IBinder myBinder = new LocalBinder();
 
-    private synchronized void connect() {
-        if (socket == null || !socket.connected()) {
-            Properties properties = new Properties();
-            // TODO use properties here?
+   // socket thread
+   class connectSocket implements Runnable{
 
-            try {
-                socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
-                socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+       public void run(){
+           if (socket == null || !socket.connected()) {
+               Properties properties = new Properties();
+               // TODO use properties here?
 
-                    public void call(Object... args){
-                        socket.emit("grapple", "It worked!");
-                        Log.v("Socket", "received connection event");
-                    }
+               try {
+                   Log.v("Service", "Attempting Socket Connection..");
+                   socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+                   socket.connect();
+                   socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
-                 });
-            }catch (URISyntaxException e) {
-                Log.e("Bad URI", e.getMessage());
-            }
+                       public void call(Object... args){
+                           socket.emit("grapple", "It worked!");
+                           Log.v("Socket", "received connection event");
+                       }
 
-        }
+                   });
+               }catch (URISyntaxException e) {
+                   Log.e("Bad URI", e.getMessage());
+               }
+
+           }
+
+
+       }
     }
+
+
 
     @Override
     public void onCreate() {
+        System.out.println("DBService Created");
         super.onCreate();
-        Log.v("Service", "onCreate hit");
-        connect();
+        Runnable connect = new connectSocket();
+        new Thread(connect).start();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        super.onStartCommand(intent,flags,startId);
+        return START_STICKY;
+    }
+
+    public void setToken(String token){
+        this.token = token;
+        Log.v("Service received token", token);
+
+    }
+
+    public String getToken(){
+        return token;
+
     }
 
     public void onDisconnect() {
@@ -81,8 +113,16 @@ public class DBService extends Service {
 
     }
 
-    //bullshit methods
+
     public IBinder onBind(Intent intent) {
-        return null;
+       return myBinder;
+    }
+
+    public class LocalBinder extends Binder {
+        public DBService getService() {
+            System.out.println("I am in Localbinder ");
+            return DBService.this;
+
+        }
     }
 }

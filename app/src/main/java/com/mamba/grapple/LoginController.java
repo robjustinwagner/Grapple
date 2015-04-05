@@ -130,6 +130,10 @@ public class LoginController {
         catch (IOException e){ Log.v("http", "caught IOException");}
     }
 
+
+
+
+
     public void talkToDB(Object obj) {
         final Socket socket;
         final Gson gson = new Gson();

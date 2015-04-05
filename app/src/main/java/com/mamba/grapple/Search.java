@@ -15,13 +15,18 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -58,23 +63,32 @@ import org.json.JSONException;
 
 public class Search extends ListActivity implements ConnectionCallbacks, OnConnectionFailedListener {
 
-    String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private boolean loggedIn = false;
+    SharedPreferences sharedPreferences;
 
-
+    // UI Elements
     ListView listView;
     SeekBar seekBar;
     TextView distanceView;
     Button search;
     View selected = null;
+
+    // Request Params
     int distance = 0;
     String course;
     String currLat;
     String currLong;
 
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
+
     // temporary until DB load setup (use SimpleCursorAdapter for DB)
     static final String[] COURSES = {"CS302", "Calc 234"};
+    // current url path for tutor list retrieval
+    static final String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +99,8 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         // grab all the view items and set defaults
         initialize();
 
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -94,6 +110,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                     parent.getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
                 }
 
+                // highlight the selected item
                 selected = view;
                 selected.setBackgroundColor(Color.rgb(62, 175, 212));
 
@@ -134,6 +151,19 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     }
 
 
+    // check login status every time the activity gets shown
+    protected void onStart(){
+        super.onStart();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String token = sharedPreferences.getString("token", null);
+        if(token != null) {
+            loggedIn = true;
+            Log.v("Search Login Status", "User has been logged in");
+            Intent intent = new Intent(this, DBService.class);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        }
+    }
 
 
     // A private method to help us initialize our default variables and settings
@@ -206,6 +236,32 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
     }
+
+    private ServiceConnection mConnection = new ServiceConnection(){
+        public void onServiceConnected(ComponentName className, IBinder service){
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+
+            Log.v("Service Connected", mService.getToken());
+        }
+
+        public void onServiceDisconnected(ComponentName arg0){
+            mBound = false;
+        }
+    };
+
+
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+
 
 
     @Override
@@ -292,6 +348,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 }
 
                 Intent intent = new Intent(Search.this, Results.class);
+                // send the tutorList along with login status on to the results activity
                 intent.putParcelableArrayListExtra("tutorList", tutorList);
                 startActivity(intent);
 
@@ -319,7 +376,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 .appendQueryParameter("lon", currLong);
         String query = builder.build().getEncodedQuery();
 
-        myurl += "?" + query;           // appended encoded query to URL
+        myurl += "?" + query;           // append encoded query to URL
         Log.v("queriedURL", myurl);
         try {
             Log.v("url", myurl);
@@ -342,7 +399,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
             is = conn.getInputStream();
 
             // Convert the InputStream into a JSON string
-            bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(is));
             stringBuilder = new StringBuilder();
 
 

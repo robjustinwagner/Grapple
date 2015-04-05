@@ -33,11 +33,12 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
         // Look up view for data population
         TextView tutorName = (TextView) convertView.findViewById(R.id.tutorName);
         TextView tutorDistance = (TextView) convertView.findViewById(R.id.tutorDistance);
-
+        TextView tutorPrice = (TextView) convertView.findViewById(R.id.tutorPrice);
 
         // populate the data into the list item template
         tutorName.setText(tutor.firstName + " " + tutor.lastName);
-        tutorDistance.setText(String.valueOf(tutor.distance));
+        tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
+        tutorPrice.setText("$" + String.valueOf(tutor.session.price));
 
         // return the completed view to render
         return convertView;
