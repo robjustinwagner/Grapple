@@ -152,8 +152,8 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
     // check login status every time the activity gets shown
-    protected void onStart(){
-        super.onStart();
+    protected void onResume(){
+        super.onResume();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sharedPreferences.getString("token", null);
         if(token != null) {
@@ -164,6 +164,17 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         }
     }
+
+    protected void onPause(){
+        super.onPause();
+        // Unbind from the service
+        if (mBound){
+            Log.v("Unbinding Service", "Search Activity");
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
 
 
     // A private method to help us initialize our default variables and settings
@@ -188,7 +199,6 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 }
                 return renderer;
             }
-
         });
 
 
@@ -252,14 +262,6 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     };
 
 
-    protected void onStop() {
-        super.onStop();
-        // Unbind from the service
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
-    }
 
 
 

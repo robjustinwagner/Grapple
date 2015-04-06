@@ -20,6 +20,7 @@ public class TutorObject implements Parcelable {
     public TutorSession session;
 
 
+
     public String toString(){
         return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
                 " rating=" + rating + " distance" + distance +

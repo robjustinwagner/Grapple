@@ -1,5 +1,6 @@
 package com.mamba.grapple;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -19,10 +20,15 @@ import com.github.nkzawa.socketio.client.SocketIOException;
 import com.google.gson.JsonElement;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.*; // for URIexception
+import java.util.HashMap;
 import java.util.Properties;
 
 
@@ -36,29 +42,31 @@ public class DBService extends Service {
    class connectSocket implements Runnable{
 
        public void run(){
-           if (socket == null || !socket.connected()) {
+           if (socket == null || !socket.connected()){
                Properties properties = new Properties();
                // TODO use properties here?
 
                try {
                    Log.v("Service", "Attempting Socket Connection..");
                    socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+                   socket.on("message", message );
                    socket.connect();
                    socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
                        public void call(Object... args){
                            socket.emit("grapple", "It worked!");
                            Log.v("Socket", "received connection event");
+
+
+
                        }
 
                    });
-               }catch (URISyntaxException e) {
+               }catch (URISyntaxException e){
                    Log.e("Bad URI", e.getMessage());
                }
 
            }
-
-
        }
     }
 
@@ -89,29 +97,13 @@ public class DBService extends Service {
 
     }
 
-    public void onDisconnect() {
-
-    }
-
-    public void onConnect() {
-        socket.emit("grapple", "It's working");
-    }
-
-    public void onMessage(String data, Ack ack) {
-
-    }
-
-    public void onMessage(JsonElement json, Ack ack) {
-
-    }
-
-    public void on(String event, Ack ack, JsonElement... args) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("action_on"));
-    }
-
-    public void onError(SocketIOException socketIOException) {
-
-    }
+    private Emitter.Listener message = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // send broadcast to activity and run on the main thread
+        }
+    };
 
 
     public IBinder onBind(Intent intent) {
@@ -125,4 +117,7 @@ public class DBService extends Service {
 
         }
     }
+
+
+
 }

@@ -1,8 +1,12 @@
 package com.mamba.grapple;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,9 +23,14 @@ import java.util.ArrayList;
 
 public class Results extends ActionBarActivity {
 
+    ArrayList<TutorObject> tutorList;
     ListView listView;
     SharedPreferences sharedPreferences;
     private boolean loggedIn = false;
+
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +40,7 @@ public class Results extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             // get the tutor list from previous activity
-            ArrayList<TutorObject> tutorList = extras.getParcelableArrayList("tutorList");
+            tutorList = extras.getParcelableArrayList("tutorList");
             Log.v("tutorList", String.valueOf(tutorList));
 
             // populate the list view
@@ -50,7 +59,12 @@ public class Results extends ActionBarActivity {
                      startActivityForResult(intent, 1);
                  }else{
                     Log.v("Login status", "Logged in user");
-
+                    TutorObject selectedTutor = tutorList.get(position);
+                     Log.v("selected tutor", String.valueOf(selectedTutor));
+                    // transition to specific tutors page
+                    Intent intent = new Intent(Results.this, Tutor.class);
+                    intent.putExtra("selectedTutor", selectedTutor);
+                    startActivity(intent);
                  }
 
 
@@ -60,10 +74,22 @@ public class Results extends ActionBarActivity {
     }
 
     // check login status every time the activity gets shown
-    public void onStart(){
-        super.onStart();
+    public void onResume(){
+        super.onResume();
         loginCheck();
     }
+
+    protected void onPause(){
+        super.onPause();
+        // Unbind from the service
+        if (mBound){
+            Log.v("Unbinding Service", "Results Activity");
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
@@ -84,8 +110,9 @@ public class Results extends ActionBarActivity {
             Log.v("Preference Token", token);
             loggedIn = true;
             Log.v("Login Status", "User has been logged in");
-
-
+            Intent intent = new Intent(this, DBService.class);
+            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            Log.v("Service Bound", "Results bound to service");
         }
     }
 
@@ -112,4 +139,21 @@ public class Results extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private ServiceConnection mConnection = new ServiceConnection(){
+        public void onServiceConnected(ComponentName className, IBinder service){
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+
+            Log.v("Service Connected", mService.getToken());
+        }
+
+        public void onServiceDisconnected(ComponentName arg0){
+            mBound = false;
+        }
+    };
+
+
+
 }
