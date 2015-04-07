@@ -15,4 +15,7 @@
     <string name="title_activity_presession">PreSession</string>
     <string name="title_activity_insession">InSession</string>
 
+    <string name="btn_join">JOIN</string>
+    <string name="btn_send">Send</string>
+
 </resources>

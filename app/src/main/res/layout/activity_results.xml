@@ -23,6 +23,7 @@
         android:id="@+id/listView"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:transcriptMode="alwaysScroll"
         android:layout_below="@+id/pageCheck" />
 
 </RelativeLayout>

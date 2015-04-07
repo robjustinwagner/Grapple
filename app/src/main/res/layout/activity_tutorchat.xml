@@ -1,0 +1,179 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:background="#94969a"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#000000"
+        android:padding="5dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/user_icon_small"
+        />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Distance"
+            android:id="@+id/distance"
+            android:layout_below="@+id/tutorPrice"
+            android:layout_alignRight="@+id/tutorPrice"
+            android:layout_alignEnd="@+id/tutorPrice" />
+
+        <TextView
+            android:id="@+id/tutorName"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:singleLine="true"
+            android:text="TutorName"
+            android:ellipsize="marquee"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/tutorPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:text="TutorPrice"
+            android:ellipsize="marquee"
+            />
+
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:layout_below="@+id/tutorName"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_alignBottom="@id/imageView"
+
+            />
+
+
+        <LinearLayout
+            android:id="@+id/meetingContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="3dp"
+            android:layout_below="@id/imageView">
+
+
+        <ImageView
+            android:id="@+id/locationPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/location_pin"
+            android:layout_below="@+id/locationHeader"
+        />
+
+        <EditText
+            android:id="@+id/locationInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Suggest where to meet!"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="italic"
+        />
+
+
+        <ImageButton
+            android:id="@+id/viewRecommended"
+            android:text="Locations List"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/locationInput"
+            android:background="#94969a"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5px"
+            android:layout_below="@id/locationHeader"
+            android:src="@drawable/locations_list"/>
+
+            <Button
+                android:id="@+id/suggestLocation"
+                android:text="Suggest"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_below="@id/meetingContent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/bg_btn_join"
+                android:textColor="@color/white"
+                android:layout_marginBottom="3dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="bottom"
+
+                />
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <ListView
+        android:id="@+id/list_view_messages"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:divider="@null"
+        android:transcriptMode="alwaysScroll"
+        android:layout_below="@id/imageView"
+        android:stackFromBottom="true">
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/llMsgCompose"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="3" >
+
+        <EditText
+            android:id="@+id/inputMsg"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:background="@color/bg_msg_input"
+            android:textColor="@color/text_msg_input"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"/>
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/bg_btn_join"
+            android:textColor="@color/white"
+            android:text="@string/btn_send" />
+    </LinearLayout>
+
+</LinearLayout>
