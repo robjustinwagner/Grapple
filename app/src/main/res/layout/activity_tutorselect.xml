@@ -1,32 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:id="@+id/">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="center"
-        android:background="#000000"
-        android:padding="5dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/user_icon"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#000000"
+            android:padding="5dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/user_icon"
+        />
 
 
-    <TextView
-        android:id="@+id/tutorName"
-        android:layout_width="wrap_content"
-        android:layout_height="26dip"
-        android:layout_toRightOf="@id/imageView"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:text="TutorName" />
+        <TextView
+            android:id="@+id/tutorName"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:singleLine="true"
+            android:text="TutorName"
+            android:ellipsize="marquee"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/tutorPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:layout_marginRight="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:text="TutorPrice"
+            android:ellipsize="marquee"
+        />
+
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:layout_below="@+id/tutorName"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_alignBottom="@id/imageView"
+
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Max Session Time:"
+            android:id="@+id/tutorAvailability"
+            android:layout_below="@+id/ratingBar"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginTop="-20dip"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Distance"
+            android:id="@+id/textView7"
+            android:layout_below="@+id/tutorPrice"
+            android:layout_alignRight="@+id/tutorPrice"
+            android:layout_alignEnd="@+id/tutorPrice" />
+
+
+    </RelativeLayout>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_alignParentTop="@id/grappleButton"
+        android:layout_below="@id/imageView"
         android:name="com.google.android.gms.maps.MapFragment"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_marginLeft="-5dip"
+        android:layout_marginRight="-5dip"
+        android:layout_marginTop="-5dip"
+        android:layout_marginBottom="-5dip"
+        android:text="Grapple"
+        android:id="@+id/grappleButton"
+        android:layout_below="@id/map"
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"/>
 
 </LinearLayout>
