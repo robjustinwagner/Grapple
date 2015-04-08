@@ -354,14 +354,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                 authReturn.putExtra("token", token);
                 setResult(Activity.RESULT_OK, authReturn);
 
-
-                //TODO: start socket service
-                // start the background networking thread and open up socket connection
-                Intent intent = new Intent(Register.this, DBService.class);
-                Log.v("DBService", "started DBService");
-                startService(intent);
-                Log.v("DBService", "got past DBService");
-
+                // return to results activity
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

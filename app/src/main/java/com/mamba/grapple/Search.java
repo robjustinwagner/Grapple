@@ -21,6 +21,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -99,7 +100,9 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         // grab all the view items and set defaults
         initialize();
 
-
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        mLastLocation = locationManager.getLastKnownLocation(locationProvider);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
@@ -138,15 +141,15 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
 
-        // Create a GoogleApiClient instance
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        // connect to the instance
-        mGoogleApiClient.connect();
+//        // Create a GoogleApiClient instance
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API)
+//                .build();
+//
+//        // connect to the instance
+//        mGoogleApiClient.connect();
 
     }
 
@@ -214,16 +217,23 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
     // on search button click get the relevant  tutor list and show results
     public void tutorSearch(View view){
+
         course = String.valueOf(((TextView) selected).getText());
         Log.v("distance", "" + distance);
         Log.v("course", course);
 
 
         // make sure we have the GPS location
-        if(mLastLocation != null){
+        if(mLastLocation != null) {
 
             currLat = String.valueOf(mLastLocation.getLatitude());
             currLong = String.valueOf(mLastLocation.getLongitude());
+
+        }else {
+            currLat = "43.076592";
+            currLong = "-89.412487";
+        }
+
 
             // log the current coordinates
             Log.v("currentLocation", "(" + currLat + "," + currLong + ")");
@@ -242,8 +252,6 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
 
-        }
-
 
     }
 
@@ -253,7 +261,6 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
             mService = binder.getService();
             mBound = true;
 
-            Log.v("Service Connected", mService.getToken());
         }
 
         public void onServiceDisconnected(ComponentName arg0){

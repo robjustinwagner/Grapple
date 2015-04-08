@@ -38,7 +38,10 @@ public class DBService extends Service {
     private String token;
     private final IBinder myBinder = new LocalBinder();
 
-   // socket thread
+
+
+
+// socket thread
 //   class connectSocket implements Runnable{
 //
 //       public void run(){
@@ -76,8 +79,21 @@ public class DBService extends Service {
     public void onCreate() {
         System.out.println("DBService Created");
         super.onCreate();
-//        Runnable connect = new connectSocket();
-//        new Thread(connect).start();
+
+        // set up socket connection
+        if (socket == null || !socket.connected()){
+            try {
+                socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+            } catch (URISyntaxException e){
+                Log.e("Bad URI", e.getMessage());
+            }
+        }
+
+//        create listeners
+//
+//
+//        connect
+        socket.connect();
     }
 
     @Override

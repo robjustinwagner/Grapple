@@ -27,13 +27,14 @@ public class Results extends ActionBarActivity {
     ListView listView;
     SharedPreferences sharedPreferences;
     private boolean loggedIn = false;
+    private boolean newService = false;
 
     // service related variables
     private boolean mBound = false;
     DBService mService;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
@@ -66,8 +67,6 @@ public class Results extends ActionBarActivity {
                     intent.putExtra("selectedTutor", selectedTutor);
                     startActivity(intent);
                  }
-
-
                 }
             });
         }
@@ -90,22 +89,21 @@ public class Results extends ActionBarActivity {
     }
 
 
-
+    // handles the result of login/registration
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
             Log.v("Reached", "Auth Activity Result");
             String token = data.getStringExtra("token");
             if(token != null){
-                Log.v("Extracted", "token: " + token);
-                loginCheck();
+                // creates a new service with session token
+                createService(token);
             }
         }
     }
 
 
     public void loginCheck(){
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sharedPreferences.getString("token", null);
+        String token = getToken();
         if(token != null){
             Log.v("Preference Token", token);
             loggedIn = true;
@@ -114,6 +112,21 @@ public class Results extends ActionBarActivity {
             bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
             Log.v("Service Bound", "Results bound to service");
         }
+    }
+
+    public String getToken(){
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        return sharedPreferences.getString("token", null);
+    }
+
+    public void createService(String token){
+        Log.v("Preference Token", token);
+        loggedIn = true;
+        newService = true;
+        Log.v("Login Status", "User has been logged in");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE );
+        Log.v("Service Bound", "Results bound to new service");
     }
 
 
@@ -146,7 +159,11 @@ public class Results extends ActionBarActivity {
             mService = binder.getService();
             mBound = true;
 
-            Log.v("Service Connected", mService.getToken());
+            if(newService){
+                // send the token
+                mService.setToken(getToken());
+                newService = false;
+            }
         }
 
         public void onServiceDisconnected(ComponentName arg0){

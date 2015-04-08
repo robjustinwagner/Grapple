@@ -62,7 +62,7 @@ public class Splash extends ActionBarActivity {
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop(){
         super.onStop();
         // Unbind from the service
         if (mBound) {
