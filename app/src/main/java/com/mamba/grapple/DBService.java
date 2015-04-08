@@ -39,36 +39,36 @@ public class DBService extends Service {
     private final IBinder myBinder = new LocalBinder();
 
    // socket thread
-   class connectSocket implements Runnable{
-
-       public void run(){
-           if (socket == null || !socket.connected()){
-               Properties properties = new Properties();
-               // TODO use properties here?
-
-               try {
-                   Log.v("Service", "Attempting Socket Connection..");
-                   socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
-                   socket.on("message", message );
-                   socket.connect();
-                   socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-
-                       public void call(Object... args){
-                           socket.emit("grapple", "It worked!");
-                           Log.v("Socket", "received connection event");
-
-
-
-                       }
-
-                   });
-               }catch (URISyntaxException e){
-                   Log.e("Bad URI", e.getMessage());
-               }
-
-           }
-       }
-    }
+//   class connectSocket implements Runnable{
+//
+//       public void run(){
+//           if (socket == null || !socket.connected()){
+//               Properties properties = new Properties();
+//               // TODO use properties here?
+//
+//               try {
+//                   Log.v("Service", "Attempting Socket Connection..");
+//                   socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+//                   socket.on("message", message );
+//                   socket.connect();
+//                   socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+//
+//                       public void call(Object... args){
+//                           socket.emit("grapple", "It worked!");
+//                           Log.v("Socket", "received connection event");
+//
+//
+//
+//                       }
+//
+//                   });
+//               }catch (URISyntaxException e){
+//                   Log.e("Bad URI", e.getMessage());
+//               }
+//
+//           }
+//       }
+//    }
 
 
 
@@ -76,8 +76,8 @@ public class DBService extends Service {
     public void onCreate() {
         System.out.println("DBService Created");
         super.onCreate();
-        Runnable connect = new connectSocket();
-        new Thread(connect).start();
+//        Runnable connect = new connectSocket();
+//        new Thread(connect).start();
     }
 
     @Override

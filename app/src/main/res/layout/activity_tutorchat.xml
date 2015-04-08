@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF"
+    android:background="@drawable/register_bg"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -18,7 +18,7 @@
         android:background="#000000"
         android:padding="5dp"
         android:id="@+id/imageView"
-        android:src="@drawable/user_icon_small"
+        android:src="@drawable/user_icon_med"
         />
 
         <TextView
@@ -60,7 +60,7 @@
         />
 
         <TextView
-            android:id="@+id/distance"
+            android:id="@+id/tutorDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -79,11 +79,9 @@
             android:background="#000"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
 
-
-
-
+        />
 
         <LinearLayout
             android:id="@+id/meetingContent"

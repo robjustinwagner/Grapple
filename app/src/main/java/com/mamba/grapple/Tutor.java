@@ -1,18 +1,24 @@
 package com.mamba.grapple;
 
+import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -25,7 +31,7 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 public class Tutor extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
     private MapFragment mapFragment;
-    private GoogleMap map;
+    private GoogleMap sessionMap;
 
 
     private GoogleApiClient mGoogleApiClient;
@@ -33,21 +39,47 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     private TutorObject tutor;
 
-    //UI Elements
-    TextView tutorName;
-    TextView tutorPrice;
-    TextView maxSession;
-    TextView distance;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
 
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        mLastLocation = locationManager.getLastKnownLocation(locationProvider);
+
+//        // Create a GoogleApiClient instance to collect GPS location
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .addApi(LocationServices.API)
+//                .build();
+//
+//        Log.v("Play Services", "Connecting on tutor page..");
+//        // connect to the instance
+//        mGoogleApiClient.connect();
+
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
+        // get the tutor data
+        retrieveTutorInfo();
+
+
+    }
+
+
+    // enters the chat with the tutor
+    public void grappleTutor(View view){
+        Intent intent = new Intent(this, Chat.class);
+        intent.putExtra("selectedTutor", tutor);
+        startActivity(intent);
+    }
+
+    public void retrieveTutorInfo(){
         // get the tutor data
         Bundle extras = getIntent().getExtras();
         if(extras != null){
@@ -63,21 +95,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
             tutorName.setText(tutor.firstName + " " + tutor.lastName);
             tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
             tutorPrice.setText("$" + String.valueOf(tutor.session.price));
-            maxSession.setText(String.valueOf(tutor.session.period));
+            maxSession.setText("Max Session: " + String.valueOf(tutor.session.period) + " min" );
+
         }
-
-        // Create a GoogleApiClient instance to collect GPS location
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        // connect to the instance
-        mGoogleApiClient.connect();
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,22 +124,33 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     @Override
     public void onMapReady(GoogleMap map) {
+        Log.v("Google Map Ready", "Adding tutor marker");
+        LatLng tutorLoc = new LatLng(tutor.location.xPos, tutor.location.yPos);
+        sessionMap = map;
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(tutor.location.xPos, tutor.location.yPos))
+                .position(tutorLoc)
                 .title("Tutor"));
         if(mLastLocation != null ){
+            LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            Log.v("mLastLocation Exists", "Adding user marker");
             map.addMarker(new MarkerOptions()
-                    .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                    .position(userLoc)
                     .title("You"));
 
 
-            // Create a LatLngBounds that includes Australia.
-             LatLngBounds bounds = new LatLngBounds(
-                    new LatLng(tutor.location.xPos, tutor.location.yPos), new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(tutorLoc).zoom(13).build();
 
-            // Set the camera to the greatest possible zoom level that includes the
-            // bounds
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+//            // Create a LatLngBounds that includes tutor/student area (work in progress)
+//             LatLngBounds bounds = new LatLngBounds(
+//                    new LatLng(tutor.location.xPos, tutor.location.yPos), new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+//
+//            // Set the camera to the greatest possible zoom level that includes the
+//            // bounds
+//            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.getCenter(), 10));
         }
 
     }
@@ -132,6 +164,12 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         Log.v("gConnected", "Connected to google play services");
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
+
+        Log.v("latitude", String.valueOf(mLastLocation.getLatitude()));
+
+        sessionMap.addMarker(new MarkerOptions()
+                .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                .title("You"));
 
     }
 
