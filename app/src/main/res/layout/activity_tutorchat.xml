@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ratingBar"
-            android:style="?android:attr/ratingBarStyleSmall"
+            style="?android:attr/ratingBarStyleSmall"
             android:numStars="5"
             android:layout_below="@+id/tutorName"
             android:layout_toRightOf="@id/imageView"

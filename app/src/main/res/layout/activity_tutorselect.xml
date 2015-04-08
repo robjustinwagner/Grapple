@@ -39,8 +39,10 @@
             android:layout_width="wrap_content"
             android:layout_height="20dip"
             android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:singleLine="true"
             android:text="TutorPrice"
             android:ellipsize="marquee"
@@ -51,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ratingBar"
-            android:style="?android:attr/ratingBarStyleSmall"
+            style="?android:attr/ratingBarStyleSmall"
             android:numStars="5"
             android:layout_below="@+id/tutorName"
             android:layout_toRightOf="@id/imageView"
@@ -88,8 +90,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_alignParentTop="@id/grappleButton"
-        android:layout_below="@id/imageView"
         android:name="com.google.android.gms.maps.MapFragment"/>
 
     <Button
@@ -102,9 +102,6 @@
         android:layout_marginBottom="-5dip"
         android:text="Grapple"
         android:id="@+id/grappleButton"
-        android:layout_below="@id/map"
-        android:layout_centerVertical="true"
-        android:layout_alignParentBottom="true"
         android:background="#94969a"/>
 
 </LinearLayout>

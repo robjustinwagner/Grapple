@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +32,13 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     private Location mLastLocation;
 
     private TutorObject tutor;
+
+    //UI Elements
+    TextView tutorName;
+    TextView tutorPrice;
+    TextView maxSession;
+    TextView distance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -37,10 +47,34 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        // get the tutor data
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             tutor = extras.getParcelable("selectedTutor");
+
+            // Look up view for data population
+            TextView tutorName = (TextView)findViewById(R.id.tutorName);
+            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
+            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
+            TextView maxSession = (TextView) findViewById(R.id.maxSession);
+
+            // populate the data
+            tutorName.setText(tutor.firstName + " " + tutor.lastName);
+            tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
+            tutorPrice.setText("$" + String.valueOf(tutor.session.price));
+            maxSession.setText(String.valueOf(tutor.session.period));
         }
+
+        // Create a GoogleApiClient instance to collect GPS location
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        // connect to the instance
+        mGoogleApiClient.connect();
 
     }
 
@@ -71,7 +105,22 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     public void onMapReady(GoogleMap map) {
         map.addMarker(new MarkerOptions()
                 .position(new LatLng(tutor.location.xPos, tutor.location.yPos))
-                .title("Marker"));
+                .title("Tutor"));
+        if(mLastLocation != null ){
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
+                    .title("You"));
+
+
+            // Create a LatLngBounds that includes Australia.
+             LatLngBounds bounds = new LatLngBounds(
+                    new LatLng(tutor.location.xPos, tutor.location.yPos), new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+
+            // Set the camera to the greatest possible zoom level that includes the
+            // bounds
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0));
+        }
+
     }
 
 

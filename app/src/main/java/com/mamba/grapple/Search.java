@@ -342,7 +342,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
             Gson gson = new Gson();
             try{
                 JSONArray tutors = new JSONArray(result);
-                ArrayList<TutorObject> tutorList = new ArrayList<TutorObject>();
+                ArrayList<TutorObject> tutorList = new ArrayList<>();
                 for(int i = 0; i < tutors.length(); i++){
                     TutorObject tutor = gson.fromJson(tutors.get(i).toString(), TutorObject.class);
                     Log.v("tutorObject", tutor.toString());
