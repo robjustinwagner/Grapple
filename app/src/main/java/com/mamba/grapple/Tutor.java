@@ -2,8 +2,10 @@ package com.mamba.grapple;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -27,6 +30,20 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Tutor extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -41,6 +58,8 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -49,6 +68,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         mLastLocation = locationManager.getLastKnownLocation(locationProvider);
+
 
 //        // Create a GoogleApiClient instance to collect GPS location
 //        mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -102,7 +122,12 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                  LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
                  sessionMap.addMarker(new MarkerOptions()
                          .position(mP)
-                         .title("Meeting Point"));
+                         .title("Meeting Point")
+                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+                 addRoute(meetingPoint.xPos, meetingPoint.yPos);
+                 Button grappleButton = (Button) findViewById(R.id.grappleButton);
+                 grappleButton.setText("Start Session");
              }
         }
     }
@@ -225,6 +250,209 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         Log.v("fail", "Connection to Google Services Failed");
 
     }
+
+
+    public void addRoute(double meetLat, double meetLong){
+
+        // we will treat it as though the meeting point is the way point between the tutor and student
+        double originLat = mLastLocation.getLatitude();
+        double originLong = mLastLocation.getLongitude();
+        double destLat = tutor.location.xPos;
+        double destLong = tutor.location.yPos;
+
+        // Origin of route
+        String str_origin = "origin="+originLat+","+originLong;
+
+        // Destination of route
+        String str_dest = "destination="+destLat+","+destLong;
+
+        // Waypoint (meeting point)
+        String waypoints = "waypoints="+meetLat+","+meetLong;
+
+        // Sensor enabled
+        String sensor = "sensor=false";
+
+        // Building the parameters to the web service
+        String parameters = str_origin+"&"+str_dest+"&"+sensor+"&"+waypoints;
+
+        // Output format
+        String output = "json";
+
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+
+        // do http request for route in separate thread
+        DownloadTask downloadTask = new DownloadTask();
+        downloadTask.execute(url);
+
+    }
+
+
+    /** A method to download json data from url */
+    private String downloadUrl(String strUrl) throws IOException {
+        String data = "";
+        InputStream iStream = null;
+        HttpURLConnection urlConnection = null;
+        try{
+            URL url = new URL(strUrl);
+
+            // Creating an http connection to communicate with url
+            urlConnection = (HttpURLConnection) url.openConnection();
+
+            // Connecting to url
+            urlConnection.connect();
+
+            // Reading data from url
+            iStream = urlConnection.getInputStream();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+            StringBuffer sb  = new StringBuffer();
+
+            String line = "";
+            while( ( line = br.readLine())  != null){
+                sb.append(line);
+            }
+
+            data = sb.toString();
+
+            br.close();
+
+        }catch(Exception e){
+            Log.d("Download Exception", e.toString());
+        }finally{
+            iStream.close();
+            urlConnection.disconnect();
+        }
+        return data;
+    }
+
+    // Fetches data from url passed
+    private class DownloadTask extends AsyncTask<String, Void, String> {
+
+        // Downloading data in non-ui thread
+        @Override
+        protected String doInBackground(String... url) {
+
+            // For storing data from web service
+
+            String data = "";
+
+            try{
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
+            }
+            return data;
+        }
+
+        // Executes in UI thread, after the execution of
+        // doInBackground()
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+        }
+    }
+
+    /** A class to parse the Google Places in JSON format */
+    private class ParserTask extends AsyncTask<String, Integer, List<LatLng> >{
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<LatLng> doInBackground(String... jsonData) {
+
+            JSONObject result;
+            JSONArray routes;
+            List<LatLng> lines =  new ArrayList<LatLng>();
+
+            try{
+
+                result  = new JSONObject(jsonData[0]);
+                routes = result.getJSONArray("routes");
+
+                // route distance
+                long distanceForSegment = routes.getJSONObject(0).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").getInt("value");
+
+                JSONArray studentSteps = routes.getJSONObject(0).getJSONArray("legs")
+                        .getJSONObject(0).getJSONArray("steps");
+
+                JSONArray tutorSteps = routes.getJSONObject(0).getJSONArray("legs")
+                        .getJSONObject(1).getJSONArray("steps");
+
+                for(int i=0; i < studentSteps.length(); i++) {
+                    String polyline = studentSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
+
+                    for(LatLng p : decodePolyline(polyline)) {
+                        lines.add(p);
+                    }
+                }
+
+                for(int i=0; i < tutorSteps.length(); i++) {
+                    String polyline = tutorSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
+
+                    for(LatLng p : decodePolyline(polyline)) {
+                        lines.add(p);
+                    }
+                }
+
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return lines;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<LatLng> lines) {
+             sessionMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
+
+        }
+
+        /** POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java **/
+        private List<LatLng> decodePolyline(String encoded) {
+
+            List<LatLng> poly = new ArrayList<LatLng>();
+
+            int index = 0, len = encoded.length();
+            int lat = 0, lng = 0;
+
+            while (index < len) {
+                int b, shift = 0, result = 0;
+                do {
+                    b = encoded.charAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+                lat += dlat;
+
+                shift = 0;
+                result = 0;
+                do {
+                    b = encoded.charAt(index++) - 63;
+                    result |= (b & 0x1f) << shift;
+                    shift += 5;
+                } while (b >= 0x20);
+                int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+                lng += dlng;
+
+                LatLng p = new LatLng((double) lat / 1E5, (double) lng / 1E5);
+                poly.add(p);
+            }
+
+            return poly;
+        }
+
+    }
+
 
 
 
