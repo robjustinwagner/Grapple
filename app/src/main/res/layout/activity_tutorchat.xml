@@ -105,9 +105,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Suggest where to meet!"
-            android:fontFamily="sans-serif-light"
-            android:textStyle="italic"
         />
 
 
@@ -167,7 +164,7 @@
         android:weightSum="3" >
 
         <EditText
-            android:id="@+id/inputMsg"
+            android:id="@+id/msgInput"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="2"

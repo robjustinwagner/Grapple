@@ -16,6 +16,8 @@
     <string name="title_activity_insession">InSession</string>
     <string name="title_activity_chat">Chat</string>
 
+
+    <string name="recommended_list_title">Recommended Meeting Spots</string>
     <string name="btn_join">JOIN</string>
     <string name="btn_send">Send</string>
 

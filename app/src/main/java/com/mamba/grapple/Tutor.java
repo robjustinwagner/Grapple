@@ -71,6 +71,41 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     }
 
+//    public void onResume(){
+//        super.onResume();
+//        Log.v("Tutor View", "Resumed");
+//        Bundle extras = getIntent().getExtras();
+//        if(extras != null){
+//            Log.v("Tutor View Extras", extras.keySet().toString());
+//            LocationObject meetingPoint = extras.getParcelable("meetingPoint");
+//             if(meetingPoint != null){
+//                 Log.v("Tutor View", "Meeting Point Found");
+//                 LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+//                 sessionMap.addMarker(new MarkerOptions()
+//                         .position(mP)
+//                         .title("Meeting Point"));
+//             }
+//
+//
+//        }
+//    }
+
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        Bundle extras = intent.getExtras();
+        if(extras != null){
+            Log.v("Tutor View", "new intent recieved ");
+            LocationObject meetingPoint = extras.getParcelable("meetingPoint");
+             if(meetingPoint != null){
+                 Log.v("Tutor View", "Meeting Point Found");
+                 LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+                 sessionMap.addMarker(new MarkerOptions()
+                         .position(mP)
+                         .title("Meeting Point"));
+             }
+        }
+    }
 
     // enters the chat with the tutor
     public void grappleTutor(View view){

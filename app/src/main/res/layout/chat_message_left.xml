@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textSize="12dp"
         android:textColor="@color/lblFromName"
-        android:textStyle="italic"
+        android:textStyle="bold"
         android:padding="5dp"/>
 
     <TextView

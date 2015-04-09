@@ -15,7 +15,7 @@
         android:padding="5dp"
         android:textColor="@color/lblFromName"
         android:textSize="12dp"
-        android:textStyle="italic" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtMsg"

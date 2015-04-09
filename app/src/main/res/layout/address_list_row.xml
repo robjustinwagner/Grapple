@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:padding= "6dip" >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/location_pin_large"
+        android:layout_marginRight = "6dip" />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="10dip"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="Location Name" />
+
+    <TextView
+        android:id="@+id/locationAddress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Location Address"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_below="@id/locationName"/>
+
+
+
+
+</RelativeLayout>
