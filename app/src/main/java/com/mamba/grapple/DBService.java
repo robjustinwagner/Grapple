@@ -89,11 +89,13 @@ public class DBService extends Service {
             }
         }
 
-//        create listeners
-//
-//
-//        connect
-        socket.connect();
+        // create listeners
+        // socket.on("message", message);
+        // socket.on("locationUpdate", locationUpdate);
+        // socket.on("meetingSuggestion", "meetingSuggestion);
+        // socket.on("startSessionRequest", startSessionRequest);
+
+        // socket.connect();
     }
 
     @Override
