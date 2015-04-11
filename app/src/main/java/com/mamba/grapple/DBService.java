@@ -90,12 +90,13 @@ public class DBService extends Service {
         }
 
         // create listeners
-        // socket.on("message", message);
-        // socket.on("locationUpdate", locationUpdate);
-        // socket.on("meetingSuggestion", "meetingSuggestion);
-        // socket.on("startSessionRequest", startSessionRequest);
+        socket.on("message", message);
+        socket.on("locationUpdate", locationUpdate);
+        socket.on("meetingSuggestion", meetingSuggestion);
+        socket.on("startSessionRequest", startSessionRequest);
+        socket.on("grapple", grapple);
 
-        // socket.connect();
+        socket.connect();
     }
 
     @Override
@@ -115,14 +116,6 @@ public class DBService extends Service {
 
     }
 
-    private Emitter.Listener message = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            JSONObject data = (JSONObject) args[0];
-            // send broadcast to activity and run on the main thread
-        }
-    };
-
 
     public IBinder onBind(Intent intent) {
        return myBinder;
@@ -134,6 +127,57 @@ public class DBService extends Service {
             return DBService.this;
 
         }
+    }
+
+
+    // listener responses
+    private Emitter.Listener message = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+    private Emitter.Listener locationUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+    private Emitter.Listener meetingSuggestion = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+    private Emitter.Listener startSessionRequest = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+    private Emitter.Listener grapple = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+
+
+    private void broadcast(Intent intent){
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
 

@@ -1,11 +1,14 @@
 package com.mamba.grapple;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,7 +60,9 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     private TutorObject tutor;
 
-
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
 
 
 
@@ -91,32 +97,33 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     }
 
-//    public void onResume(){
-//        super.onResume();
-//        Log.v("Tutor View", "Resumed");
-//        Bundle extras = getIntent().getExtras();
-//        if(extras != null){
-//            Log.v("Tutor View Extras", extras.keySet().toString());
-//            LocationObject meetingPoint = extras.getParcelable("meetingPoint");
-//             if(meetingPoint != null){
-//                 Log.v("Tutor View", "Meeting Point Found");
-//                 LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
-//                 sessionMap.addMarker(new MarkerOptions()
-//                         .position(mP)
-//                         .title("Meeting Point"));
-//             }
-//
-//
-//        }
-//    }
+    public void onResume(){
+        super.onResume();
+        Log.v("Tutor View", "Resumed");
+        Intent intent = new Intent(this, DBService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Tutor select bound to service");
+    }
 
+    protected void onPause(){
+        super.onPause();
+        // Unbind from the service
+        if (mBound){
+            Log.v("Unbinding Service", "Results Activity");
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+
+    // response when meeting point is accepted
     @Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
         if(extras != null){
             Log.v("Tutor View", "new intent recieved ");
-            LocationObject meetingPoint = extras.getParcelable("meetingPoint");
+            final LocationObject meetingPoint = extras.getParcelable("meetingPoint");
              if(meetingPoint != null){
                  Log.v("Tutor View", "Meeting Point Found");
                  LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
@@ -126,8 +133,36 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
                  addRoute(meetingPoint.xPos, meetingPoint.yPos);
+
+                 // grab dynamic layout items
                  Button grappleButton = (Button) findViewById(R.id.grappleButton);
-                 grappleButton.setText("Start Session");
+                 Button startSession = (Button) findViewById(R.id.startSession);
+                 Button chatButton = (Button) findViewById(R.id.chatButton);
+                 LinearLayout sessionButtons = (LinearLayout) findViewById(R.id.sessionButtons);
+
+                 // hide the grapple button and show the session/chat buttons
+                 grappleButton.setVisibility(View.GONE);
+                 sessionButtons.setVisibility(View.VISIBLE);
+
+                 //bind the newly visible buttons
+                 startSession.setOnClickListener(new View.OnClickListener(){
+                        public void onClick(View v){
+                            Intent intent = new Intent(Tutor.this, InSession.class);
+                            startActivity(intent);
+                        }
+                 });
+
+                 chatButton.setOnClickListener(new View.OnClickListener(){
+                     public void onClick(View v){
+                         Intent intent = new Intent(Tutor.this, Chat.class);
+                         intent.putExtra("selectedTutor", tutor);
+                         intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
+                         startActivity(intent);
+                     }
+                 });
+
+
+
              }
         }
     }
@@ -159,6 +194,19 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
         }
     }
+
+    private ServiceConnection mConnection = new ServiceConnection(){
+        public void onServiceConnected(ComponentName className, IBinder service){
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName arg0){
+            mBound = false;
+        }
+    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
