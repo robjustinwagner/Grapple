@@ -75,6 +75,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mLastNameView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView = (EditText) findViewById(R.id.password);
         mFirstNameView = (EditText) findViewById(R.id.first);
         mLastNameView = (EditText) findViewById(R.id.last);
-
+        loginButton = (Button) findViewById(R.id.loginButton);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -98,6 +99,13 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        loginButton.setOnClickListener(new OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(Register.this , Login.class );
+                startActivity(intent);
             }
         });
 

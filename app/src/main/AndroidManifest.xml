@@ -81,7 +81,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignInGooglePlus"
+            android:name=".Login"
             android:label="@string/title_activity_signin"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|stateHidden" >

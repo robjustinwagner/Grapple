@@ -1,6 +1,7 @@
 package com.mamba.grapple;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +27,10 @@ import java.util.List;
  */
 public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+
     private TutorObject tutor;
     private LocationObject presetLoc;
+    private BroadcastReceiver mBroadcastReceiver ;
 
     private MessagesAdapter adapter;
     private List<MessageObject> messageList;
@@ -139,6 +142,9 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
     }
 
 
+
+
+
     // places the selected chosen location from the address list into the location suggest input
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK && data != null){
@@ -169,6 +175,9 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
 
         }
     }
+
+
+
 
 
     @Override

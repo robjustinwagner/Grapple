@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.ListView;
 
 // *socket.io imports*
 import com.github.nkzawa.emitter.Emitter;
@@ -17,6 +18,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.IO.*;
 import com.github.nkzawa.socketio.client.SocketIOException;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 
@@ -37,7 +39,7 @@ public class DBService extends Service {
     private Socket socket;
     private String token;
     private final IBinder myBinder = new LocalBinder();
-
+    private final Gson gson = new Gson();
 
 
 
@@ -96,6 +98,7 @@ public class DBService extends Service {
         socket.on("startSessionRequest", startSessionRequest);
         socket.on("grapple", grapple);
 
+
         socket.connect();
     }
 
@@ -136,6 +139,7 @@ public class DBService extends Service {
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and broadcast
+
         }
     };
 
@@ -144,6 +148,12 @@ public class DBService extends Service {
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and broadcast
+//            LocationObject location = gson.fromJson();
+
+
+            Intent intent = new Intent("locationUpdate");
+            // You can also include some extra data.
+            intent.putExtra("message", "This is my message!");
         }
     };
 

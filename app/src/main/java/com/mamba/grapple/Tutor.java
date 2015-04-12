@@ -1,8 +1,10 @@
 package com.mamba.grapple;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -95,6 +98,14 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         retrieveTutorInfo();
 
 
+        // Register to receive messages.
+        // We are registering an observer (mMessageReceiver) to receive Intents
+        // with actions named "custom-event-name".
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("locationUpdate"));
+
+
+
     }
 
     public void onResume(){
@@ -115,6 +126,24 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    // Our handler for received Intents. This will be called whenever an Intent
+// with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+        }
+    };
+
 
     // response when meeting point is accepted
     @Override
@@ -133,6 +162,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                          .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
                  addRoute(meetingPoint.xPos, meetingPoint.yPos);
+
 
                  // grab dynamic layout items
                  Button grappleButton = (Button) findViewById(R.id.grappleButton);

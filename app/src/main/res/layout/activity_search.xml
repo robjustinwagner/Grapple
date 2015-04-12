@@ -38,7 +38,7 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="30dp" />
 
-        <ListView  android:id="@id/android:list"
+        <ListView  android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal|top"

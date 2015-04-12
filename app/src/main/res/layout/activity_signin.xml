@@ -55,7 +55,6 @@
                     android:layout_marginTop="75dp" />
                 <EditText android:id="@+id/password" android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified" android:inputType="textPassword"
                     android:maxLines="1" android:singleLine="true"
@@ -66,27 +65,26 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:text="@string/action_log_in"
                     android:textStyle="bold"
-                    android:layout_alignRight="@+id/textView2"
-                    android:layout_alignEnd="@+id/textView2"
+                    android:layout_alignParentTop="true"
                     android:layout_alignLeft="@+id/textView2"
                     android:layout_alignStart="@+id/textView2" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="---------------- OR ----------------"
+                    android:text="       OR         "
                     android:id="@+id/textView2"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="56dp"
                     android:layout_above="@+id/register_button"
                     android:layout_centerHorizontal="true" />
-                <com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"
-                    android:layout_width="wrap_content" android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_above="@+id/email_sign_in_button"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginBottom="35dp" />
+                <!--<com.google.android.gms.common.SignInButton android:id="@+id/plus_sign_in_button"-->
+                    <!--android:layout_width="wrap_content" android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_above="@+id/email_sign_in_button"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:layout_marginBottom="35dp" />-->
                 <Button
                     style="?android:textAppearanceSmall"
                     android:id="@+id/register_button"

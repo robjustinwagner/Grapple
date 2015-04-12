@@ -9,12 +9,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -57,12 +59,13 @@ import com.google.android.gms.location.LocationServices;
 
 // *json imports*
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 
-public class Search extends ListActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class Search extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -183,7 +186,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     // A private method to help us initialize our default variables and settings
     private void initialize() {
         seekBar = (SeekBar) findViewById(R.id.seekBar2);
-        listView = getListView();
+        listView = (ListView) findViewById(R.id.list);
         distanceView = (TextView) findViewById(R.id.textView5);
         search = (Button) findViewById(R.id.button);
 
@@ -344,26 +347,20 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result){
             Log.v("postResult", result);
             Gson gson = new Gson();
-            try{
-                JSONArray tutors = new JSONArray(result);
+//            try{
+//                JSONArray tutors = new JSONArray(result);
                 ArrayList<TutorObject> tutorList = new ArrayList<>();
-                for(int i = 0; i < tutors.length(); i++){
-                    TutorObject tutor = gson.fromJson(tutors.get(i).toString(), TutorObject.class);
-                    Log.v("tutorObject", tutor.toString());
-                    tutorList.add(tutor);
-                }
+                Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
+                tutorList = gson.fromJson(result, resultType);
 
                 Intent intent = new Intent(Search.this, Results.class);
                 // send the tutorList along with login status on to the results activity
                 intent.putParcelableArrayListExtra("tutorList", tutorList);
                 startActivity(intent);
 
-            }catch(JSONException e){
-
-            }
         }
     }
 
