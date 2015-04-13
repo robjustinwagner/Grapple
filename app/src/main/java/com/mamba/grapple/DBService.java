@@ -82,10 +82,22 @@ public class DBService extends Service {
         System.out.println("DBService Created");
         super.onCreate();
 
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        super.onStartCommand(intent,flags,startId);
+        return START_STICKY;
+    }
+
+    public void connectSocket(){
         // set up socket connection
         if (socket == null || !socket.connected()){
             try {
-                socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+                String url = "http://protected-dawn-4244.herokuapp.com" + "?token=" + getToken();
+                Log.v("socket url", url);
+                socket = IO.socket(url);
             } catch (URISyntaxException e){
                 Log.e("Bad URI", e.getMessage());
             }
@@ -102,15 +114,9 @@ public class DBService extends Service {
         socket.connect();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        super.onStartCommand(intent,flags,startId);
-        return START_STICKY;
-    }
-
     public void setToken(String token){
-        this.token = token;
         Log.v("Service received token", token);
+        this.token = token;
 
     }
 

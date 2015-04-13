@@ -75,6 +75,7 @@ public class Splash extends ActionBarActivity {
     public void loginCheck(){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         token = sharedPreferences.getString("token", null);
+        Log.v("Splash token", token);
         if(token != null){
             Log.v("Preference Token", token);
             loggedIn = true;
@@ -91,6 +92,7 @@ public class Splash extends ActionBarActivity {
 
            // send the token
            mService.setToken(token);
+           mService.connectSocket();
         }
 
         public void onServiceDisconnected(ComponentName arg0){

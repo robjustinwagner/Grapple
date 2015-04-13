@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -107,6 +108,12 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
                 Intent intent = new Intent(Chat.this, AddressList.class);
                 // we expect an address
                 startActivityForResult(intent, 1);
+            }
+        });
+
+        messagesContainer.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
+            public void onSwipeRight() {
+                Toast.makeText(Chat.this, "right", Toast.LENGTH_SHORT).show();
             }
         });
 
