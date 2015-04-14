@@ -14,8 +14,8 @@ import java.util.Locale;
  * Created by vash on 4/8/15.
  */
 public class LocationObject implements Parcelable {
-    public double xPos;
-    public double yPos;
+    public double xPos = 0.0;
+    public double yPos = 0.0;
     private String address;
     private String name;
 
@@ -23,22 +23,24 @@ public class LocationObject implements Parcelable {
         this.name =  name;
         this.address = address;
 
+//        geocode(context,address);
+
+
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> fromLocationName = null;
 
         // get the latitude and longitude from an address TODO: Put in separate thread
         try{
-            fromLocationName = geocoder.getFromLocationName(this.address,   1);
+            fromLocationName = geocoder.getFromLocationName(address,   1);
             if (fromLocationName != null && fromLocationName.size() > 0) {
                 Address a = fromLocationName.get(0);
                 xPos =  a.getLatitude();
                 yPos =  a.getLongitude();
-                Log.v(this.name + " coordinates:" , xPos + "," + yPos);
+                Log.v(address+ " coordinates:" , xPos + "," + yPos);
             }
         }catch(java.io.IOException e){
 
         }
-
 
     }
 
@@ -85,6 +87,41 @@ public class LocationObject implements Parcelable {
             return new LocationObject[size];
         }
     };
+
+
+
+    public void geocode(Context c, String add){
+        final Context context = c;
+
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run(){
+
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                List<Address> fromLocationName = null;
+
+                // get the latitude and longitude from an address TODO: Put in separate thread
+                try{
+                    fromLocationName = geocoder.getFromLocationName(address,   1);
+                    if (fromLocationName != null && fromLocationName.size() > 0) {
+                        Address a = fromLocationName.get(0);
+                        xPos =  a.getLatitude();
+                        yPos =  a.getLongitude();
+                        Log.v(address+ " coordinates:" , xPos + "," + yPos);
+                    }
+                }catch(java.io.IOException e){
+
+                }
+
+
+            }
+        });
+
+
+        thread.start();
+
+    }
 
 
 }

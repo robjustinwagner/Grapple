@@ -97,50 +97,55 @@
                 android:layout_below="@id/imageView">
 
 
-            <ImageView
-                android:id="@+id/locationPin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/location_pin"
-                android:layout_below="@+id/locationHeader"
-            />
+            <!--<ImageView-->
+                <!--android:id="@+id/locationPin"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:src="@drawable/location_pin"-->
+                <!--android:layout_below="@+id/locationHeader"-->
+            <!--/>-->
 
-            <EditText
-                android:id="@+id/locationInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-            />
+            <!--<EditText-->
+                <!--android:id="@+id/locationInput"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+            <!--/>-->
 
 
-            <ImageButton
-                android:id="@+id/viewRecommended"
-                android:text="Locations List"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/locationInput"
-                android:background="#94969a"
-                android:layout_gravity="bottom"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5px"
-                android:layout_below="@id/locationHeader"
-                android:src="@drawable/locations_list"/>
+            <!--<ImageButton-->
+                <!--android:id="@+id/viewRecommended"-->
+                <!--android:text="Locations List"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_toRightOf="@id/locationInput"-->
+                <!--android:background="#94969a"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_marginBottom="5px"-->
+                <!--android:layout_below="@id/locationHeader"-->
+                <!--android:src="@drawable/locations_list"/>-->
 
+                <!--<Button-->
+                    <!--android:id="@+id/suggestLocation"-->
+                    <!--android:text="Suggest"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="28dp"-->
+                    <!--android:layout_below="@id/meetingContent"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:background="@color/bg_btn_join"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:layout_marginBottom="3dp"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_gravity="bottom"-->
+
+                    <!--/>-->
                 <Button
-                    android:id="@+id/suggestLocation"
-                    android:text="Suggest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="28dp"
-                    android:layout_below="@id/meetingContent"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/bg_btn_join"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_gravity="bottom"
-
-                    />
-
+                    android:id="@+id/suggestMeetingBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Suggest Meeting Location"
+                />
             </LinearLayout>
 
 

@@ -19,7 +19,7 @@ public class MessagesAdapter extends BaseAdapter{
     private List<MessageObject> messages;
 
 
-    public MessagesAdapter(Context context, List<MessageObject> navDrawerItems) {
+    public MessagesAdapter(Context context, List<MessageObject> navDrawerItems){
         this.context = context;
         this.messages = navDrawerItems;
     }
@@ -44,13 +44,31 @@ public class MessagesAdapter extends BaseAdapter{
 
         // Identifying the message owner
         if (messages.get(position).isSelf()) {
-            // message belongs to you, so load the right aligned layout
-            convertView = mInflater.inflate(R.layout.chat_message_right,
-                    null);
+
+            if(messages.get(position).isLocation()){
+                // message belongs to you, so load the right aligned layout
+                convertView = mInflater.inflate(R.layout.location_message_right, // location message
+                        null);
+
+            }else{
+                // message belongs to you, so load the right aligned layout
+                convertView = mInflater.inflate(R.layout.chat_message_right,
+                        null);
+
+            }
+
         } else {
-            // message belongs to other person, load the left aligned layout
-            convertView = mInflater.inflate(R.layout.chat_message_left,
-                    null);
+
+            if(messages.get(position).isLocation()){
+                // message belongs to you, so load the right aligned layout
+                convertView = mInflater.inflate(R.layout.location_message_left, // location message
+                        null);
+
+            }else {
+                // message belongs to other person, load the left aligned layout
+                convertView = mInflater.inflate(R.layout.chat_message_left,
+                        null);
+            }
         }
 
         // TODO: have a different message type for notification messages

@@ -36,17 +36,6 @@
         android:layout_marginTop="40dp"
     />
 
-    <Button
-        android:id="@+id/resumeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewTime"
-        android:layout_above="@id/endBtn"
-        android:layout_centerHorizontal="true"
-        android:text="Resume Session"
-        android:layout_marginTop="40dp"
-        android:visibility="gone"
-        />
 
 
     <Button
@@ -54,11 +43,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/pauseBtn"
-
         android:layout_centerHorizontal="true"
         android:text="End Session"
         android:layout_marginTop="5dp"
     />
+
+
 
 
 

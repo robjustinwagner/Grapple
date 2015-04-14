@@ -27,6 +27,7 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/bg_msg_from"/>
+        android:background="@drawable/bg_msg_from"
+    />
 
 </LinearLayout>

@@ -178,6 +178,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                  startSession.setOnClickListener(new View.OnClickListener(){
                         public void onClick(View v){
                             Intent intent = new Intent(Tutor.this, InSession.class);
+                            intent.putExtra("sessionLength", tutor.session.period);
                             startActivity(intent);
                         }
                  });

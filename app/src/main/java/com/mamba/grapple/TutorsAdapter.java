@@ -46,7 +46,7 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
 
 
     // use to add in profile picture
-    public static Drawable LoadImageFromWebOperations(String url) {
+    public static Drawable LoadImageFromWebOperations(String url){
         try {
             InputStream is = (InputStream) new URL(url).getContent();
             Drawable d = Drawable.createFromStream(is, "");

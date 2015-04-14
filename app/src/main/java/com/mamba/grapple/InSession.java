@@ -3,6 +3,7 @@ package com.mamba.grapple;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,36 +15,71 @@ import java.util.concurrent.TimeUnit;
 
 public class InSession extends ActionBarActivity {
 
+    final int MS_IN_MIN = 60000; // ms in a minute
+
     TextView textViewTime;
     Button btnPause;
     Button btnStop;
-    Button btnResume;
+
+    private SessionCounter timer;
+    private long sessionRemaining = MS_IN_MIN * 30;    // set from tutor's set max (default 30 min)
+    private boolean sessionPaused = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insession);
         textViewTime = (TextView) findViewById(R.id.textViewTime);
         btnStop = (Button) findViewById(R.id.endBtn);
         btnPause = (Button) findViewById(R.id.pauseBtn);
-        btnResume = (Button) findViewById(R.id.resumeBtn);
 
-        SessionCounter timer = new SessionCounter(180000,1000);
+        Bundle extras = getIntent().getExtras();
 
-        timer.start();
+        if(extras != null){
+            Log.v("Max Session:" , String.valueOf(extras.getInt("sessionLength")));
+            // convert to long in ms
+            long sessionLength = MS_IN_MIN * (long) extras.getInt("sessionLength");
+
+           if(sessionLength > sessionRemaining){
+               sessionRemaining = sessionLength;
+           }
+        }
 
 
+        startCountdown();
+
+        btnPause.setOnClickListener(new View.OnClickListener(){
+               public void onClick(View v){
+                   // if the session is already paused resume it
+                   if(sessionPaused){
+                       startCountdown();
+                       btnPause.setText("Pause Session");
+                       sessionPaused = false;
+
+                   }else{
+                       timer.cancel();
+                       btnPause.setText("Resume Session");
+                       sessionPaused = true;
+                   }
+               }
+
+        });
 
 
-        btnResume.setOnClickListener(new View.OnClickListener(){
+        btnStop.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                timer.start();
-                btnPause.setVisibility(View.VISIBLE);
-                btnResume.setVisibility(View.GONE);
+                timer.cancel();
+                timer.onFinish();
             }
         });
 
 
+    }
+
+
+    private void startCountdown(){
+        timer = new SessionCounter(sessionRemaining, 1000);
+        timer.start();
     }
 
 
@@ -85,6 +121,7 @@ public class InSession extends ActionBarActivity {
 
         @Override
         public void onTick(long millisUntilFinished) {
+            sessionRemaining = millisUntilFinished;
             millis = millisUntilFinished;
             String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                     TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
@@ -92,12 +129,6 @@ public class InSession extends ActionBarActivity {
             System.out.println(hms);
             textViewTime.setText(hms);
         }
-
-        public void resume(){
-
-        }
-
-
 
 
 
