@@ -118,6 +118,11 @@
         <activity android:name=".AddressList"
              android:label="AddressList"
              android:exported="true"></activity>
+        <activity
+            android:name=".MapDialog"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
+            android:label="Suggested Meeting Point">
+        </activity>
     </application>
 
 </manifest>

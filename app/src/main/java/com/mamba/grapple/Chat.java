@@ -100,7 +100,7 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
 
 //                }
 
-                  showDialog(v.getContext());
+                  showListDialog(v.getContext());
 
 
             }
@@ -141,10 +141,10 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
 
                 // handle if location
                 if(message.isLocation()){
-
-                    Intent intent = new Intent(Chat.this, Tutor.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    Intent intent = new Intent(Chat.this, MapDialog.class);
                     intent.putExtra("meetingPoint", message.getLocation());
+                    intent.putExtra("tutorLat", tutor.location.xPos);
+                    intent.putExtra("tutorLon", tutor.location.yPos);
                     startActivity(intent);
                 }
 
@@ -203,8 +203,8 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
 
 
 
-    public void showDialog(Context context){
-        Log.v("Dialog", "Show dialog hit");
+    public void showListDialog(Context context){
+
         final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 
         dialog.setCancelable(true);
@@ -244,11 +244,6 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
             }
         });
 
-
-
-
-
-
         dialog.setView(view);
         final AlertDialog alert = dialog.show();
 
@@ -265,6 +260,18 @@ public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbac
         });
 
     }
+
+
+//    public void showMapDialog(Context context){
+//
+//        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+//
+//        dialog.setCancelable(true);
+//
+//        View view = ((Activity)context).getLayoutInflater().inflate(R.layout.dialog_map , null);
+//
+//        dialog.setView(view);
+//    }
 
 
     public void dummyPopulate(){

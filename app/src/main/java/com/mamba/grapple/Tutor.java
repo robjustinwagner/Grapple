@@ -490,9 +490,8 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
         // Executes in UI thread, after the parsing process
         @Override
-        protected void onPostExecute(List<LatLng> lines) {
+        protected void onPostExecute(List<LatLng> lines){
              sessionMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
-
         }
 
         /** POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java **/
