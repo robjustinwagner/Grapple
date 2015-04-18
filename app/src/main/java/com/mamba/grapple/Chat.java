@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by vash on 4/8/15.
  */
-public class Chat extends Activity  implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class Chat extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     private TutorObject tutor;

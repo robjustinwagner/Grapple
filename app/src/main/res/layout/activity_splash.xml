@@ -5,20 +5,15 @@
     android:layout_height="match_parent"
     tools:context="com.mamba.grapple.Splash"
     tools:ignore="MergeRootFrame"
-    android:background="@drawable/splash_bg"
+    android:background="#2c2c2c"
   >
 
-    <TextView
-        android:layout_width="220dp"
-        android:layout_height="55dp"
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="400dp"
         android:id="@+id/textView"
-        android:layout_gravity="right|bottom"
-        android:textColor="#ffffffff"
-        android:layout_marginBottom="120dp"
-        android:theme="@style/AppTheme"
+        android:layout_gravity="center"
         android:textAlignment="center"
-        android:editable="false"
-        android:elegantTextHeight="false"
-        android:background="@drawable/logov4"  />
+        android:background="@drawable/splash_text"  />
 
 </FrameLayout>

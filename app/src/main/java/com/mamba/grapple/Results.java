@@ -1,5 +1,6 @@
 package com.mamba.grapple;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +22,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public class Results extends ActionBarActivity {
+public class Results extends Activity {
 
     ArrayList<TutorObject> tutorList;
     ListView listView;

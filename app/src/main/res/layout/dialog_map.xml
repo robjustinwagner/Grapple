@@ -17,7 +17,9 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-    <Button android:layout_width="match_parent"
+    <Button
+            android:id="@+id/accept_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@android:style/Widget.Holo.Light.Button.Borderless.Small"
             android:text="Accept"
@@ -26,7 +28,9 @@
 
      />
 
-        <Button android:layout_width="match_parent"
+        <Button
+            android:id="@+id/decline_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@android:style/Widget.Holo.Light.Button.Borderless.Small"
             android:text="Decline"

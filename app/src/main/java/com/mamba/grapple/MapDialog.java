@@ -1,11 +1,14 @@
 package com.mamba.grapple;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,22 +31,33 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
     private GoogleApiClient mGoogleApiClient;
     private MapFragment mapFragment;
 
+    // received from Intent
     private LocationObject meetingPoint;
     private double tutorLat;
     private double tutorLon;
+
+    // UI elements
+    Button acceptBtn;
+    Button declineBtn;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_map);
 
-        // get location
+        // grab UI elements
+        acceptBtn = (Button) findViewById(R.id.accept_button);
+        declineBtn = (Button) findViewById(R.id.decline_button);
+
+        // get current user  location
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         mLastLocation = locationManager.getLastKnownLocation(locationProvider);
 
+        // load the google map
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // extract data sent from intent
         Bundle extras = getIntent().getExtras();
 
         if(extras != null){
@@ -51,6 +65,31 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
             tutorLat = extras.getDouble("tutorLat");
             tutorLon = extras.getDouble("tutorLon");
         }
+
+
+        // bind UI listeners
+        acceptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // send the data to the tutor view and finish
+                Intent intent = new Intent(MapDialog.this, Tutor.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.putExtra("meetingPoint", meetingPoint);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+
+        declineBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // just close for now
+            }
+        });
+
+
 
     }
 
