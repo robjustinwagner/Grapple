@@ -1,8 +1,13 @@
 package com.mamba.grapple;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import java.text.DecimalFormat;
+
 /**
  * Created by vash on 4/1/15.
  */
@@ -16,17 +21,59 @@ public class TutorObject implements Parcelable {
     public int rating;
     public String profilePic;
     public float distance;
-    public TutorLocation location;
+    public LocationObject location;
     public TutorSession session;
 
+    // rounds to two decimal places
+    DecimalFormat twoDeci = new DecimalFormat("##.00");
+
+    // constructor
+    public TutorObject(String firstName, String lastName, int rating, LocationObject location, TutorSession session){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.rating = rating;
+        this.location = location;
+        this.session = session;
+        this.profilePic = firstName + "_" + lastName;
+        Log.v("Session Price: ", String.valueOf(this.session.price));
+    }
+
+
+
+    public String getDistance(Location userLocation){
+
+        double lat1 = userLocation.getLatitude();
+        double lon1 = userLocation.getLongitude();
+        double lat2 = this.location.xPos;
+        double lon2 = this.location.yPos;
+
+        Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        return twoDeci.format(dist);
+    }
+
+    // conversions
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+
+    private double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
+    }
 
 
     public String toString(){
         return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
                 " rating=" + rating + " distance" + distance +
                 " location=" + location.xPos + "," + location.yPos + "]" +
-                " session= {price: " + session.price + ", minLength: " + session.minLength +
-                ", period: " + session.period +" }]" ;
+                " session= {price: " + session.price + ", minLength: " + session.maxLength + " }]";
     }
 
 
@@ -37,7 +84,7 @@ public class TutorObject implements Parcelable {
         rating = in.readInt();
         profilePic = in.readString();
         distance = in.readFloat();
-        location = (TutorLocation) in.readValue(TutorLocation.class.getClassLoader());
+        location = (LocationObject) in.readValue(TutorObject.class.getClassLoader());
         session = (TutorSession) in.readValue(TutorSession.class.getClassLoader());
     }
 
@@ -70,8 +117,6 @@ public class TutorObject implements Parcelable {
             return new TutorObject[size];
         }
     };
-
-
 
 
 

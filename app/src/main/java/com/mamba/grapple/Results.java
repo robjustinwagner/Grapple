@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -30,9 +32,12 @@ public class Results extends Activity {
     private boolean loggedIn = false;
     private boolean newService = false;
 
+
     // service related variables
     private boolean mBound = false;
     DBService mService;
+
+    private Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -41,12 +46,20 @@ public class Results extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
+
             // get the tutor list from previous activity
             tutorList = extras.getParcelableArrayList("tutorList");
             Log.v("tutorList", String.valueOf(tutorList));
 
+
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            String locationProvider = LocationManager.NETWORK_PROVIDER;
+            mLastLocation = locationManager.getLastKnownLocation(locationProvider);
+
+
             // populate the list view
             TutorsAdapter adapter = new TutorsAdapter(this, tutorList);
+            adapter.setUserLocation(mLastLocation);
             listView = (ListView)findViewById(R.id.listView);
             listView.setAdapter(adapter);
 

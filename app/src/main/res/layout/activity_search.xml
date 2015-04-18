@@ -16,8 +16,7 @@
         android:id="@+id/frameLayout"
         android:background="#ffffffff"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-      >
+        android:layout_alignParentStart="true">
 
         <Button
             android:layout_width="fill_parent"

@@ -9,14 +9,19 @@ import android.os.Parcelable;
 
 public class TutorSession implements Parcelable {
     public int price;
-    public int minLength;
-    public int period;
+    public int maxLength;
     public boolean available;
+
+    public TutorSession(int price, int maxLength, boolean available) {
+        this.price = price;
+        this.maxLength = maxLength;
+        this.available = available;
+    }
+
 
     protected TutorSession(Parcel in) {
         price = in.readInt();
-        minLength = in.readInt();
-        period = in.readInt();
+        maxLength = in.readInt();
         available = in.readByte() != 0x00;
     }
 
@@ -28,8 +33,7 @@ public class TutorSession implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(price);
-        dest.writeInt(minLength);
-        dest.writeInt(period);
+        dest.writeInt(maxLength);
         dest.writeByte((byte) (available ? 0x01 : 0x00));
     }
 

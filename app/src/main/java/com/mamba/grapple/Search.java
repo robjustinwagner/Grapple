@@ -351,16 +351,23 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
         protected void onPostExecute(String result){
             Log.v("postResult", result);
             Gson gson = new Gson();
-//            try{
-//                JSONArray tutors = new JSONArray(result);
-                ArrayList<TutorObject> tutorList = new ArrayList<>();
-                Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
-                tutorList = gson.fromJson(result, resultType);
 
-                Intent intent = new Intent(Search.this, Results.class);
-                // send the tutorList along with login status on to the results activity
-                intent.putParcelableArrayListExtra("tutorList", tutorList);
-                startActivity(intent);
+            ArrayList<TutorObject> tutorList = new ArrayList<>();
+            Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
+            tutorList = gson.fromJson(result, resultType);
+
+            Intent intent = new Intent(Search.this, Results.class);
+
+            Log.v("tutorList", String.valueOf(tutorList.size()));
+
+            // dummy populate the empty list for now
+            if(tutorList.size() < 1){
+                dummyPopulate(tutorList);
+            }
+
+            // send the tutorList along with login status on to the results activity
+            intent.putParcelableArrayListExtra("tutorList", tutorList);
+            startActivity(intent);
 
         }
     }
@@ -428,6 +435,32 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
                 is.close();
             }
         }
+    }
+
+
+    private void dummyPopulate(ArrayList<TutorObject> tutorList){
+
+        LocationObject loc1 = new LocationObject(43.0719139, -89.4081352);
+        TutorSession session1 = new TutorSession(15, 60, true);
+        TutorObject tutor1 = new TutorObject("Jane", "Han", 5, loc1, session1);
+
+        LocationObject loc2 = new LocationObject(43.0767057, -89.4010609);
+        TutorSession session2 = new TutorSession(15, 60, true);
+        TutorObject tutor2 = new TutorObject("Eric", "Trac", 3, loc2, session2);
+
+        LocationObject loc3 = new LocationObject(43.0726811,-89.40169209999999);
+        TutorSession session3 = new TutorSession(16, 60, true);
+        TutorObject tutor3 = new TutorObject("Robert", "Williams", 4, loc3, session3);
+
+        LocationObject loc4 = new LocationObject(43.0726811,-89.40169209999999);
+        TutorSession session4 = new TutorSession(18, 60, true);
+        TutorObject tutor4 = new TutorObject("Nadia", "Martinez", 5, loc4, session4);
+
+        tutorList.add(tutor1);
+        tutorList.add(tutor2);
+        tutorList.add(tutor3);
+        tutorList.add(tutor4);
+
     }
 
 

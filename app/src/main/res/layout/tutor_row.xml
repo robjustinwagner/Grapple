@@ -4,15 +4,16 @@
     android:background="@color/white"
     android:layout_height="100dip"
     android:layout_marginBottom="10dp"
-    android:padding= "6dip" >
+    android:paddingRight="6dp" >
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:id="@+id/profilePic"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
-        android:id="@+id/imageView"
         android:src="@drawable/user_icon"
+        android:background="@color/theme"
         android:layout_marginRight = "6dip" />
 
     <TextView
@@ -20,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="20dp"
-        android:layout_toRightOf="@id/imageView"
+        android:layout_toRightOf="@id/profilePic"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
 
@@ -36,7 +37,7 @@
         style="?android:attr/ratingBarStyleSmall"
         android:numStars="5"
         android:layout_below="@+id/tutorName"
-        android:layout_toRightOf="@id/imageView" />
+        android:layout_toRightOf="@id/profilePic" />
 
     <TextView
         android:id="@+id/tutorDistance"
@@ -44,11 +45,10 @@
         android:textColor="#cecece"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imageView"
+        android:layout_toRightOf="@id/profilePic"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginBottom="6dip"
         android:gravity="right"
         android:text="TutorDistance" />
 
@@ -58,11 +58,10 @@
         android:textColor="#cecece"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imageView"
+        android:layout_toRightOf="@id/profilePic"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_marginBottom="6dip"
         android:gravity="center_vertical"
         android:text="TutorPrice" />
 
