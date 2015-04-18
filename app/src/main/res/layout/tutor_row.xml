@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="fill_parent"
+    android:background="@color/white"
     android:layout_height="100dip"
+    android:layout_marginBottom="10dp"
     android:padding= "6dip" >
 
     <ImageView
@@ -16,17 +18,30 @@
     <TextView
         android:id="@+id/tutorName"
         android:layout_width="fill_parent"
-        android:layout_height="26dip"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
         android:layout_toRightOf="@id/imageView"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="10dip"
+
         android:singleLine="true"
         android:ellipsize="marquee"
         android:text="TutorName" />
 
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleSmall"
+        android:numStars="5"
+        android:layout_below="@+id/tutorName"
+        android:layout_toRightOf="@id/imageView" />
+
     <TextView
         android:id="@+id/tutorDistance"
+        android:textSize="16dp"
+        android:textColor="#cecece"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView"
@@ -39,6 +54,8 @@
 
     <TextView
         android:id="@+id/tutorPrice"
+        android:textSize="16dp"
+        android:textColor="#cecece"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView"

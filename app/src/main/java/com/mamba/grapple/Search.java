@@ -92,14 +92,13 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
     DBService mService;
 
     // temporary until DB load setup (use SimpleCursorAdapter for DB)
-    static final String[] COURSES = {"CS302", "Calc 234"};
+    static final String[] COURSES = {"Chemistry 103", "Comp Sci 302", "French 4", "Math 234", "Physics 202"};
     // current url path for tutor list retrieval
     static final String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_search);
 
         // grab all the view items and set defaults
@@ -127,7 +126,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
 
         // update distance as user slides
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distance = progress;
@@ -140,7 +139,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                distanceView.setText("Distance: " + distance + " mi");
+                distanceView.setText("Travel Distance: " + distance + " mi");
             }
         });
 
@@ -216,7 +215,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
         // set initial distance
         distance = seekBar.getProgress();
-        distanceView.setText("Distance: " + distance + " mi");
+        distanceView.setText("Travel Distance: " + distance + " mi");
     }
 
 
