@@ -64,6 +64,8 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class Search extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
@@ -362,6 +364,11 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
                 startActivity(intent);
 
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 
