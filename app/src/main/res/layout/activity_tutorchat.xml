@@ -6,152 +6,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
+    android:background="@color/background"
     android:orientation="vertical" >
 
-        <RelativeLayout
+        <!--<RelativeLayout-->
 
-            android:layout_width="wrap_content"
-            android:background="#94969a"
-            android:layout_height="wrap_content"
-            >
-
-            <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="#000000"
-            android:padding="5dp"
-            android:id="@+id/imageView"
-            android:src="@drawable/user_icon_med"
-            />
-
-            <TextView
-                android:id="@+id/tutorName"
-                android:layout_width="wrap_content"
-                android:layout_height="20dip"
-                android:singleLine="true"
-                android:text="TutorName"
-                android:ellipsize="marquee"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/imageView"
-                android:layout_toEndOf="@+id/imageView"
-                android:layout_marginLeft="3dp"/>
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:numStars="5"
-                android:layout_below="@+id/tutorName"
-                android:layout_toRightOf="@id/imageView"
-                android:layout_marginLeft="3dp"
-
-                />
-
-            <TextView
-                android:id="@+id/tutorPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="20dip"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="1dp"
-                android:layout_toRightOf="@id/imageView"
-                android:layout_below="@+id/ratingBar"
-                android:singleLine="true"
-                android:text="TutorPrice"
-                android:ellipsize="marquee"
-                android:layout_marginLeft="3dp"
-            />
-
-            <TextView
-                android:id="@+id/tutorDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Distance"
-                android:layout_below="@+id/tutorPrice"
-                android:layout_toRightOf="@id/imageView"
-                android:layout_marginLeft="3dp"
-            />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:text="Cancel"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:background="#000"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:textColor="#FFF"
-
-            />
-
-            <LinearLayout
-                android:id="@+id/meetingContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="3dp"
-                android:layout_below="@id/imageView">
-
+            <!--android:layout_width="wrap_content"-->
+            <!--android:background="#94969a"-->
+            <!--android:layout_height="wrap_content"-->
+            <!-->-->
 
             <!--<ImageView-->
-                <!--android:id="@+id/locationPin"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:src="@drawable/location_pin"-->
-                <!--android:layout_below="@+id/locationHeader"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:background="#000000"-->
+            <!--android:padding="5dp"-->
+            <!--android:id="@+id/imageView"-->
+            <!--android:src="@drawable/user_icon_med"-->
             <!--/>-->
 
-            <!--<EditText-->
-                <!--android:id="@+id/locationInput"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-            <!--/>-->
-
-
-            <!--<ImageButton-->
-                <!--android:id="@+id/viewRecommended"-->
-                <!--android:text="Locations List"-->
+            <!--<TextView-->
+                <!--android:id="@+id/tutorName"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="20dip"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="TutorName"-->
+                <!--android:ellipsize="marquee"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_toRightOf="@+id/imageView"-->
+                <!--android:layout_toEndOf="@+id/imageView"-->
+                <!--android:layout_marginLeft="3dp"/>-->
+            <!--<RatingBar-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
-                <!--android:layout_toRightOf="@id/locationInput"-->
-                <!--android:background="#94969a"-->
-                <!--android:layout_gravity="bottom"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:layout_marginBottom="5px"-->
-                <!--android:layout_below="@id/locationHeader"-->
-                <!--android:src="@drawable/locations_list"/>-->
+                <!--android:id="@+id/ratingBar"-->
+                <!--style="?android:attr/ratingBarStyleSmall"-->
+                <!--android:numStars="5"-->
+                <!--android:layout_below="@+id/tutorName"-->
+                <!--android:layout_toRightOf="@id/imageView"-->
+                <!--android:layout_marginLeft="3dp"-->
 
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tutorPrice"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="20dip"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_marginBottom="1dp"-->
+                <!--android:layout_toRightOf="@id/imageView"-->
+                <!--android:layout_below="@+id/ratingBar"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="TutorPrice"-->
+                <!--android:ellipsize="marquee"-->
+                <!--android:layout_marginLeft="3dp"-->
+            <!--/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tutorDistance"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+                <!--android:text="Distance"-->
+                <!--android:layout_below="@+id/tutorPrice"-->
+                <!--android:layout_toRightOf="@id/imageView"-->
+                <!--android:layout_marginLeft="3dp"-->
+            <!--/>-->
+
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:text="Cancel"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:background="#000"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:textColor="#FFF"-->
+
+            <!--/>-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/meetingContent"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:layout_marginTop="3dp"-->
+                <!--android:layout_below="@id/imageView">-->
+
+
+        <!---->
                 <!--<Button-->
-                    <!--android:id="@+id/suggestLocation"-->
-                    <!--android:text="Suggest"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="28dp"-->
-                    <!--android:layout_below="@id/meetingContent"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:background="@color/bg_btn_join"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:layout_marginBottom="3dp"-->
-                    <!--android:layout_marginRight="5dp"-->
-                    <!--android:layout_gravity="bottom"-->
-
-                    <!--/>-->
-                <Button
-                    android:id="@+id/suggestMeetingBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Suggest Meeting Location"
-                />
-            </LinearLayout>
+                    <!--android:id="@+id/suggestMeetingBtn"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Suggest Meeting Location"-->
+                <!--/>-->
+            <!--</LinearLayout>-->
 
 
 
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <ListView
             android:id="@+id/list_view_messages"
@@ -161,7 +119,6 @@
             android:background="@null"
             android:divider="@null"
             android:transcriptMode="alwaysScroll"
-            android:layout_below="@id/imageView"
             android:stackFromBottom="true">
         </ListView>
 
@@ -171,40 +128,50 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="horizontal"
-            android:weightSum="3" >
+            android:weightSum="4" >
+
+            <ImageButton
+                android:id="@+id/suggestMeetingBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:src="@drawable/meetingicon"
+                android:background="@null"
+                android:layout_weight=".5"
+
+            />
 
             <EditText
                 android:id="@+id/msgInput"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="2"
-                android:background="@color/bg_msg_input"
-                android:textColor="@color/text_msg_input"
+                android:layout_weight="2.5"
                 android:paddingLeft="6dp"
+                android:hint="Type a message.."
                 android:paddingRight="6dp"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnSend"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:background="@color/bg_btn_join"
+                android:src="@drawable/send"
+                android:background="@null"
                 android:textColor="@color/white"
                 android:text="@string/btn_send" />
         </LinearLayout>
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/mapView"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/map_icon"
-        android:layout_marginTop="130dp"
-        android:layout_marginRight="20dp"
-        android:background="@null"
-    />
+    <!--<ImageButton-->
+        <!--android:id="@+id/mapView"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:src="@drawable/map_icon"-->
+        <!--android:layout_marginTop="130dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:background="@null"-->
+    <!--/>-->
 
 
 </RelativeLayout>

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -167,7 +168,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                  // grab dynamic layout items
                  Button grappleButton = (Button) findViewById(R.id.grappleButton);
                  Button startSession = (Button) findViewById(R.id.startSession);
-                 Button chatButton = (Button) findViewById(R.id.chatButton);
+                 ImageButton chatButton = (ImageButton) findViewById(R.id.chatButton);
                  LinearLayout sessionButtons = (LinearLayout) findViewById(R.id.sessionButtons);
 
                  // hide the grapple button and show the session/chat buttons
@@ -217,11 +218,15 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
             TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
             TextView maxSession = (TextView) findViewById(R.id.maxSession);
 
+            String fullName = tutor.firstName + " " + tutor.lastName;
+
             // populate the data
-            tutorName.setText(tutor.firstName + " " + tutor.lastName);
+            tutorName.setText(fullName);
             tutorDistance.setText(tutor.getDistance(mLastLocation) + " mi");
             tutorPrice.setText("$" + String.valueOf(tutor.session.price));
             maxSession.setText("Max Session: " + String.valueOf(tutor.session.maxLength) + " min" );
+
+            getActionBar().setTitle(fullName);
 
         }
     }

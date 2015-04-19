@@ -1,5 +1,7 @@
 package com.mamba.grapple;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,7 +15,7 @@ import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
 
-public class InSession extends ActionBarActivity {
+public class InSession extends Activity {
 
     final int MS_IN_MIN = 60000; // ms in a minute
 
@@ -70,6 +72,12 @@ public class InSession extends ActionBarActivity {
             public void onClick(View v){
                 timer.cancel();
                 timer.onFinish();
+
+                // go to receipt
+                Intent intent = new Intent(InSession.this, PostSession.class);
+                startActivity(intent);
+                finish();
+
             }
         });
 

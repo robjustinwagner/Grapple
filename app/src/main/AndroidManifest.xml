@@ -113,6 +113,10 @@
             android:label="@string/title_activity_insession"
             android:exported="true"></activity>
         <activity
+            android:name=".PostSession"
+            android:label="Session Complete"
+            android:exported="true"></activity>
+        <activity
             android:name=".Chat"
             android:label="@string/title_activity_chat"
             android:exported="true"></activity>

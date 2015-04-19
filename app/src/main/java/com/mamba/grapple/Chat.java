@@ -37,7 +37,7 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
     private TutorObject tutor;
     private LocationObject presetLoc;
-    private BroadcastReceiver mBroadcastReceiver ;
+    private BroadcastReceiver mBroadcastReceiver;
 
     private MessagesAdapter adapter;
     private List<MessageObject> messageList;
@@ -51,8 +51,8 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
     ListView messagesContainer;
     EditText locInput;
     EditText chatInput;
-    Button sendButton;
-    Button suggestButton;
+    ImageButton sendButton;
+    ImageButton suggestButton;
     View selected;
 //    ImageButton locationList;
 
@@ -66,8 +66,8 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         dummyPopulate();
 
         messagesContainer = (ListView) findViewById(R.id.list_view_messages);
-        sendButton = (Button) findViewById(R.id.btnSend);
-        suggestButton = (Button) findViewById(R.id.suggestMeetingBtn);
+        sendButton = (ImageButton) findViewById(R.id.btnSend);
+        suggestButton = (ImageButton) findViewById(R.id.suggestMeetingBtn);
 //        locInput = (EditText)findViewById(R.id.locationInput);
         chatInput = (EditText)  findViewById(R.id.msgInput);
 //        locationList = (ImageButton) findViewById(R.id.viewRecommended);
@@ -186,16 +186,23 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         if(extras != null){
             tutor = extras.getParcelable("selectedTutor");
 
-            // Look up view for data population
-            TextView tutorName = (TextView)findViewById(R.id.tutorName);
-            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
-            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
+            String fullName = tutor.firstName + " " + tutor.lastName;
 
+//            // Look up view for data population
+//            TextView tutorName = (TextView)findViewById(R.id.tutorName);
+//            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
+//            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
+//
+//
+//
+//
+//            // populate the data
+//            tutorName.setText(fullName);
+//            tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
+//            tutorPrice.setText("$" + String.valueOf(tutor.session.price));
 
-            // populate the data
-            tutorName.setText(tutor.firstName + " " + tutor.lastName);
-            tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
-            tutorPrice.setText("$" + String.valueOf(tutor.session.price));
+            getActionBar().setTitle(fullName);
+            getActionBar().setIcon(R.drawable.user_icon);
 
 
         }
