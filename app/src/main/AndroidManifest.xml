@@ -40,6 +40,7 @@
 
     <!-- to access GPS polling -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <!-- adds OpenGL for google map rendering -->
     <uses-feature

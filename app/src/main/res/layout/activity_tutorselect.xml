@@ -14,11 +14,10 @@
         >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentTop="true"
             android:background="#000000"
-            android:padding="5dp"
             android:id="@+id/imageView"
             android:src="@drawable/user_icon_med"
         />

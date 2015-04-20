@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -68,11 +69,8 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         messagesContainer = (ListView) findViewById(R.id.list_view_messages);
         sendButton = (ImageButton) findViewById(R.id.btnSend);
         suggestButton = (ImageButton) findViewById(R.id.suggestMeetingBtn);
-//        locInput = (EditText)findViewById(R.id.locationInput);
         chatInput = (EditText)  findViewById(R.id.msgInput);
-//        locationList = (ImageButton) findViewById(R.id.viewRecommended);
 
-//        locInput.setHint("Suggest where to meet");
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -89,33 +87,14 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
             }
         });
 
-        suggestButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-//                // TODO: actually wait for other person to accept suggestion before continuing
-//                if(presetLoc != null){
-//                    Intent intent = new Intent(Chat.this, Tutor.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//                    intent.putExtra("meetingPoint", presetLoc);
-//                    startActivity(intent);
 
-//                }
-
-                  showListDialog(v.getContext());
-
-
+        suggestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showListDialog(v.getContext());
             }
         });
 
-//        locationList.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // create a result activity involving the list
-//                // transfer the user to the register page
-//                Intent intent = new Intent(Chat.this, AddressList.class);
-//                // we expect an address
-//                startActivityForResult(intent, 1);
-//            }
-//        });
 
 
 
@@ -143,26 +122,32 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
                 if(message.isLocation()){
                     Intent intent = new Intent(Chat.this, MapDialog.class);
                     intent.putExtra("meetingPoint", message.getLocation());
-                    intent.putExtra("tutorLat", tutor.location.xPos);
-                    intent.putExtra("tutorLon", tutor.location.yPos);
+                    intent.putExtra("tutor", tutor);
                     startActivity(intent);
                 }
 
             }
         });
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.v("Dummy Msg", "Sending dummy message");
+        sendDummyMsg();
 
     }
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
-        mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -187,22 +172,21 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
             tutor = extras.getParcelable("selectedTutor");
 
             String fullName = tutor.firstName + " " + tutor.lastName;
-
-//            // Look up view for data population
-//            TextView tutorName = (TextView)findViewById(R.id.tutorName);
-//            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
-//            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
-//
-//
-//
-//
-//            // populate the data
-//            tutorName.setText(fullName);
-//            tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
-//            tutorPrice.setText("$" + String.valueOf(tutor.session.price));
-
             getActionBar().setTitle(fullName);
-            getActionBar().setIcon(R.drawable.user_icon);
+
+
+
+            // TEMP DUMMY TUTORS/////////////////////////////////////////////
+            switch (tutor.firstName){
+                case "Jess": getActionBar().setIcon(R.drawable.jess);
+                    break;
+                case "Eric": getActionBar().setIcon(R.drawable.eric);
+                    break;
+                case "Robert": getActionBar().setIcon(R.drawable.robert);
+                    break;
+                case "Nadia": getActionBar().setIcon(R.drawable.nadia);
+                    break;
+            }
 
 
         }
@@ -268,19 +252,6 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
     }
 
-
-//    public void showMapDialog(Context context){
-//
-//        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-//
-//        dialog.setCancelable(true);
-//
-//        View view = ((Activity)context).getLayoutInflater().inflate(R.layout.dialog_map , null);
-//
-//        dialog.setView(view);
-//    }
-
-
     public void dummyPopulate(){
 
         locationList =  new ArrayList<LocationObject>();
@@ -308,6 +279,49 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
         thread.start();
+
+    }
+
+
+    public void sendDummyMsg(){
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // display locally
+                MessageObject msg  = new MessageObject(tutor.firstName, "Hi!", false, null);
+                messageList.add(msg);
+                adapter.notifyDataSetChanged();
+            }
+        }, 2000);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // display locally
+                MessageObject msg = new MessageObject(tutor.firstName, "Can you meet here? I've got a table reserved: ", false, null);
+                messageList.add(msg);
+                adapter.notifyDataSetChanged();
+
+            }
+        }, 3200);
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // display locally
+                LocationObject loc = new LocationObject(43.071394, -89.408676);
+                MessageObject msg = new MessageObject(tutor.firstName, "215 N Randall Ave, Madison, WI 53706" , false, loc);
+                messageList.add(msg);
+                adapter.notifyDataSetChanged();
+            }
+        }, 4000);
+
+
+
+
 
     }
 

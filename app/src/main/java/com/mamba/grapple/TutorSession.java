@@ -12,7 +12,7 @@ public class TutorSession implements Parcelable {
     public int maxLength;
     public boolean available;
 
-    public TutorSession(int price, int maxLength, boolean available) {
+    public TutorSession(int price, int maxLength, boolean available){
         this.price = price;
         this.maxLength = maxLength;
         this.available = available;

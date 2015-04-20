@@ -62,6 +62,7 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
 
         if(extras != null){
             meetingPoint = extras.getParcelable("meetingPoint");
+            tutor = extras.getParcelable("tutor");
             tutorLat = extras.getDouble("tutorLat");
             tutorLon = extras.getDouble("tutorLon");
         }
@@ -100,6 +101,7 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
         Log.v("Google Map Ready", "Adding tutor marker");
         LatLng tutorLoc = new LatLng(tutorLat, tutorLon);
         LatLng meetPoint = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+        int zoom;
         meetMap = map;
         map.addMarker(new MarkerOptions()
                 .position(tutorLoc)
@@ -117,8 +119,13 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
                     .title("You"));
 
 
+
+            Double meetDistance =  Double.parseDouble(tutor.getDistance(userLoc));
+
+            zoom = (meetDistance <= 1) ? 14 : 13;
+
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(tutorLoc).zoom(13).build();
+                    .target(tutorLoc).zoom(zoom).build();
 
             map.moveCamera( CameraUpdateFactory.newLatLngZoom( meetPoint , 14.0f) );
 //            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

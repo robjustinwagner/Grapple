@@ -7,15 +7,28 @@
     android:paddingTop="5dp"
     android:paddingLeft="10dp">
 
-    <TextView
-        android:id="@+id/lblMsgFrom"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:textColor="@color/lblFromName"
-        android:text="Name"
-        android:textStyle="bold"
-        android:padding="5dp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/user_icon_small"/>
+
+        <TextView
+            android:id="@+id/lblMsgFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/lblFromName"
+            android:textStyle="bold"
+            android:text="Tutor"
+            android:layout_gravity="bottom"
+            android:padding="5dp"/>
+
+    </LinearLayout>
 
     <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +43,8 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:src="@drawable/location_pin_large"/>
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/location_pin"/>
 
         <TextView
             android:id="@+id/txtMsg"
@@ -42,6 +56,7 @@
             android:paddingRight="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
+            android:layout_gravity="center_vertical"
             android:text="Location Message"
             />
 

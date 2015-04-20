@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
@@ -57,6 +58,25 @@ public class TutorObject implements Parcelable {
 
         return twoDeci.format(dist);
     }
+
+    public String getDistance(LatLng location){
+
+        double lat1 = location.latitude;
+        double lon1 = location.longitude;
+        double lat2 = this.location.xPos;
+        double lon2 = this.location.yPos;
+
+        Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
+
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+
+        return twoDeci.format(dist);
+    }
+
 
     // conversions
     private double deg2rad(double deg) {

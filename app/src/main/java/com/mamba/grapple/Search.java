@@ -442,7 +442,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
         LocationObject loc1 = new LocationObject(43.0719139, -89.4081352);
         TutorSession session1 = new TutorSession(15, 60, true);
-        TutorObject tutor1 = new TutorObject("Jane", "Han", 5, loc1, session1);
+        TutorObject tutor1 = new TutorObject("Jess", "Kannon", 5, loc1, session1);
 
         LocationObject loc2 = new LocationObject(43.0767057, -89.4010609);
         TutorSession session2 = new TutorSession(15, 60, true);
