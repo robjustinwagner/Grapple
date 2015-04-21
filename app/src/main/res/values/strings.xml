@@ -7,7 +7,7 @@
 
     <string name="hello_world">Hello world!</string>
 
-    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_splash">Grapple</string>
     <string name="title_activity_search">Search</string>
     <string name="title_activity_results">Results</string>
     <string name="title_activity_account">Account</string>

@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#94969a"
+    android:background="@color/white"
     android:orientation="vertical"
     android:weightSum="1"
     android:id="@+id/tutorSelection">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingRight="3dp"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -18,7 +20,8 @@
             android:background="#000000"
             android:padding="5dp"
             android:id="@+id/imageView"
-            android:src="@drawable/user_icon_med" />
+            android:src="@drawable/user_icon_med"
+        />
 
 
         <TextView
@@ -32,7 +35,8 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/imageView"
             android:layout_toEndOf="@+id/imageView"
-            android:layout_marginLeft="3dp" />
+            android:layout_marginLeft="3dp"
+        />
 
 
         <RatingBar
@@ -44,18 +48,20 @@
             android:layout_below="@+id/tutorName"
             android:layout_toRightOf="@id/imageView"
             android:layout_alignBottom="@id/imageView"
-            android:layout_marginLeft="3dp" />
+            android:layout_marginLeft="3dp"
+        />
 
         <TextView
-            android:id="@+id/maxSession"
+            android:id="@+id/tutorPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Max Session Time:"
+            android:text="$15"
             android:layout_below="@+id/ratingBar"
             android:layout_toRightOf="@+id/imageView"
             android:layout_toEndOf="@+id/imageView"
             android:layout_marginTop="-20dip"
-            android:layout_marginLeft="3dp" />
+            android:layout_marginLeft="3dp"
+         />
 
         <TextView
             android:id="@+id/tutorDistance"
@@ -65,25 +71,26 @@
             android:text="1.5 mi"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-20dip"
+            android:layout_below="@+id/ratingBar"
+        />
 
 
         <TextView
-            android:id="@+id/tutorPrice"
+            android:id="@+id/maxSession"
             android:layout_width="wrap_content"
             android:layout_height="20dip"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_below="@+id/tutorDistance"
-            android:layout_alignRight="@+id/tutorDistance"
-            android:layout_alignEnd="@+id/tutorDistance"
-            android:layout_alignStart="@id/tutorDistance"
-            android:layout_alignLeft="@id/tutorDistance"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:singleLine="true"
-            android:text="$15"
-            android:ellipsize="marquee" />
+            android:text="Max Session: 30 min"
+            android:layout_marginTop="2dp"
+            android:ellipsize="marquee"
+        />
 
 
     </RelativeLayout>
@@ -93,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:name="com.google.android.gms.maps.MapFragment" />
+        android:name="com.google.android.gms.maps.MapFragment"/>
 
     <Button
         android:layout_width="match_parent"
@@ -102,11 +109,15 @@
         android:layout_marginLeft="-5dip"
         android:layout_marginRight="-5dip"
         android:layout_marginTop="-5dip"
-        android:layout_marginBottom="-5dip"
-        android:text="Grapple"
+        android:layout_marginBottom="-25dip"
         android:id="@+id/grappleButton"
         android:onClick="grappleTutor"
-        android:background="#94969a" />
+        android:background="@color/theme"
+        android:textColor="@color/white"
+        android:drawableTop="@drawable/launcher"
+
+    />
+
 
 
     <LinearLayout
@@ -116,7 +127,6 @@
         android:orientation="horizontal"
         android:weightSum="2"
         android:visibility="gone"
-
         >
 
 
@@ -131,12 +141,15 @@
             android:layout_marginBottom="-5dip"
             android:text="Start Session"
             android:id="@+id/startSession"
-            android:background="#94969a" />
+            android:background="@color/theme"
+            android:textColor="@color/white"
+
+        />
 
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="0dp"
             android:layout_weight="1"
             android:layout_marginLeft="-5dip"
@@ -145,7 +158,9 @@
             android:layout_marginBottom="-5dip"
             android:text="Chat"
             android:id="@+id/chatButton"
-            android:background="#94969a" />
+            android:background="@color/theme"
+            android:src="@drawable/chat_icon"
+        />
 
     </LinearLayout>
 

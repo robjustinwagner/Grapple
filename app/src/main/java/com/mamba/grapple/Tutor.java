@@ -1,8 +1,10 @@
 package com.mamba.grapple;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,6 +12,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -65,8 +69,9 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     DBService mService;
 
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
 
@@ -94,9 +99,17 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         retrieveTutorInfo();
 
 
+        // Register to receive messages.
+        // We are registering an observer (mMessageReceiver) to receive Intents
+        // with actions named "custom-event-name".
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("locationUpdate"));
+
+
+
     }
 
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         Log.v("Tutor View", "Resumed");
         Intent intent = new Intent(this, DBService.class);
@@ -104,103 +117,128 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         Log.v("Service Bound", "Tutor select bound to service");
     }
 
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         // Unbind from the service
-        if (mBound) {
+        if (mBound){
             Log.v("Unbinding Service", "Results Activity");
             unbindService(mConnection);
             mBound = false;
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        // Unregister since the activity is about to be closed.
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    // Our handler for received Intents. This will be called whenever an Intent
+// with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Log.d("receiver", "Got message: " + message);
+        }
+    };
+
 
     // response when meeting point is accepted
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        if (extras != null) {
+        if(extras != null){
             Log.v("Tutor View", "new intent recieved ");
             final LocationObject meetingPoint = extras.getParcelable("meetingPoint");
-            if (meetingPoint != null) {
-                Log.v("Tutor View", "Meeting Point Found");
-                LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
-                sessionMap.addMarker(new MarkerOptions()
-                        .position(mP)
-                        .title("Meeting Point")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+             if(meetingPoint != null){
+                 Log.v("Tutor View", "Meeting Point Found");
+                 LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+                 sessionMap.addMarker(new MarkerOptions()
+                         .position(mP)
+                         .title("Meeting Point")
+                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-                addRoute(meetingPoint.xPos, meetingPoint.yPos);
-
-                // grab dynamic layout items
-                Button grappleButton = (Button) findViewById(R.id.grappleButton);
-                Button startSession = (Button) findViewById(R.id.startSession);
-                Button chatButton = (Button) findViewById(R.id.chatButton);
-                LinearLayout sessionButtons = (LinearLayout) findViewById(R.id.sessionButtons);
-
-                // hide the grapple button and show the session/chat buttons
-                grappleButton.setVisibility(View.GONE);
-                sessionButtons.setVisibility(View.VISIBLE);
-
-                //bind the newly visible buttons
-                startSession.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Tutor.this, InSession.class);
-                        startActivity(intent);
-                    }
-                });
-
-                chatButton.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Tutor.this, Chat.class);
-                        intent.putExtra("selectedTutor", tutor);
-                        intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
-                        startActivity(intent);
-                    }
-                });
+                 addRoute(meetingPoint.xPos, meetingPoint.yPos);
 
 
-            }
+                 // grab dynamic layout items
+                 Button grappleButton = (Button) findViewById(R.id.grappleButton);
+                 Button startSession = (Button) findViewById(R.id.startSession);
+                 ImageButton chatButton = (ImageButton) findViewById(R.id.chatButton);
+                 LinearLayout sessionButtons = (LinearLayout) findViewById(R.id.sessionButtons);
+
+                 // hide the grapple button and show the session/chat buttons
+                 grappleButton.setVisibility(View.GONE);
+                 sessionButtons.setVisibility(View.VISIBLE);
+
+                 //bind the newly visible buttons
+                 startSession.setOnClickListener(new View.OnClickListener(){
+                        public void onClick(View v){
+                            Intent intent = new Intent(Tutor.this, InSession.class);
+                            intent.putExtra("sessionLength", tutor.session.maxLength);
+                            startActivity(intent);
+                        }
+                 });
+
+                 chatButton.setOnClickListener(new View.OnClickListener(){
+                     public void onClick(View v){
+                         Intent intent = new Intent(Tutor.this, Chat.class);
+                         intent.putExtra("selectedTutor", tutor);
+                         intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
+                         startActivity(intent);
+                     }
+                 });
+
+
+
+             }
         }
     }
 
     // enters the chat with the tutor
-    public void grappleTutor(View view) {
+    public void grappleTutor(View view){
         Intent intent = new Intent(this, Chat.class);
         intent.putExtra("selectedTutor", tutor);
         startActivity(intent);
     }
 
-    public void retrieveTutorInfo() {
+    public void retrieveTutorInfo(){
         // get the tutor data
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if(extras != null){
             tutor = extras.getParcelable("selectedTutor");
 
             // Look up view for data population
-            TextView tutorName = (TextView) findViewById(R.id.tutorName);
-            TextView tutorDistance = (TextView) findViewById(R.id.tutorDistance);
-            TextView tutorPrice = (TextView) findViewById(R.id.tutorPrice);
+            TextView tutorName = (TextView)findViewById(R.id.tutorName);
+            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
+            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
             TextView maxSession = (TextView) findViewById(R.id.maxSession);
 
+            String fullName = tutor.firstName + " " + tutor.lastName;
+
             // populate the data
-            tutorName.setText(tutor.firstName + " " + tutor.lastName);
-            tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
+            tutorName.setText(fullName);
+            tutorDistance.setText(tutor.getDistance(mLastLocation) + " mi");
             tutorPrice.setText("$" + String.valueOf(tutor.session.price));
-            maxSession.setText("Max Session: " + String.valueOf(tutor.session.period) + " min");
+            maxSession.setText("Max Session: " + String.valueOf(tutor.session.maxLength) + " min" );
+
+            getActionBar().setTitle(fullName);
 
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
+    private ServiceConnection mConnection = new ServiceConnection(){
+        public void onServiceConnected(ComponentName className, IBinder service){
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
         }
 
-        public void onServiceDisconnected(ComponentName arg0) {
+        public void onServiceDisconnected(ComponentName arg0){
             mBound = false;
         }
     };
@@ -236,7 +274,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         map.addMarker(new MarkerOptions()
                 .position(tutorLoc)
                 .title("Tutor"));
-        if (mLastLocation != null) {
+        if(mLastLocation != null ){
             LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
             Log.v("mLastLocation Exists", "Adding user marker");
             map.addMarker(new MarkerOptions()
@@ -262,6 +300,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
 
+
     @Override
     public void onConnected(Bundle connectionHint) {
         // Connected to Google Play services!
@@ -279,7 +318,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
+    public void onConnectionSuspended(int cause){
         // The connection has been interrupted.
         // Disable any UI components that depend on Google APIs
         // until onConnected() is called.
@@ -297,7 +336,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
 
-    public void addRoute(double meetLat, double meetLong) {
+    public void addRoute(double meetLat, double meetLong){
 
         // we will treat it as though the meeting point is the way point between the tutor and student
         double originLat = mLastLocation.getLatitude();
@@ -306,25 +345,25 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         double destLong = tutor.location.yPos;
 
         // Origin of route
-        String str_origin = "origin=" + originLat + "," + originLong;
+        String str_origin = "origin="+originLat+","+originLong;
 
         // Destination of route
-        String str_dest = "destination=" + destLat + "," + destLong;
+        String str_dest = "destination="+destLat+","+destLong;
 
         // Waypoint (meeting point)
-        String waypoints = "waypoints=" + meetLat + "," + meetLong;
+        String waypoints = "waypoints="+meetLat+","+meetLong;
 
         // Sensor enabled
         String sensor = "sensor=false";
 
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + waypoints;
+        String parameters = str_origin+"&"+str_dest+"&"+sensor+"&"+waypoints;
 
         // Output format
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
 
         // do http request for route in separate thread
         DownloadTask downloadTask = new DownloadTask();
@@ -333,14 +372,12 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
 
-    /**
-     * A method to download json data from url
-     */
+    /** A method to download json data from url */
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
-        try {
+        try{
             URL url = new URL(strUrl);
 
             // Creating an http connection to communicate with url
@@ -354,10 +391,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
 
-            StringBuffer sb = new StringBuffer();
+            StringBuffer sb  = new StringBuffer();
 
             String line = "";
-            while ((line = br.readLine()) != null) {
+            while( ( line = br.readLine())  != null){
                 sb.append(line);
             }
 
@@ -365,9 +402,9 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             br.close();
 
-        } catch (Exception e) {
+        }catch(Exception e){
             Log.d("Download Exception", e.toString());
-        } finally {
+        }finally{
             iStream.close();
             urlConnection.disconnect();
         }
@@ -385,11 +422,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             String data = "";
 
-            try {
+            try{
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
             }
             return data;
         }
@@ -407,10 +444,8 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         }
     }
 
-    /**
-     * A class to parse the Google Places in JSON format
-     */
-    private class ParserTask extends AsyncTask<String, Integer, List<LatLng>> {
+    /** A class to parse the Google Places in JSON format */
+    private class ParserTask extends AsyncTask<String, Integer, List<LatLng> >{
 
         // Parsing the data in non-ui thread
         @Override
@@ -418,11 +453,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             JSONObject result;
             JSONArray routes;
-            List<LatLng> lines = new ArrayList<LatLng>();
+            List<LatLng> lines =  new ArrayList<LatLng>();
 
-            try {
+            try{
 
-                result = new JSONObject(jsonData[0]);
+                result  = new JSONObject(jsonData[0]);
                 routes = result.getJSONArray("routes");
 
                 // route distance
@@ -434,24 +469,24 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                 JSONArray tutorSteps = routes.getJSONObject(0).getJSONArray("legs")
                         .getJSONObject(1).getJSONArray("steps");
 
-                for (int i = 0; i < studentSteps.length(); i++) {
+                for(int i=0; i < studentSteps.length(); i++) {
                     String polyline = studentSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-                    for (LatLng p : decodePolyline(polyline)) {
+                    for(LatLng p : decodePolyline(polyline)) {
                         lines.add(p);
                     }
                 }
 
-                for (int i = 0; i < tutorSteps.length(); i++) {
+                for(int i=0; i < tutorSteps.length(); i++) {
                     String polyline = tutorSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-                    for (LatLng p : decodePolyline(polyline)) {
+                    for(LatLng p : decodePolyline(polyline)) {
                         lines.add(p);
                     }
                 }
 
 
-            } catch (Exception e) {
+            }catch(Exception e){
                 e.printStackTrace();
             }
 
@@ -460,14 +495,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
         // Executes in UI thread, after the parsing process
         @Override
-        protected void onPostExecute(List<LatLng> lines) {
-            sessionMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
-
+        protected void onPostExecute(List<LatLng> lines){
+             sessionMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
         }
 
-        /**
-         * POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java *
-         */
+        /** POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java **/
         private List<LatLng> decodePolyline(String encoded) {
 
             List<LatLng> poly = new ArrayList<LatLng>();
@@ -503,6 +535,8 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         }
 
     }
+
+
 
 
 }

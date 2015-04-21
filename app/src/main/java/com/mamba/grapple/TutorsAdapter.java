@@ -2,32 +2,40 @@ package com.mamba.grapple;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
  * Created by vash on 4/2/15.
  */
 public class TutorsAdapter extends ArrayAdapter<TutorObject> {
+
+    private Location userLocation;
+
+
+
     public TutorsAdapter(Context context, ArrayList<TutorObject> tutors) {
         super(context, 0, tutors);
 
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent){
 
         // get the data item for this position
         TutorObject tutor = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
+        if(convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.tutor_row, parent, false);
         }
 
@@ -35,10 +43,11 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
         TextView tutorName = (TextView) convertView.findViewById(R.id.tutorName);
         TextView tutorDistance = (TextView) convertView.findViewById(R.id.tutorDistance);
         TextView tutorPrice = (TextView) convertView.findViewById(R.id.tutorPrice);
+        ImageView tutorPic = (ImageView) convertView.findViewById(R.id.profilePic);
 
         // populate the data into the list item template
         tutorName.setText(tutor.firstName + " " + tutor.lastName);
-        tutorDistance.setText(String.valueOf(tutor.distance) + " mi");
+        tutorDistance.setText(tutor.getDistance(userLocation) + " mi");
         tutorPrice.setText("$" + String.valueOf(tutor.session.price));
 
         // return the completed view to render
@@ -47,7 +56,7 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
 
 
     // use to add in profile picture
-    public static Drawable LoadImageFromWebOperations(String url) {
+    public static Drawable LoadImageFromWebOperations(String url){
         try {
             InputStream is = (InputStream) new URL(url).getContent();
             Drawable d = Drawable.createFromStream(is, "");
@@ -55,6 +64,11 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+
+    public void setUserLocation(Location userLocation){
+        this.userLocation = userLocation;
     }
 
 }

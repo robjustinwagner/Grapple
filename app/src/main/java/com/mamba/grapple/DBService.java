@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.ListView;
 
 // *socket.io imports*
 import com.github.nkzawa.emitter.Emitter;
@@ -17,6 +18,7 @@ import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.IO.*;
 import com.github.nkzawa.socketio.client.SocketIOException;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 
@@ -37,6 +39,8 @@ public class DBService extends Service {
     private Socket socket;
     private String token;
     private final IBinder myBinder = new LocalBinder();
+    private final Gson gson = new Gson();
+
 
 
 // socket thread
@@ -72,16 +76,29 @@ public class DBService extends Service {
 //    }
 
 
+
     @Override
     public void onCreate() {
         System.out.println("DBService Created");
         super.onCreate();
 
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        super.onStartCommand(intent,flags,startId);
+        return START_STICKY;
+    }
+
+    public void connectSocket(){
         // set up socket connection
-        if (socket == null || !socket.connected()) {
+        if (socket == null || !socket.connected()){
             try {
-                socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
-            } catch (URISyntaxException e) {
+                String url = "http://protected-dawn-4244.herokuapp.com" + "?token=" + getToken();
+                Log.v("socket url", url);
+                socket = IO.socket(url);
+            } catch (URISyntaxException e){
                 Log.e("Bad URI", e.getMessage());
             }
         }
@@ -93,29 +110,24 @@ public class DBService extends Service {
         socket.on("startSessionRequest", startSessionRequest);
         socket.on("grapple", grapple);
 
+
         socket.connect();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setToken(String token){
         Log.v("Service received token", token);
+        this.token = token;
 
     }
 
-    public String getToken() {
+    public String getToken(){
         return token;
 
     }
 
 
     public IBinder onBind(Intent intent) {
-        return myBinder;
+       return myBinder;
     }
 
     public class LocalBinder extends Binder {
@@ -133,6 +145,7 @@ public class DBService extends Service {
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and broadcast
+
         }
     };
 
@@ -141,6 +154,12 @@ public class DBService extends Service {
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and broadcast
+//            LocationObject location = gson.fromJson();
+
+
+            Intent intent = new Intent("locationUpdate");
+            // You can also include some extra data.
+            intent.putExtra("message", "This is my message!");
         }
     };
 
@@ -171,9 +190,12 @@ public class DBService extends Service {
     };
 
 
-    private void broadcast(Intent intent) {
+
+
+    private void broadcast(Intent intent){
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
 
 
 }

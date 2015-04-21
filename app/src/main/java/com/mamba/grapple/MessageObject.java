@@ -7,14 +7,22 @@ public class MessageObject {
 
     private String fromName, message;
     private boolean isSelf;
+    private boolean isLocation = false;
+    private LocationObject location;
+
 
     public MessageObject() {
     }
 
-    public MessageObject(String fromName, String message, boolean isSelf) {
+    public MessageObject(String fromName, String message, boolean isSelf, LocationObject loc) {
         this.fromName = fromName;
         this.message = message;
         this.isSelf = isSelf;
+
+        if(loc != null){
+            this.isLocation = true;
+            location = loc;
+        }
     }
 
     public String getFromName() {
@@ -35,6 +43,12 @@ public class MessageObject {
 
     public boolean isSelf() {
         return isSelf;
+    }
+
+    public boolean isLocation(){ return isLocation; }
+
+    public LocationObject getLocation(){
+        return location;
     }
 
     public void setSelf(boolean isSelf) {

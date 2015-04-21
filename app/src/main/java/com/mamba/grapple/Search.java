@@ -9,12 +9,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -57,12 +59,15 @@ import com.google.android.gms.location.LocationServices;
 
 // *json imports*
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class Search extends ListActivity implements ConnectionCallbacks, OnConnectionFailedListener {
+
+public class Search extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -87,14 +92,13 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     DBService mService;
 
     // temporary until DB load setup (use SimpleCursorAdapter for DB)
-    static final String[] COURSES = {"CS302", "Calc 234"};
+    static final String[] COURSES = {"Chemistry 103", "Comp Sci 302", "French 4", "Math 234", "Physics 202"};
     // current url path for tutor list retrieval
     static final String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_search);
 
         // grab all the view items and set defaults
@@ -108,7 +112,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // If a previous item was selected unhighlight it
-                if (selected != null) {
+                if(selected != null){
                     selected.setBackgroundColor(Color.TRANSPARENT);
                     parent.getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
                 }
@@ -122,7 +126,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
         // update distance as user slides
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distance = progress;
@@ -135,9 +139,10 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                distanceView.setText("Distance: " + distance + " mi");
+                distanceView.setText("Travel Distance: " + distance + " mi");
             }
         });
+
 
 
 //        // Create a GoogleApiClient instance
@@ -154,11 +159,11 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
     // check login status every time the activity gets shown
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sharedPreferences.getString("token", null);
-        if (token != null) {
+        if(token != null) {
             loggedIn = true;
             Log.v("Search Login Status", "User has been logged in");
             Intent intent = new Intent(this, DBService.class);
@@ -167,10 +172,10 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         }
     }
 
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         // Unbind from the service
-        if (mBound) {
+        if (mBound){
             Log.v("Unbinding Service", "Search Activity");
             unbindService(mConnection);
             mBound = false;
@@ -178,21 +183,24 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     }
 
 
+
     // A private method to help us initialize our default variables and settings
     private void initialize() {
         seekBar = (SeekBar) findViewById(R.id.seekBar2);
-        listView = getListView();
+        listView = (ListView) findViewById(R.id.list);
         distanceView = (TextView) findViewById(R.id.textView5);
         search = (Button) findViewById(R.id.button);
 
         //add elements from array to list view
         listView.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.row, COURSES) {
+                R.layout.row, COURSES){
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
                 final View renderer = super.getView(position, convertView, parent);
-                if (position == 0) {
+                if (position == 0)
+                {
                     // highlight the first list item by default
                     renderer.setBackgroundColor(Color.rgb(62, 175, 212));
                 }
@@ -207,13 +215,12 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         // set initial distance
         distance = seekBar.getProgress();
-        //TODO fix this! convert distance to double
-        distanceView.setText("Distance: " + distance + ".0" + " mi");
+        distanceView.setText("Travel Distance: " + distance + " mi");
     }
 
 
     // on search button click get the relevant  tutor list and show results
-    public void tutorSearch(View view) {
+    public void tutorSearch(View view){
 
         course = String.valueOf(((TextView) selected).getText());
         Log.v("distance", "" + distance);
@@ -221,44 +228,46 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
         // make sure we have the GPS location
-        if (mLastLocation != null) {
+        if(mLastLocation != null) {
 
             currLat = String.valueOf(mLastLocation.getLatitude());
             currLong = String.valueOf(mLastLocation.getLongitude());
 
-        } else {
+        }else {
             currLat = "43.076592";
             currLong = "-89.412487";
         }
 
 
-        // log the current coordinates
-        Log.v("currentLocation", "(" + currLat + "," + currLong + ")");
+            // log the current coordinates
+            Log.v("currentLocation", "(" + currLat + "," + currLong + ")");
 
 
-        //  send the data in a http request
-        ConnectivityManager conMgr = (ConnectivityManager)
+            //  send the data in a http request
+            ConnectivityManager conMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
-        // if there is a network connection create a request thread
-        if (networkInfo != null && networkInfo.isConnected()) {
-            new TutorRetrieval().execute(TUTOR_PATH);
-        } else {
-            Log.v("no connection", "Failed to connect to internet");
-        }
+            NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+            // if there is a network connection create a request thread
+            if(networkInfo != null && networkInfo.isConnected()){
+               new TutorRetrieval().execute(TUTOR_PATH);
+            }else{
+                Log.v("no connection", "Failed to connect to internet");
+            }
+
+
 
 
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
+    private ServiceConnection mConnection = new ServiceConnection(){
+        public void onServiceConnected(ComponentName className, IBinder service){
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
 
         }
 
-        public void onServiceDisconnected(ComponentName arg0) {
+        public void onServiceDisconnected(ComponentName arg0){
             mBound = false;
         }
     };
@@ -279,7 +288,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
+    public void onConnectionSuspended(int cause){
         // The connection has been interrupted.
         // Disable any UI components that depend on Google APIs
         // until onConnected() is called.
@@ -337,30 +346,35 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 return "Unable to retrieve web page. URL may be invalid.";
             }
         }
-
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result){
             Log.v("postResult", result);
             Gson gson = new Gson();
-            try {
-                JSONArray tutors = new JSONArray(result);
-                ArrayList<TutorObject> tutorList = new ArrayList<>();
-                for (int i = 0; i < tutors.length(); i++) {
-                    TutorObject tutor = gson.fromJson(tutors.get(i).toString(), TutorObject.class);
-                    Log.v("tutorObject", tutor.toString());
-                    tutorList.add(tutor);
-                }
 
-                Intent intent = new Intent(Search.this, Results.class);
-                // send the tutorList along with login status on to the results activity
-                intent.putParcelableArrayListExtra("tutorList", tutorList);
-                startActivity(intent);
+            ArrayList<TutorObject> tutorList = new ArrayList<>();
+            Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
+            tutorList = gson.fromJson(result, resultType);
 
-            } catch (JSONException e) {
+            Intent intent = new Intent(Search.this, Results.class);
 
+            Log.v("tutorList", String.valueOf(tutorList.size()));
+
+            // dummy populate the empty list for now
+            if(tutorList.size() < 1){
+                dummyPopulate(tutorList);
             }
+
+            // send the tutorList along with login status on to the results activity
+            intent.putParcelableArrayListExtra("tutorList", tutorList);
+            startActivity(intent);
+
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 
@@ -375,9 +389,9 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         // add all tutor request data to params list and build url query
         Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("course", course)
+                .appendQueryParameter("course", course )
                 .appendQueryParameter("distance", String.valueOf(distance))
-                .appendQueryParameter("lat", currLat)
+                .appendQueryParameter("lat", currLat )
                 .appendQueryParameter("lon", currLong);
         String query = builder.build().getEncodedQuery();
 
@@ -421,6 +435,32 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 is.close();
             }
         }
+    }
+
+
+    private void dummyPopulate(ArrayList<TutorObject> tutorList){
+
+        LocationObject loc1 = new LocationObject(43.0719139, -89.4081352);
+        TutorSession session1 = new TutorSession(15, 60, true);
+        TutorObject tutor1 = new TutorObject("Jane", "Han", 5, loc1, session1);
+
+        LocationObject loc2 = new LocationObject(43.0767057, -89.4010609);
+        TutorSession session2 = new TutorSession(15, 60, true);
+        TutorObject tutor2 = new TutorObject("Eric", "Trac", 3, loc2, session2);
+
+        LocationObject loc3 = new LocationObject(43.0726811,-89.40169209999999);
+        TutorSession session3 = new TutorSession(16, 60, true);
+        TutorObject tutor3 = new TutorObject("Robert", "Williams", 4, loc3, session3);
+
+        LocationObject loc4 = new LocationObject(43.0726811,-89.40169209999999);
+        TutorSession session4 = new TutorSession(18, 60, true);
+        TutorObject tutor4 = new TutorObject("Nadia", "Martinez", 5, loc4, session4);
+
+        tutorList.add(tutor1);
+        tutorList.add(tutor2);
+        tutorList.add(tutor3);
+        tutorList.add(tutor4);
+
     }
 
 
