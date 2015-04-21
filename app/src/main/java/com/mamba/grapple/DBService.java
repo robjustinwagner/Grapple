@@ -1,7 +1,10 @@
 package com.mamba.grapple;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,72 +20,166 @@ import com.github.nkzawa.socketio.client.SocketIOException;
 import com.google.gson.JsonElement;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.*; // for URIexception
+import java.util.HashMap;
 import java.util.Properties;
 
 
 public class DBService extends Service {
 
     private Socket socket;
+    private String token;
+    private final IBinder myBinder = new LocalBinder();
 
-    private synchronized void connect() {
-        if (socket == null || !socket.connected()) {
-            Properties properties = new Properties();
-            // TODO use properties here?
 
+
+
+// socket thread
+//   class connectSocket implements Runnable{
+//
+//       public void run(){
+//           if (socket == null || !socket.connected()){
+//               Properties properties = new Properties();
+//               // TODO use properties here?
+//
+//               try {
+//                   Log.v("Service", "Attempting Socket Connection..");
+//                   socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
+//                   socket.on("message", message );
+//                   socket.connect();
+//                   socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+//
+//                       public void call(Object... args){
+//                           socket.emit("grapple", "It worked!");
+//                           Log.v("Socket", "received connection event");
+//
+//
+//
+//                       }
+//
+//                   });
+//               }catch (URISyntaxException e){
+//                   Log.e("Bad URI", e.getMessage());
+//               }
+//
+//           }
+//       }
+//    }
+
+
+
+    @Override
+    public void onCreate() {
+        System.out.println("DBService Created");
+        super.onCreate();
+
+        // set up socket connection
+        if (socket == null || !socket.connected()){
             try {
                 socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
-                socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-
-                    public void call(Object... args){
-                        socket.emit("grapple", "It worked!");
-                        Log.v("Socket", "received connection event");
-                    }
-
-                 });
-            }catch (URISyntaxException e) {
+            } catch (URISyntaxException e){
                 Log.e("Bad URI", e.getMessage());
             }
+        }
+
+        // create listeners
+        socket.on("message", message);
+        socket.on("locationUpdate", locationUpdate);
+        socket.on("meetingSuggestion", meetingSuggestion);
+        socket.on("startSessionRequest", startSessionRequest);
+        socket.on("grapple", grapple);
+
+        socket.connect();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        super.onStartCommand(intent,flags,startId);
+        return START_STICKY;
+    }
+
+    public void setToken(String token){
+        this.token = token;
+        Log.v("Service received token", token);
+
+    }
+
+    public String getToken(){
+        return token;
+
+    }
+
+
+    public IBinder onBind(Intent intent) {
+       return myBinder;
+    }
+
+    public class LocalBinder extends Binder {
+        public DBService getService() {
+            System.out.println("I am in Localbinder ");
+            return DBService.this;
 
         }
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.v("Service", "onCreate hit");
-        connect();
+
+    // listener responses
+    private Emitter.Listener message = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+    private Emitter.Listener locationUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+    private Emitter.Listener meetingSuggestion = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+    private Emitter.Listener startSessionRequest = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+    private Emitter.Listener grapple = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            JSONObject data = (JSONObject) args[0];
+            // parse data and broadcast
+        }
+    };
+
+
+
+
+    private void broadcast(Intent intent){
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    public void onDisconnect() {
 
-    }
 
-    public void onConnect() {
-        socket.emit("grapple", "It's working");
-    }
-
-    public void onMessage(String data, Ack ack) {
-
-    }
-
-    public void onMessage(JsonElement json, Ack ack) {
-
-    }
-
-    public void on(String event, Ack ack, JsonElement... args) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("action_on"));
-    }
-
-    public void onError(SocketIOException socketIOException) {
-
-    }
-
-    //bullshit methods
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
 }

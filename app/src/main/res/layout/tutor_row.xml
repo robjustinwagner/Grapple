@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:padding= "6dip" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/imageView"
+        android:src="@drawable/user_icon"
+        android:layout_marginRight = "6dip" />
+
+    <TextView
+        android:id="@+id/tutorName"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dip"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="TutorName" />
+
+    <TextView
+        android:id="@+id/tutorDistance"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginBottom="6dip"
+        android:gravity="right"
+        android:text="TutorDistance" />
+
+    <TextView
+        android:id="@+id/tutorPrice"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginBottom="6dip"
+        android:gravity="center_vertical"
+        android:text="TutorPrice" />
+
+</RelativeLayout>

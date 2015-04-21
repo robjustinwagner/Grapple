@@ -24,32 +24,33 @@
             android:text="Search"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="75dp" />
+            android:layout_marginBottom="75dp"
+            android:onClick="tutorSearch" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Class"
+            android:text="Select a class"
             android:id="@+id/textView6"
             android:layout_below="@+id/textView5"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="80dp" />
+            android:layout_marginTop="30dp" />
 
-        <ExpandableListView
-            android:layout_width="wrap_content"
-            android:layout_height="160dp"
-            android:id="@+id/list"
+        <ListView  android:id="@id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="100dp"
-            android:headerDividersEnabled="false" />
+            android:layout_marginTop="70dp"
+            android:headerDividersEnabled="false"
+        />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Distance"
+            android:text="Distance: "
             android:id="@+id/textView5"
             android:layout_below="@+id/textView5"
             android:layout_centerHorizontal="true"
@@ -62,7 +63,7 @@
             android:id="@+id/seekBar2"
             android:layout_gravity="center"
             android:layout_marginTop="70dp"
-            android:max="25" />
+            android:max="10" />
 
     </FrameLayout>
 

@@ -5,18 +5,20 @@
     android:layout_height="match_parent"
     tools:context="com.mamba.grapple.Splash"
     tools:ignore="MergeRootFrame"
-    android:background="@drawable/splash_bg">
+    android:background="@drawable/splash_bg"
+  >
 
     <TextView
-        android:layout_width="338dp"
-        android:layout_height="52dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="220dp"
+        android:layout_height="55dp"
         android:id="@+id/textView"
         android:layout_gravity="right|bottom"
         android:textColor="#ffffffff"
-        android:text="▒█▀▀█ █▀▀█ █▀▀█ █▀▀█ █▀▀█ █░░ █▀▀  ▒█░▄▄ █▄▄▀ █▄▄█ █░░█ █░░█ █░░ █▀▀  ▒█▄▄█ ▀░▀▀ ▀░░▀ █▀▀▀ █▀▀▀ ▀▀▀ ▀▀▀  "
-        android:textSize="14dp"
-        android:background="#ff000000"
-        android:autoText="true"
-        android:layout_marginBottom="120dp" />
+        android:layout_marginBottom="120dp"
+        android:theme="@style/AppTheme"
+        android:textAlignment="center"
+        android:editable="false"
+        android:elegantTextHeight="false"
+        android:background="@drawable/logov4"  />
+
 </FrameLayout>

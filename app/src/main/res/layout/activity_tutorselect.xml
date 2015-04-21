@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#94969a"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:id="@+id/tutorSelection">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#000000"
+            android:padding="5dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/user_icon_med"
+        />
+
+
+        <TextView
+            android:id="@+id/tutorName"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:singleLine="true"
+            android:text="TutorName"
+            android:ellipsize="marquee"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="3dp"
+        />
+
+
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:attr/ratingBarStyleSmall"
+            android:numStars="5"
+            android:layout_below="@+id/tutorName"
+            android:layout_toRightOf="@id/imageView"
+            android:layout_alignBottom="@id/imageView"
+            android:layout_marginLeft="3dp"
+        />
+
+        <TextView
+            android:id="@+id/maxSession"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max Session Time:"
+            android:layout_below="@+id/ratingBar"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginTop="-20dip"
+            android:layout_marginLeft="3dp"
+         />
+
+        <TextView
+            android:id="@+id/tutorDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="1.5 mi"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+        />
+
+
+        <TextView
+            android:id="@+id/tutorPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="20dip"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_below="@+id/tutorDistance"
+            android:layout_alignRight="@+id/tutorDistance"
+            android:layout_alignEnd="@+id/tutorDistance"
+            android:layout_alignStart="@id/tutorDistance"
+            android:layout_alignLeft="@id/tutorDistance"
+            android:singleLine="true"
+            android:text="$15"
+            android:ellipsize="marquee"
+        />
+
+
+    </RelativeLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:name="com.google.android.gms.maps.MapFragment"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:layout_marginLeft="-5dip"
+        android:layout_marginRight="-5dip"
+        android:layout_marginTop="-5dip"
+        android:layout_marginBottom="-5dip"
+        android:text="Grapple"
+        android:id="@+id/grappleButton"
+        android:onClick="grappleTutor"
+        android:background="#94969a"
+    />
+
+
+
+    <LinearLayout
+        android:id="@+id/sessionButtons"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:visibility="gone"
+
+        >
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_marginBottom="-5dip"
+            android:text="Start Session"
+            android:id="@+id/startSession"
+            android:background="#94969a"
+        />
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="-5dip"
+            android:layout_marginRight="-5dip"
+            android:layout_marginTop="-5dip"
+            android:layout_marginBottom="-5dip"
+            android:text="Chat"
+            android:id="@+id/chatButton"
+            android:background="#94969a"
+        />
+
+    </LinearLayout>
+
+
+</LinearLayout>
