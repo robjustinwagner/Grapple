@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.mamba.grapple.Splash"
     tools:ignore="MergeRootFrame"
-    android:background="@drawable/splash_bg"
-  >
+    android:background="@drawable/splash_bg">
 
     <TextView
         android:layout_width="220dp"
@@ -19,6 +18,6 @@
         android:textAlignment="center"
         android:editable="false"
         android:elegantTextHeight="false"
-        android:background="@drawable/logov4"  />
+        android:background="@drawable/logov4" />
 
 </FrameLayout>

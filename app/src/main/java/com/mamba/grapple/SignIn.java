@@ -6,16 +6,23 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,8 +33,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.AddressException;
 
 
 /**
@@ -35,17 +57,11 @@ import java.util.List;
  */
 public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+    static final String SIGNIN_PATH = "http://protected-dawn-4244.herokuapp.com/signin";
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    private UserSignInTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -56,7 +72,7 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signin);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -136,22 +152,37 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //  send the data in a http request
+            ConnectivityManager conMgr = (ConnectivityManager)
+                    getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+            // if there is a network connection create a request thread
+            if (networkInfo != null && networkInfo.isConnected()) {
+                // Show a progress spinner, and kick off a background task to
+                // perform the user login attempt.
+                showProgress(true);
+
+                mAuthTask = new UserSignInTask(email, password);
+                mAuthTask.execute(SIGNIN_PATH);
+            } else {
+                Log.v("no connection", "Failed to connect to internet");
+            }
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
     }
 
     /**
@@ -238,7 +269,7 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
+                new ArrayAdapter<String>(SignIn.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -248,27 +279,26 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserSignInTask extends AsyncTask<String, Void, String> {
 
         private final String mEmail;
         private final String mPassword;
 
-        UserLoginTask(String email, String password) {
+        UserSignInTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected String doInBackground(String... urls) {
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
+                return RegisterPost(urls[0]);
+            } catch (IOException e) {
+                return "Unable to retrieve web page. URL may be invalid.";
             }
-
+/*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -279,14 +309,38 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
 
             // TODO: register the new account here.
             return true;
+*/
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(String result) {
             mAuthTask = null;
             showProgress(false);
+            Log.v("JSON Post Result", result);
+            if (result.contains("token")) {
+                // handle success
+                String token = "";
+                try {
+                    // extract the token from the JSON object
+                    JSONObject json = new JSONObject(result);
+                    token = json.getString("token");
+                    Log.v("Extracted Token", token);
 
-            if (success) {
+                    // put the token in shared preferences
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("token", token);
+                    editor.commit();
+
+                } catch (JSONException e) {
+
+                }
+                // make sure the parent activity acknowledges the authorized session
+                Intent authReturn = new Intent();
+                authReturn.putExtra("token", token);
+                setResult(Activity.RESULT_OK, authReturn);
+
+                // return to results activity
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -299,6 +353,72 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             showProgress(false);
         }
+
+        // HTTP POST request on a separate thread to send credentials and retrieve token
+        private String RegisterPost(String signinURL) throws IOException {
+            InputStream is = null;
+            BufferedReader bufferedReader;
+            StringBuilder stringBuilder;
+            String line;
+
+            try {
+                Log.v("Attempting Connection", signinURL);
+                URL url = new URL(signinURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("email", mEmail)
+                        .appendQueryParameter("password", mPassword);
+                String query = builder.build().getEncodedQuery();
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+
+                conn.connect();
+
+                int response = conn.getResponseCode();
+                Log.v("Post Response", String.valueOf(response));
+                if (response == 200) {
+                    is = conn.getInputStream();
+
+                    // Convert the InputStream into a JSON string
+                    bufferedReader = new BufferedReader(new InputStreamReader(is));
+                    stringBuilder = new StringBuilder();
+
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line + '\n');
+                    }
+                    String jsonString = stringBuilder.toString();
+                    return jsonString;
+
+                } else if (response == 400) {
+                    return "Validation Errors";
+                }
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+            }
+
+            return "";
+        }
+
+        public void gotoRegister() {
+            Intent intent = new Intent(SignIn.this, Register.class);
+            startActivity(intent);
+        }
+
     }
 }
 

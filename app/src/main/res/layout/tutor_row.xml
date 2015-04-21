@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
     android:layout_height="100dip"
-    android:padding= "6dip" >
+    android:padding="6dip">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -11,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/imageView"
         android:src="@drawable/user_icon"
-        android:layout_marginRight = "6dip" />
+        android:layout_marginRight="6dip" />
 
     <TextView
         android:id="@+id/tutorName"

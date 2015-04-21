@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by vash on 4/8/15.
  */
-public class MessagesAdapter extends BaseAdapter{
+public class MessagesAdapter extends BaseAdapter {
 
     private Context context;
     private List<MessageObject> messages;
@@ -24,9 +24,10 @@ public class MessagesAdapter extends BaseAdapter{
         this.messages = navDrawerItems;
     }
 
-    public int getCount(){
+    public int getCount() {
         return messages.size();
     }
+
     @Override
     public Object getItem(int position) {
         return messages.get(position);
@@ -36,7 +37,7 @@ public class MessagesAdapter extends BaseAdapter{
         return position;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         MessageObject m = messages.get(position);
 
         LayoutInflater mInflater = (LayoutInflater) context

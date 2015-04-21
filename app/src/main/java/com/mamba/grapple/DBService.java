@@ -39,8 +39,6 @@ public class DBService extends Service {
     private final IBinder myBinder = new LocalBinder();
 
 
-
-
 // socket thread
 //   class connectSocket implements Runnable{
 //
@@ -74,17 +72,16 @@ public class DBService extends Service {
 //    }
 
 
-
     @Override
     public void onCreate() {
         System.out.println("DBService Created");
         super.onCreate();
 
         // set up socket connection
-        if (socket == null || !socket.connected()){
+        if (socket == null || !socket.connected()) {
             try {
                 socket = IO.socket("http://protected-dawn-4244.herokuapp.com");
-            } catch (URISyntaxException e){
+            } catch (URISyntaxException e) {
                 Log.e("Bad URI", e.getMessage());
             }
         }
@@ -100,25 +97,25 @@ public class DBService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        super.onStartCommand(intent,flags,startId);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
-    public void setToken(String token){
+    public void setToken(String token) {
         this.token = token;
         Log.v("Service received token", token);
 
     }
 
-    public String getToken(){
+    public String getToken() {
         return token;
 
     }
 
 
     public IBinder onBind(Intent intent) {
-       return myBinder;
+        return myBinder;
     }
 
     public class LocalBinder extends Binder {
@@ -174,12 +171,9 @@ public class DBService extends Service {
     };
 
 
-
-
-    private void broadcast(Intent intent){
+    private void broadcast(Intent intent) {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
-
 
 
 }

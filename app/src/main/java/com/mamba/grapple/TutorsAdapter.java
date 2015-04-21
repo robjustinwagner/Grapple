@@ -20,13 +20,14 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
         super(context, 0, tutors);
 
     }
-    public View getView(int position, View convertView, ViewGroup parent){
+
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         // get the data item for this position
         TutorObject tutor = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.tutor_row, parent, false);
         }
 

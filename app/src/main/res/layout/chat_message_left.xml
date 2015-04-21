@@ -14,7 +14,7 @@
         android:textSize="12dp"
         android:textColor="@color/lblFromName"
         android:textStyle="bold"
-        android:padding="5dp"/>
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/txtMsg"
@@ -27,6 +27,6 @@
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:background="@drawable/bg_msg_from"/>
+        android:background="@drawable/bg_msg_from" />
 
 </LinearLayout>

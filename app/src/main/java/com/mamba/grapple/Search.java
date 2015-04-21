@@ -108,7 +108,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // If a previous item was selected unhighlight it
-                if(selected != null){
+                if (selected != null) {
                     selected.setBackgroundColor(Color.TRANSPARENT);
                     parent.getChildAt(0).setBackgroundColor(Color.TRANSPARENT);
                 }
@@ -140,7 +140,6 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         });
 
 
-
 //        // Create a GoogleApiClient instance
 //        mGoogleApiClient = new GoogleApiClient.Builder(this)
 //                .addConnectionCallbacks(this)
@@ -155,11 +154,11 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
     // check login status every time the activity gets shown
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String token = sharedPreferences.getString("token", null);
-        if(token != null) {
+        if (token != null) {
             loggedIn = true;
             Log.v("Search Login Status", "User has been logged in");
             Intent intent = new Intent(this, DBService.class);
@@ -168,16 +167,15 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
         }
     }
 
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         // Unbind from the service
-        if (mBound){
+        if (mBound) {
             Log.v("Unbinding Service", "Search Activity");
             unbindService(mConnection);
             mBound = false;
         }
     }
-
 
 
     // A private method to help us initialize our default variables and settings
@@ -189,14 +187,12 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         //add elements from array to list view
         listView.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.row, COURSES){
+                R.layout.row, COURSES) {
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
+            public View getView(int position, View convertView, ViewGroup parent) {
                 final View renderer = super.getView(position, convertView, parent);
-                if (position == 0)
-                {
+                if (position == 0) {
                     // highlight the first list item by default
                     renderer.setBackgroundColor(Color.rgb(62, 175, 212));
                 }
@@ -211,12 +207,13 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         // set initial distance
         distance = seekBar.getProgress();
-        distanceView.setText("Distance: " + distance + " mi");
+        //TODO fix this! convert distance to double
+        distanceView.setText("Distance: " + distance + ".0" + " mi");
     }
 
 
     // on search button click get the relevant  tutor list and show results
-    public void tutorSearch(View view){
+    public void tutorSearch(View view) {
 
         course = String.valueOf(((TextView) selected).getText());
         Log.v("distance", "" + distance);
@@ -224,46 +221,44 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
 
         // make sure we have the GPS location
-        if(mLastLocation != null) {
+        if (mLastLocation != null) {
 
             currLat = String.valueOf(mLastLocation.getLatitude());
             currLong = String.valueOf(mLastLocation.getLongitude());
 
-        }else {
+        } else {
             currLat = "43.076592";
             currLong = "-89.412487";
         }
 
 
-            // log the current coordinates
-            Log.v("currentLocation", "(" + currLat + "," + currLong + ")");
+        // log the current coordinates
+        Log.v("currentLocation", "(" + currLat + "," + currLong + ")");
 
 
-            //  send the data in a http request
-            ConnectivityManager conMgr = (ConnectivityManager)
+        //  send the data in a http request
+        ConnectivityManager conMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
-            // if there is a network connection create a request thread
-            if(networkInfo != null && networkInfo.isConnected()){
-               new TutorRetrieval().execute(TUTOR_PATH);
-            }else{
-                Log.v("no connection", "Failed to connect to internet");
-            }
-
-
+        NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
+        // if there is a network connection create a request thread
+        if (networkInfo != null && networkInfo.isConnected()) {
+            new TutorRetrieval().execute(TUTOR_PATH);
+        } else {
+            Log.v("no connection", "Failed to connect to internet");
+        }
 
 
     }
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
 
         }
 
-        public void onServiceDisconnected(ComponentName arg0){
+        public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
         }
     };
@@ -284,7 +279,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
     }
 
     @Override
-    public void onConnectionSuspended(int cause){
+    public void onConnectionSuspended(int cause) {
         // The connection has been interrupted.
         // Disable any UI components that depend on Google APIs
         // until onConnected() is called.
@@ -342,15 +337,16 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 return "Unable to retrieve web page. URL may be invalid.";
             }
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
             Log.v("postResult", result);
             Gson gson = new Gson();
-            try{
+            try {
                 JSONArray tutors = new JSONArray(result);
                 ArrayList<TutorObject> tutorList = new ArrayList<>();
-                for(int i = 0; i < tutors.length(); i++){
+                for (int i = 0; i < tutors.length(); i++) {
                     TutorObject tutor = gson.fromJson(tutors.get(i).toString(), TutorObject.class);
                     Log.v("tutorObject", tutor.toString());
                     tutorList.add(tutor);
@@ -361,7 +357,7 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
                 intent.putParcelableArrayListExtra("tutorList", tutorList);
                 startActivity(intent);
 
-            }catch(JSONException e){
+            } catch (JSONException e) {
 
             }
         }
@@ -379,9 +375,9 @@ public class Search extends ListActivity implements ConnectionCallbacks, OnConne
 
         // add all tutor request data to params list and build url query
         Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("course", course )
+                .appendQueryParameter("course", course)
                 .appendQueryParameter("distance", String.valueOf(distance))
-                .appendQueryParameter("lat", currLat )
+                .appendQueryParameter("lat", currLat)
                 .appendQueryParameter("lon", currLong);
         String query = builder.build().getEncodedQuery();
 

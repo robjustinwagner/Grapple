@@ -1,6 +1,7 @@
 package com.mamba.grapple;
 
 // *android imports*
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +31,9 @@ public class Splash extends ActionBarActivity {
     DBService mService;
 
     SharedPreferences sharedPreferences;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
@@ -39,12 +41,12 @@ public class Splash extends ActionBarActivity {
         // check to see if the user is logged in here
         loginCheck();
 
-        if(loggedIn){
+        if (loggedIn) {
             // start the background networking thread and open up socket connection
             Log.v("DBService", "Binding DBService from Splash..");
             // we must start and bind the service so we have control of its lifecycle
             startService(new Intent(this, DBService.class));
-            bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE );
+            bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
         }
 
         /* New Handler to start the Menu-Activity
@@ -62,7 +64,7 @@ public class Splash extends ActionBarActivity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         // Unbind from the service
         if (mBound) {
@@ -72,10 +74,10 @@ public class Splash extends ActionBarActivity {
     }
 
 
-    public void loginCheck(){
+    public void loginCheck() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         token = sharedPreferences.getString("token", null);
-        if(token != null){
+        if (token != null) {
             Log.v("Preference Token", token);
             loggedIn = true;
             Log.v("Login Status", "User has been logged in");
@@ -83,21 +85,20 @@ public class Splash extends ActionBarActivity {
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
-           DBService.LocalBinder binder = (DBService.LocalBinder) service;
-           mService = binder.getService();
-           mBound = true;
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
 
-           // send the token
-           mService.setToken(token);
+            // send the token
+            mService.setToken(token);
         }
 
-        public void onServiceDisconnected(ComponentName arg0){
+        public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
         }
     };
-
 
 
 }

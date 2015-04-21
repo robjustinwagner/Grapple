@@ -34,54 +34,54 @@ public class Results extends ActionBarActivity {
     DBService mService;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if (extras != null) {
             // get the tutor list from previous activity
             tutorList = extras.getParcelableArrayList("tutorList");
             Log.v("tutorList", String.valueOf(tutorList));
 
             // populate the list view
             TutorsAdapter adapter = new TutorsAdapter(this, tutorList);
-            listView = (ListView)findViewById(R.id.listView);
+            listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
 
-                 if(!loggedIn){
-                     // transfer the user to the register page
-                     Intent intent = new Intent(Results.this, Register.class);
-                     // we expect the auth response
-                     startActivityForResult(intent, 1);
-                 }else{
-                    Log.v("Login status", "Logged in user");
-                    TutorObject selectedTutor = tutorList.get(position);
-                     Log.v("selected tutor", String.valueOf(selectedTutor));
-                    // transition to specific tutors page
-                    Intent intent = new Intent(Results.this, Tutor.class);
-                    intent.putExtra("selectedTutor", selectedTutor);
-                    startActivity(intent);
-                 }
+                    if (!loggedIn) {
+                        // transfer the user to the register page
+                        Intent intent = new Intent(Results.this, Register.class);
+                        // we expect the auth response
+                        startActivityForResult(intent, 1);
+                    } else {
+                        Log.v("Login status", "Logged in user");
+                        TutorObject selectedTutor = tutorList.get(position);
+                        Log.v("selected tutor", String.valueOf(selectedTutor));
+                        // transition to specific tutors page
+                        Intent intent = new Intent(Results.this, Tutor.class);
+                        intent.putExtra("selectedTutor", selectedTutor);
+                        startActivity(intent);
+                    }
                 }
             });
         }
     }
 
     // check login status every time the activity gets shown
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         loginCheck();
     }
 
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         // Unbind from the service
-        if (mBound){
+        if (mBound) {
             Log.v("Unbinding Service", "Results Activity");
             unbindService(mConnection);
             mBound = false;
@@ -90,11 +90,11 @@ public class Results extends ActionBarActivity {
 
 
     // handles the result of login/registration
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             Log.v("Reached", "Auth Activity Result");
             String token = data.getStringExtra("token");
-            if(token != null){
+            if (token != null) {
                 // creates a new service with session token
                 createService(token);
             }
@@ -102,9 +102,9 @@ public class Results extends ActionBarActivity {
     }
 
 
-    public void loginCheck(){
+    public void loginCheck() {
         String token = getToken();
-        if(token != null){
+        if (token != null) {
             Log.v("Preference Token", token);
             loggedIn = true;
             Log.v("Login Status", "User has been logged in");
@@ -114,18 +114,18 @@ public class Results extends ActionBarActivity {
         }
     }
 
-    public String getToken(){
+    public String getToken() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return sharedPreferences.getString("token", null);
     }
 
-    public void createService(String token){
+    public void createService(String token) {
         Log.v("Preference Token", token);
         loggedIn = true;
         newService = true;
         Log.v("Login Status", "User has been logged in");
         startService(new Intent(this, DBService.class));
-        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE );
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
         Log.v("Service Bound", "Results bound to new service");
     }
 
@@ -153,24 +153,23 @@ public class Results extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
 
-            if(newService){
+            if (newService) {
                 // send the token
                 mService.setToken(getToken());
                 newService = false;
             }
         }
 
-        public void onServiceDisconnected(ComponentName arg0){
+        public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
         }
     };
-
 
 
 }

@@ -24,8 +24,8 @@
             android:text="Search"
             android:id="@+id/button"
             android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="75dp"
-            android:onClick="tutorSearch" />
+            android:onClick="tutorSearch"
+            android:paddingTop="0dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,13 +38,13 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="30dp" />
 
-        <ListView  android:id="@id/android:list"
+        <ListView
+            android:id="@id/android:list"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="70dp"
-            android:headerDividersEnabled="false"
-        />
+            android:headerDividersEnabled="false" />
 
         <TextView
             android:layout_width="wrap_content"

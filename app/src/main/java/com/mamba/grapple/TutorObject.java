@@ -1,8 +1,10 @@
 package com.mamba.grapple;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.Gson;
+
 /**
  * Created by vash on 4/1/15.
  */
@@ -20,13 +22,12 @@ public class TutorObject implements Parcelable {
     public TutorSession session;
 
 
-
-    public String toString(){
+    public String toString() {
         return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
                 " rating=" + rating + " distance" + distance +
                 " location=" + location.xPos + "," + location.yPos + "]" +
                 " session= {price: " + session.price + ", minLength: " + session.minLength +
-                ", period: " + session.period +" }]" ;
+                ", period: " + session.period + " }]";
     }
 
 
@@ -70,10 +71,6 @@ public class TutorObject implements Parcelable {
             return new TutorObject[size];
         }
     };
-
-
-
-
 
 
 }
