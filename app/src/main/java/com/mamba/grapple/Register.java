@@ -86,7 +86,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView = (EditText) findViewById(R.id.password);
         mFirstNameView = (EditText) findViewById(R.id.first);
         mLastNameView = (EditText) findViewById(R.id.last);
-        loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton = (Button) findViewById(R.id.register_to_signin_button);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
