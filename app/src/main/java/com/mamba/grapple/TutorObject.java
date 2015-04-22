@@ -25,6 +25,7 @@ public class TutorObject implements Parcelable {
     public LocationObject location;
     public TutorSession session;
 
+
     // rounds to two decimal places
     DecimalFormat twoDeci = new DecimalFormat("##.00");
 
@@ -38,6 +39,10 @@ public class TutorObject implements Parcelable {
         this.profilePic = firstName + "_" + lastName;
         Log.v("Session Price: ", String.valueOf(this.session.price));
     }
+
+
+
+
 
 
 

@@ -50,13 +50,15 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
     ListView messagesContainer;
-    EditText locInput;
+
     EditText chatInput;
     ImageButton sendButton;
     ImageButton suggestButton;
     View selected;
 //    ImageButton locationList;
 
+
+    private boolean seen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,13 +105,13 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         messagesContainer.setAdapter(adapter);
 
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+//        mGoogleApiClient = new GoogleApiClient
+//                .Builder(this)
+//                .addApi(Places.GEO_DATA_API)
+//                .addApi(Places.PLACE_DETECTION_API)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+//                .build();
 
 
         messagesContainer.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -134,8 +136,12 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
     @Override
     protected void onResume(){
         super.onResume();
-        Log.v("Dummy Msg", "Sending dummy message");
-        sendDummyMsg();
+        if(!seen){
+            Log.v("Dummy Msg", "Sending dummy message");
+            sendDummyMsg();
+            seen = true;
+        }
+
 
     }
 
@@ -155,15 +161,15 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
 
-    // places the selected chosen location from the address list into the location suggest input
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
-            Log.v("Chat Activity", "Location Result Received");
-            presetLoc = data.getParcelableExtra("location");
-            locInput.setText(presetLoc.getAddress());
-        }
-    }
-
+//    // places the selected chosen location from the address list into the location suggest input
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+//        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
+//            Log.v("Chat Activity", "Location Result Received");
+//            presetLoc = data.getParcelableExtra("location");
+//            locInput.setText(presetLoc.getAddress());
+//        }
+//    }
+//
 
     public void retrieveTutorInfo(){
         // get the tutor data
@@ -230,6 +236,9 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
                 // get the selected location
                 selectedLocation = locationList.get(position);
+                if(selectedLocation.xPos == 0.0 || selectedLocation.yPos == 0.0){
+                    selectedLocation.geoCode(getApplicationContext());
+                }
                 Log.v("Selected Location", String.valueOf(selectedLocation.xPos) + "," + String.valueOf(selectedLocation.yPos));
 
             }

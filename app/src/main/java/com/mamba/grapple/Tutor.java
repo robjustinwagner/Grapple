@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 
+import android.media.Image;
 import android.media.Rating;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -82,11 +84,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     Marker tutorMarker;
     Marker studentMarker;
 
-
+    GoogleMap.InfoWindowAdapter iwadapter;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
 
@@ -104,12 +106,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 //
 //        mGoogleApiClient.connect();
 
-        // Create the LocationRequest object
-        mLocationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
-
+//        // Create the LocationRequest object
+//        mLocationRequest = LocationRequest.create()
+//                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+//                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
+//                .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
 
 //        // Define a listener that responds to location updates
@@ -159,10 +160,9 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                 new IntentFilter("locationUpdate"));
 
 
-
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         Log.v("Tutor View", "Resumed");
         Intent intent = new Intent(this, DBService.class);
@@ -170,10 +170,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         Log.v("Service Bound", "Tutor select bound to service");
     }
 
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         // Unbind from the service
-        if (mBound){
+        if (mBound) {
             Log.v("Unbinding Service", "Results Activity");
             unbindService(mConnection);
             mBound = false;
@@ -201,84 +201,90 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     // response when meeting point is accepted
     @Override
-    protected void onNewIntent(Intent intent){
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
-        if(extras != null){
+        if (extras != null) {
             Log.v("Tutor View", "new intent received ");
             final LocationObject meetingPoint = extras.getParcelable("meetingPoint");
-             if(meetingPoint != null){
-                 Log.v("Tutor View", "Meeting Point Found");
-                 final LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
-                 gMap.addMarker(new MarkerOptions()
-                         .position(mP)
-                         .title("Meeting Point")
-                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            if (meetingPoint != null) {
+                Log.v("Tutor View", "Meeting Point Found");
+                final LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+                gMap.addMarker(new MarkerOptions()
+                        .position(mP)
+                        .title("Meeting Point")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-                 addRoute(meetingPoint.xPos, meetingPoint.yPos);
-
-
-                 // grab dynamic layout items
-                 Button grappleButton = (Button) findViewById(R.id.grappleButton);
-                 Button startSession = (Button) findViewById(R.id.startSession);
-                 ImageButton chatButton = (ImageButton) findViewById(R.id.chatButton);
-                 LinearLayout sessionButtons = (LinearLayout) findViewById(R.id.sessionButtons);
-
-                 // hide the grapple button and show the session/chat buttons
-                 grappleButton.setVisibility(View.GONE);
-                 sessionButtons.setVisibility(View.VISIBLE);
-
-                 //bind the newly visible buttons
-                 startSession.setOnClickListener(new View.OnClickListener(){
-                        public void onClick(View v){
-                            Intent intent = new Intent(Tutor.this, InSession.class);
-                            intent.putExtra("sessionLength", tutor.session.maxLength);
-                            startActivity(intent);
-                            finish();
-                        }
-                 });
-
-                 chatButton.setOnClickListener(new View.OnClickListener(){
-                     public void onClick(View v){
-                         Intent intent = new Intent(Tutor.this, Chat.class);
-                         intent.putExtra("selectedTutor", tutor);
-                         intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
-                         startActivity(intent);
-                     }
-                 });
-
-                 new Handler().postDelayed(new Runnable() {
-                     @Override
-                     public void run() {
-                         // display locally
-                         tutorMarker.setPosition(mP);
-                     }
-                 }, 4000);
+                addRoute(meetingPoint.xPos, meetingPoint.yPos);
 
 
+                // grab dynamic layout items
+                Button grappleButton = (Button) findViewById(R.id.grappleButton);
+                ImageButton chatButton = (ImageButton) findViewById(R.id.chatButton);
 
-             }
+                // hide the grapple button and show the session/chat buttons
+                grappleButton.setVisibility(View.GONE);
+                chatButton.setVisibility(View.VISIBLE);
+
+
+                // change to session infowindow
+                iwadapter = new SessionWindowAdapter();
+                gMap.setInfoWindowAdapter(iwadapter);
+                iwadapter.getInfoWindow(tutorMarker);
+                tutorMarker.showInfoWindow();
+
+
+                gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Intent intent = new Intent(Tutor.this, InSession.class);
+                        intent.putExtra("tutor", tutor);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+                chatButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Tutor.this, Chat.class);
+                        intent.putExtra("selectedTutor", tutor);
+                        intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
+                        startActivity(intent);
+                    }
+                });
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // display locally
+                        tutorMarker.setPosition(mP);
+                    }
+                }, 4000);
+
+
+            }
         }
     }
 
     // enters the chat with the tutor
-    public void grappleTutor(View view){
+    public void grappleTutor(View view) {
         Intent intent = new Intent(this, Chat.class);
         intent.putExtra("selectedTutor", tutor);
         startActivity(intent);
     }
 
-    public void retrieveTutorInfo(){
+    public void retrieveTutorInfo() {
         // get the tutor data
         Bundle extras = getIntent().getExtras();
-        if(extras != null){
+        if (extras != null) {
             tutor = extras.getParcelable("selectedTutor");
 
             // Look up view for data population
-            TextView tutorName = (TextView)findViewById(R.id.tutorName);
-            TextView tutorDistance = (TextView)findViewById(R.id.tutorDistance);
-            TextView tutorPrice = (TextView)findViewById(R.id.tutorPrice);
-            TextView maxSession = (TextView) findViewById(R.id.maxSession);
+            TextView tutorName = (TextView) findViewById(R.id.tutorName);
+            TextView tutorDistance = (TextView) findViewById(R.id.tutorDistance);
+            TextView tutorPrice = (TextView) findViewById(R.id.tutorPrice);
+
             RatingBar tutorRating = (RatingBar) findViewById(R.id.ratingBar);
             ImageView tutorPic = (ImageView) findViewById(R.id.imageView);
 
@@ -290,34 +296,36 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
             tutorDistance.setText(tutor.getDistance(mLastLocation) + " mi");
             tutorPrice.setText("$" + String.valueOf(tutor.session.price));
             tutorRating.setRating(tutor.rating);
-            maxSession.setText("Max Session: " + String.valueOf(tutor.session.maxLength) + " min" );
+
 
             // TEMP DUMMY TUTORS
-            switch (tutor.firstName){
-                case "Jess": tutorPic.setImageResource(R.drawable.jess);
+            switch (tutor.firstName) {
+                case "Jess":
+                    tutorPic.setImageResource(R.drawable.jess);
                     break;
-                case "Eric": tutorPic.setImageResource(R.drawable.eric);
+                case "Eric":
+                    tutorPic.setImageResource(R.drawable.eric);
                     break;
-                case "Robert": tutorPic.setImageResource(R.drawable.robert);
+                case "Robert":
+                    tutorPic.setImageResource(R.drawable.robert);
                     break;
-                case "Nadia": tutorPic.setImageResource(R.drawable.nadia);
+                case "Nadia":
+                    tutorPic.setImageResource(R.drawable.nadia);
                     break;
             }
 
 
-            getActionBar().setTitle(fullName);
-
         }
     }
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
         }
 
-        public void onServiceDisconnected(ComponentName arg0){
+        public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
         }
     };
@@ -331,7 +339,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -354,32 +362,40 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         map.setMyLocationEnabled(true);
         tutorMarker = gMap.addMarker(new MarkerOptions()
                 .position(tutorLoc)
-                .title("Tutor"));
-        if(mLastLocation != null ){
+                .title("Tutor")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markersmall)));
+
+        iwadapter = new TutorWindowAdapter();
+        gMap.setInfoWindowAdapter(iwadapter);
+        iwadapter.getInfoWindow(tutorMarker);
+
+        if (mLastLocation != null) {
             LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-//            studentMarker = gMap.addMarker(new MarkerOptions()
-//                    .position(userLoc)
-//                    .title("You"));
+
             Log.v("mLastLocation Exists", "Adding user marker");
 
             Double distance = Double.parseDouble(tutor.getDistance(userLoc));
 
-            zoom = (distance < 1) ? 14 : 13 ;
+            zoom = (distance < 1) ? 14 : 13;
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(tutorLoc).zoom(zoom).build();
 
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),new GoogleMap.CancelableCallback() {
+                @Override
+                public void onFinish() {
+                    tutorMarker.showInfoWindow();
+                }
 
-            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                @Override
+                public void onCancel() {
 
+                }
+            });
 
         }
 
     }
-
-
-
-
 
 
     @Override
@@ -406,7 +422,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
     @Override
-    public void onConnectionSuspended(int cause){
+    public void onConnectionSuspended(int cause) {
         // The connection has been interrupted.
         // Disable any UI components that depend on Google APIs
         // until onConnected() is called.
@@ -420,19 +436,18 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         //
         // More about this in the next section.
         Log.v("fail", "Connection to Google Services Failed");
-        Log.v("fail result",result.toString());
+        Log.v("fail result", result.toString());
 
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation= location;
+        mLastLocation = location;
 
     }
 
 
-
-    public void addRoute(double meetLat, double meetLong){
+    public void addRoute(double meetLat, double meetLong) {
 
         // we will treat it as though the meeting point is the way point between the tutor and student
         double originLat = mLastLocation.getLatitude();
@@ -441,25 +456,25 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         double destLong = tutor.location.yPos;
 
         // Origin of route
-        String str_origin = "origin="+originLat+","+originLong;
+        String str_origin = "origin=" + originLat + "," + originLong;
 
         // Destination of route
-        String str_dest = "destination="+destLat+","+destLong;
+        String str_dest = "destination=" + destLat + "," + destLong;
 
         // Waypoint (meeting point)
-        String waypoints = "waypoints="+meetLat+","+meetLong;
+        String waypoints = "waypoints=" + meetLat + "," + meetLong;
 
         // Sensor enabled
         String sensor = "sensor=false";
 
         // Building the parameters to the web service
-        String parameters = str_origin+"&"+str_dest+"&"+sensor+"&"+waypoints;
+        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + waypoints;
 
         // Output format
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
         // do http request for route in separate thread
         DownloadTask downloadTask = new DownloadTask();
@@ -468,12 +483,14 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
 
-    /** A method to download json data from url */
+    /**
+     * A method to download json data from url
+     */
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
         HttpURLConnection urlConnection = null;
-        try{
+        try {
             URL url = new URL(strUrl);
 
             // Creating an http connection to communicate with url
@@ -487,10 +504,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
 
-            StringBuffer sb  = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
 
             String line = "";
-            while( ( line = br.readLine())  != null){
+            while ((line = br.readLine()) != null) {
                 sb.append(line);
             }
 
@@ -498,15 +515,14 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             br.close();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.d("Download Exception", e.toString());
-        }finally{
+        } finally {
             iStream.close();
             urlConnection.disconnect();
         }
         return data;
     }
-
 
 
     // Fetches data from url passed
@@ -520,11 +536,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             String data = "";
 
-            try{
+            try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-            }catch(Exception e){
-                Log.d("Background Task",e.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
             }
             return data;
         }
@@ -542,8 +558,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         }
     }
 
-    /** A class to parse the Google Places in JSON format */
-    private class ParserTask extends AsyncTask<String, Integer, List<LatLng> >{
+    /**
+     * A class to parse the Google Places in JSON format
+     */
+    private class ParserTask extends AsyncTask<String, Integer, List<LatLng>> {
 
         // Parsing the data in non-ui thread
         @Override
@@ -551,11 +569,11 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
             JSONObject result;
             JSONArray routes;
-            List<LatLng> lines =  new ArrayList<LatLng>();
+            List<LatLng> lines = new ArrayList<LatLng>();
 
-            try{
+            try {
 
-                result  = new JSONObject(jsonData[0]);
+                result = new JSONObject(jsonData[0]);
                 routes = result.getJSONArray("routes");
 
                 // route distance
@@ -567,24 +585,24 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                 JSONArray tutorSteps = routes.getJSONObject(0).getJSONArray("legs")
                         .getJSONObject(1).getJSONArray("steps");
 
-                for(int i=0; i < studentSteps.length(); i++) {
+                for (int i = 0; i < studentSteps.length(); i++) {
                     String polyline = studentSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-                    for(LatLng p : decodePolyline(polyline)) {
+                    for (LatLng p : decodePolyline(polyline)) {
                         lines.add(p);
                     }
                 }
 
-                for(int i=0; i < tutorSteps.length(); i++) {
+                for (int i = 0; i < tutorSteps.length(); i++) {
                     String polyline = tutorSteps.getJSONObject(i).getJSONObject("polyline").getString("points");
 
-                    for(LatLng p : decodePolyline(polyline)) {
+                    for (LatLng p : decodePolyline(polyline)) {
                         lines.add(p);
                     }
                 }
 
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -593,11 +611,13 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
         // Executes in UI thread, after the parsing process
         @Override
-        protected void onPostExecute(List<LatLng> lines){
-             gMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
+        protected void onPostExecute(List<LatLng> lines) {
+            gMap.addPolyline(new PolylineOptions().addAll(lines).width(4).color(Color.CYAN));
         }
 
-        /** POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java **/
+        /**
+         * POLYLINE DECODER - http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java *
+         */
         private List<LatLng> decodePolyline(String encoded) {
 
             List<LatLng> poly = new ArrayList<LatLng>();
@@ -635,6 +655,56 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     }
 
 
+    class TutorWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+       TutorWindowAdapter() {
+            myContentsView = getLayoutInflater().inflate(R.layout.tutorinfowindow, null);
+        }
+
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            TextView tutorName = (TextView) myContentsView.findViewById(R.id.tutorName);
+            ImageView profilePic = (ImageView) myContentsView.findViewById(R.id.profilePic);
+
+            tutorName.setText(tutor.firstName + " " + tutor.lastName);
+            int x = R.drawable.jess;
+            profilePic.setImageResource(x);
+            return myContentsView;
+        }
+    }
+
+
+    class SessionWindowAdapter implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+        SessionWindowAdapter() {
+            myContentsView = getLayoutInflater().inflate(R.layout.sessionstart_infowindow, null);
+        }
+
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            ImageView profilePic = (ImageView) myContentsView.findViewById(R.id.profilePic);
+            int x = R.drawable.jess;
+            profilePic.setImageResource(x);
+            return myContentsView;
+        }
+    }
 
 
 }

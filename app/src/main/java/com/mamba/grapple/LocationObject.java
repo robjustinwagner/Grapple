@@ -15,8 +15,8 @@ import java.util.Locale;
  */
 
 public class LocationObject implements Parcelable {
-    public double xPos = 0.0;
-    public double yPos = 0.0;
+    public double xPos;
+    public double yPos;
     private String address;
     private String name;
 
@@ -40,20 +40,6 @@ public class LocationObject implements Parcelable {
         this.name =  name;
         this.address = address;
 
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        List<Address> fromLocationName = null;
-
-        try{
-            fromLocationName = geocoder.getFromLocationName(address,   1);
-            if (fromLocationName != null && fromLocationName.size() > 0) {
-                Address a = fromLocationName.get(0);
-                xPos =  a.getLatitude();
-                yPos =  a.getLongitude();
-                Log.v(address+ " coordinates:" , xPos + "," + yPos);
-            }
-        }catch(java.io.IOException e){
-
-        }
 
     }
 
@@ -88,6 +74,25 @@ public class LocationObject implements Parcelable {
     }
 
 
+    public void geoCode(Context context){
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> fromLocationName = null;
+
+        try{
+            fromLocationName = geocoder.getFromLocationName(this.address,   1);
+            if (fromLocationName != null && fromLocationName.size() > 0) {
+                Address a = fromLocationName.get(0);
+                this.xPos =  a.getLatitude();
+                this.yPos =  a.getLongitude();
+                Log.v(this.address+ " coordinates:" , xPos + "," + yPos);
+            }
+        }catch(java.io.IOException e){
+
+        }
+
+    }
+
+
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<LocationObject> CREATOR = new Parcelable.Creator<LocationObject>() {
@@ -104,38 +109,38 @@ public class LocationObject implements Parcelable {
 
 
 
-    public void geocode(Context c, String add){
-        final Context context = c;
-
-
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run(){
-
-                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-                List<Address> fromLocationName = null;
-
-                // get the latitude and longitude from an address TODO: Put in separate thread
-                try{
-                    fromLocationName = geocoder.getFromLocationName(address,   1);
-                    if (fromLocationName != null && fromLocationName.size() > 0) {
-                        Address a = fromLocationName.get(0);
-                        xPos =  a.getLatitude();
-                        yPos =  a.getLongitude();
-                        Log.v(address+ " coordinates:" , xPos + "," + yPos);
-                    }
-                }catch(java.io.IOException e){
-
-                }
-
-
-            }
-        });
-
-
-        thread.start();
-
-    }
+//    public void geocode(Context c, String add){
+//        final Context context = c;
+//
+//
+//        Thread thread = new Thread(new Runnable(){
+//            @Override
+//            public void run(){
+//
+//                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+//                List<Address> fromLocationName = null;
+//
+//                // get the latitude and longitude from an address TODO: Put in separate thread
+//                try{
+//                    fromLocationName = geocoder.getFromLocationName(address,   1);
+//                    if (fromLocationName != null && fromLocationName.size() > 0) {
+//                        Address a = fromLocationName.get(0);
+//                        xPos =  a.getLatitude();
+//                        yPos =  a.getLongitude();
+//                        Log.v(address+ " coordinates:" , xPos + "," + yPos);
+//                    }
+//                }catch(java.io.IOException e){
+//
+//                }
+//
+//
+//            }
+//        });
+//
+//
+//        thread.start();
+//
+//    }
 
 
 }

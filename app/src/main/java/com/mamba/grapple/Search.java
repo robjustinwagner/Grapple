@@ -367,6 +367,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
             // send the tutorList along with login status on to the results activity
             intent.putParcelableArrayListExtra("tutorList", tutorList);
+            intent.putExtra("distance", distance);
             startActivity(intent);
 
         }

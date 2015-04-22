@@ -42,8 +42,8 @@
 
     <TextView
         android:id="@+id/tutorDistance"
-        android:textSize="16dp"
-        android:textColor="#cecece"
+        android:textSize="20dp"
+        android:textColor="@color/text_gray"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/profilePic"
@@ -55,8 +55,8 @@
 
     <TextView
         android:id="@+id/tutorPrice"
-        android:textSize="16dp"
-        android:textColor="#cecece"
+        android:textSize="20dp"
+        android:textColor="@color/text_gray"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/profilePic"

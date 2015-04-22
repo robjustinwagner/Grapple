@@ -44,8 +44,15 @@ public class Results extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+
+
         Bundle extras = getIntent().getExtras();
         if(extras != null){
+
+            int distance = extras.getInt("distance");
+            String distString = (distance == 1)  ? distance + " Mile " : distance + " Miles";
+
+            getActionBar().setTitle("Tutors Within " + distString);
 
             // get the tutor list from previous activity
             tutorList = extras.getParcelableArrayList("tutorList");

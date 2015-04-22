@@ -17,8 +17,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -63,8 +65,8 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
         if(extras != null){
             meetingPoint = extras.getParcelable("meetingPoint");
             tutor = extras.getParcelable("tutor");
-            tutorLat = extras.getDouble("tutorLat");
-            tutorLon = extras.getDouble("tutorLon");
+            tutorLat = tutor.location.xPos;
+            tutorLon = tutor.location.yPos;
         }
 
 
@@ -97,46 +99,41 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
 
 
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(GoogleMap map){
         Log.v("Google Map Ready", "Adding tutor marker");
         LatLng tutorLoc = new LatLng(tutorLat, tutorLon);
         LatLng meetPoint = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
         int zoom;
         meetMap = map;
-        map.addMarker(new MarkerOptions()
+        map.setMyLocationEnabled(true);
+        Marker tutorMarker = map.addMarker(new MarkerOptions()
                 .position(tutorLoc)
-                .title("Tutor"));
+                .title("Tutor")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.markersmall)));
 
-        map.addMarker(new MarkerOptions()
+        Marker meetMarker = map.addMarker(new MarkerOptions()
                 .position(meetPoint)
-                .title("Meeting Spot"));
+                .title("Meeting Spot")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+        meetMarker.showInfoWindow();
 
         if(mLastLocation != null ){
             LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            Log.v("mLastLocation Exists", "Adding user marker");
-            map.addMarker(new MarkerOptions()
-                    .position(userLoc)
-                    .title("You"));
-
-
+//            Log.v("mLastLocation Exists", "Adding user marker");
+//            Marker userMarker = map.addMarker(new MarkerOptions()
+//                    .position(userLoc)
+//                    .title("You")
+//                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.markersmall)));
 
             Double meetDistance =  Double.parseDouble(tutor.getDistance(userLoc));
 
             zoom = (meetDistance <= 1) ? 14 : 13;
 
-            CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(tutorLoc).zoom(zoom).build();
+            map.moveCamera( CameraUpdateFactory.newLatLngZoom( meetPoint , zoom) );
 
-            map.moveCamera( CameraUpdateFactory.newLatLngZoom( meetPoint , 14.0f) );
-//            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-//            // Create a LatLngBounds that includes tutor/student area (work in progress)
-//             LatLngBounds bounds = new LatLngBounds(
-//                    new LatLng(tutor.location.xPos, tutor.location.yPos), new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-//
-//            // Set the camera to the greatest possible zoom level that includes the
-//            // bounds
-//            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.getCenter(), 10));
+
         }
 
     }

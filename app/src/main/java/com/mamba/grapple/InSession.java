@@ -23,6 +23,8 @@ public class InSession extends Activity {
     Button btnPause;
     Button btnStop;
 
+    TutorObject tutor;
+
     private SessionCounter timer;
     private long sessionRemaining = MS_IN_MIN * 30;    // set from tutor's set max (default 30 min)
     private boolean sessionPaused = false;
@@ -38,10 +40,10 @@ public class InSession extends Activity {
         Bundle extras = getIntent().getExtras();
 
         if(extras != null){
-            Log.v("Max Session:" , String.valueOf(extras.getInt("sessionLength")));
-            // convert to long in ms
-            long sessionLength = MS_IN_MIN * (long) extras.getInt("sessionLength");
+            tutor = extras.getParcelable("tutor");
 
+           // convert to long in ms
+           long sessionLength = MS_IN_MIN * (long) tutor.session.maxLength;
            if(sessionLength > sessionRemaining){
                sessionRemaining = sessionLength;
            }
@@ -75,6 +77,7 @@ public class InSession extends Activity {
 
                 // go to receipt
                 Intent intent = new Intent(InSession.this, PostSession.class);
+                intent.putExtra("tutor", tutor);
                 startActivity(intent);
                 finish();
 
