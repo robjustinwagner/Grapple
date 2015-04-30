@@ -8,7 +8,6 @@ import android.os.Parcelable;
  */
 
 
-
 public class TutorLocation implements Parcelable {
     public double xPos;
     public double yPos;

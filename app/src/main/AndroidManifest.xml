@@ -129,6 +129,10 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:label="Suggested Meeting Point">
         </activity>
+        <activity
+            android:name=".SignIn"
+            android:label="@string/title_activity_sign_in"
+            android:windowSoftInputMode="adjustResize|stateVisible"></activity>
     </application>
 
 </manifest>

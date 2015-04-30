@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by vash on 4/8/15.
  */
-public class AddressList extends Activity{
+public class AddressList extends Activity {
 
     private LocationsAdapter adapter;
     private List<LocationObject> locationList;
@@ -24,7 +24,7 @@ public class AddressList extends Activity{
     ListView locationsContainer;
 
 
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_addresslist);
@@ -41,15 +41,15 @@ public class AddressList extends Activity{
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-              // send the location back to the parent activity
-              selectedLocation = locationList.get(position);
+                // send the location back to the parent activity
+                selectedLocation = locationList.get(position);
 
-              // make sure the parent activity acknowledges the authorized session
-              Intent chatReturn = new Intent();
-              chatReturn.putExtra("location", selectedLocation);
-              setResult(Activity.RESULT_OK, chatReturn);
+                // make sure the parent activity acknowledges the authorized session
+                Intent chatReturn = new Intent();
+                chatReturn.putExtra("location", selectedLocation);
+                setResult(Activity.RESULT_OK, chatReturn);
 
-              finish();
+                finish();
 
             }
         });
@@ -57,11 +57,9 @@ public class AddressList extends Activity{
     }
 
 
+    public void dummyPopulate() {
 
-
-    public void dummyPopulate(){
-
-        locationList =  new ArrayList<LocationObject>();
+        locationList = new ArrayList<LocationObject>();
         Context context = getApplicationContext();
         // create dummy location objects for now
         LocationObject loc1 = new LocationObject("College Library", "600 N Park St, Madison, WI", context);

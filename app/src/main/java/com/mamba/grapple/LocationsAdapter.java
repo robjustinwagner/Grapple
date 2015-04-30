@@ -18,10 +18,10 @@ public class LocationsAdapter extends BaseAdapter {
     private List<LocationObject> locations;
 
 
-
-    public int getCount(){
+    public int getCount() {
         return locations.size();
     }
+
     @Override
     public Object getItem(int position) {
         return locations.get(position);
@@ -32,7 +32,7 @@ public class LocationsAdapter extends BaseAdapter {
     }
 
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
 
         LocationObject loc = locations.get(position);
 
@@ -41,7 +41,7 @@ public class LocationsAdapter extends BaseAdapter {
 
 
         // Check if an existing view is being reused, otherwise inflate the view
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = mInflater.inflate(R.layout.address_list_row, null);
         }
 
@@ -57,12 +57,10 @@ public class LocationsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public LocationsAdapter(Context context, List<LocationObject> navDrawerItems){
+    public LocationsAdapter(Context context, List<LocationObject> navDrawerItems) {
         this.context = context;
-        this.locations= navDrawerItems;
+        this.locations = navDrawerItems;
     }
-
-
 
 
 }

@@ -47,6 +47,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.net.ssl.HttpsURLConnection;
 
 
@@ -55,14 +57,9 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
+
     static final String SIGNUP_PATH = "http://protected-dawn-4244.herokuapp.com/signup";
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -89,7 +86,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView = (EditText) findViewById(R.id.password);
         mFirstNameView = (EditText) findViewById(R.id.first);
         mLastNameView = (EditText) findViewById(R.id.last);
-        loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton = (Button) findViewById(R.id.register_to_signin_button);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -180,27 +177,32 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                     getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
             // if there is a network connection create a request thread
-            if(networkInfo != null && networkInfo.isConnected()){
+            if (networkInfo != null && networkInfo.isConnected()) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
                 showProgress(true);
 
                 mAuthTask = new UserSignupTask(firstName, lastName, email, password);
                 mAuthTask.execute(SIGNUP_PATH);
-            }else{
+            } else {
                 Log.v("no connection", "Failed to connect to internet");
             }
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
     }
 
     /**
@@ -313,7 +315,6 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         protected String doInBackground(String... urls) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
@@ -342,9 +343,9 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
             if (result.contains("token")) {
                 // handle success
                 String token = "";
-                try{
+                try {
                     // extract the token from the JSON object
-                    JSONObject json  = new JSONObject(result);
+                    JSONObject json = new JSONObject(result);
                     token = json.getString("token");
                     Log.v("Extracted Token", token);
 
@@ -354,7 +355,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                     editor.putString("token", token);
                     editor.commit();
 
-                }catch(JSONException e){
+                } catch (JSONException e) {
 
                 }
                 // make sure the parent activity acknowledges the authorized session
@@ -377,7 +378,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         // HTTP POST request on a separate thread to send credentials and retrieve token
-        private String RegisterPost(String signupURL) throws IOException{
+        private String RegisterPost(String signupURL) throws IOException {
             InputStream is = null;
             BufferedReader bufferedReader;
             StringBuilder stringBuilder;
@@ -426,7 +427,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                     String jsonString = stringBuilder.toString();
                     return jsonString;
 
-                }else if(response == 400){
+                } else if (response == 400) {
                     return "Validation Errors";
                 }
             } finally {
@@ -440,8 +441,10 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
     }
 
-
-
+    public void gotoSignIn() {
+        Intent intent = new Intent(Register.this, SignIn.class);
+        startActivity(intent);
+    }
 
 }
 
