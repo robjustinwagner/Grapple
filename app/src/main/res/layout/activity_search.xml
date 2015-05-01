@@ -6,7 +6,7 @@
     android:paddingRight="16dp"
     android:paddingLeft="16dp"
     android:paddingTop="30dp"
-    android:paddingBottom="55dp"
+    android:paddingBottom="30dp"
     tools:context="com.mamba.grapple.Search"
     android:background="@color/background">
 
@@ -37,15 +37,15 @@
             android:layout_below="@+id/textView5"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|top"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:layout_marginTop="15dp"
             />
 
         <ListView  android:id="@+id/list"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="45dp"
             android:headerDividersEnabled="false"
         />
 
@@ -53,11 +53,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="How far can you go? "
+            android:text="Travel Distance "
             android:id="@+id/textView5"
             android:layout_below="@+id/list"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
+            android:textSize="18dp"
             android:layout_marginTop="90dp" />
 
         <SeekBar

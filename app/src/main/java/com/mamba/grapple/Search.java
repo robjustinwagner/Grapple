@@ -16,7 +16,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.app.ListActivity;
 import android.content.Context;
@@ -67,7 +68,7 @@ import org.json.JSONException;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class Search extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class Search extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -87,24 +88,32 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
     String currLat;
     String currLong;
 
-    // service related variables
-    private boolean mBound = false;
-    DBService mService;
+//    // service related variables
+//    private boolean mBound = false;
+//    DBService mService;
 
     // temporary until DB load setup (use SimpleCursorAdapter for DB)
     static final String[] COURSES = {"Chemistry 103", "Comp Sci 302", "French 4", "Math 234", "Physics 202"};
     // current url path for tutor list retrieval
     static final String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.activity_search, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
 
         // grab all the view items and set defaults
         initialize();
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         mLastLocation = locationManager.getLastKnownLocation(locationProvider);
 
@@ -145,6 +154,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
 
 
+
 //        // Create a GoogleApiClient instance
 //        mGoogleApiClient = new GoogleApiClient.Builder(this)
 //                .addConnectionCallbacks(this)
@@ -158,41 +168,41 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
     }
 
 
-    // check login status every time the activity gets shown
-    protected void onResume(){
-        super.onResume();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sharedPreferences.getString("token", null);
-        if(token != null) {
-            loggedIn = true;
-            Log.v("Search Login Status", "User has been logged in");
-            Intent intent = new Intent(this, DBService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
-        }
-    }
-
-    protected void onPause(){
-        super.onPause();
-        // Unbind from the service
-        if (mBound){
-            Log.v("Unbinding Service", "Search Activity");
-            unbindService(mConnection);
-            mBound = false;
-        }
-    }
+//    // check login status every time the activity gets shown
+//    protected void onResume(){
+//        super.onResume();
+//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String token = sharedPreferences.getString("token", null);
+//        if(token != null) {
+//            loggedIn = true;
+//            Log.v("Search Login Status", "User has been logged in");
+//            Intent intent = new Intent(this, DBService.class);
+//            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+//
+//        }
+//    }
+//
+//    protected void onPause(){
+//        super.onPause();
+//        // Unbind from the service
+//        if (mBound){
+//            Log.v("Unbinding Service", "Search Activity");
+//            unbindService(mConnection);
+//            mBound = false;
+//        }
+//    }
 
 
 
     // A private method to help us initialize our default variables and settings
     private void initialize() {
-        seekBar = (SeekBar) findViewById(R.id.seekBar2);
-        listView = (ListView) findViewById(R.id.list);
-        distanceView = (TextView) findViewById(R.id.textView5);
-        search = (Button) findViewById(R.id.button);
+        seekBar = (SeekBar) getView().findViewById(R.id.seekBar2);
+        listView = (ListView) getView().findViewById(R.id.list);
+        distanceView = (TextView) getView().findViewById(R.id.textView5);
+        search = (Button) getView().findViewById(R.id.button);
 
         //add elements from array to list view
-        listView.setAdapter(new ArrayAdapter<String>(this,
+        listView.setAdapter(new ArrayAdapter<String>(getActivity(),
                 R.layout.row, COURSES){
 
             @Override
@@ -216,6 +226,14 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
         // set initial distance
         distance = seekBar.getProgress();
         distanceView.setText("Travel Distance: " + distance + " mi");
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tutorSearch(v);
+            }
+        });
+
     }
 
 
@@ -245,7 +263,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
             //  send the data in a http request
             ConnectivityManager conMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
             // if there is a network connection create a request thread
             if(networkInfo != null && networkInfo.isConnected()){
@@ -259,18 +277,18 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
 
     }
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
-            DBService.LocalBinder binder = (DBService.LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-
-        }
-
-        public void onServiceDisconnected(ComponentName arg0){
-            mBound = false;
-        }
-    };
+//    private ServiceConnection mConnection = new ServiceConnection(){
+//        public void onServiceConnected(ComponentName className, IBinder service){
+//            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+//            mService = binder.getService();
+//            mBound = true;
+//
+//        }
+//
+//        public void onServiceDisconnected(ComponentName arg0){
+//            mBound = false;
+//        }
+//    };
 
 
 
@@ -306,27 +324,27 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_search, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a
@@ -356,7 +374,7 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
             Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
             tutorList = gson.fromJson(result, resultType);
 
-            Intent intent = new Intent(Search.this, Results.class);
+            Intent intent = new Intent(getActivity(), Results.class);
 
             Log.v("tutorList", String.valueOf(tutorList.size()));
 
@@ -373,10 +391,6 @@ public class Search extends Activity implements ConnectionCallbacks, OnConnectio
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
 
     // Given a URL, establishes an HttpUrlConnection and retrieves
