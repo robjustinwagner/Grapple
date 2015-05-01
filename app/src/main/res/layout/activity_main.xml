@@ -29,7 +29,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"/>
 
-                <fragment android:name="com.mamba.grapple.Search"
+                <fragment android:name="com.mamba.grapple.Broadcast"
                     android:id="@+id/tab2"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"/>

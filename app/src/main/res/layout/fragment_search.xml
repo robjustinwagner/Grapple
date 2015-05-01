@@ -26,12 +26,11 @@
             android:layout_gravity="center_horizontal|bottom"
             android:background="@color/theme"
             android:textColor="@color/white"
-            android:onClick="tutorSearch" />
+         />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Select a class"
             android:id="@+id/textView6"
             android:layout_below="@+id/textView5"
@@ -46,19 +45,18 @@
             android:layout_height="220dp"
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="45dp"
-            android:headerDividersEnabled="false"
+            android:headerDividersEnabled="true"
         />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Travel Distance "
             android:id="@+id/textView5"
             android:layout_below="@+id/list"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:textSize="18dp"
+            android:textSize="16dp"
             android:layout_marginTop="90dp" />
 
         <SeekBar

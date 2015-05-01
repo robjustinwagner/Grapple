@@ -33,7 +33,7 @@ public class PostSession extends Activity {
                 // TODO: get tutor rating
 
                 // return to search and finish
-                Intent intent = new Intent(PostSession.this, Search.class);
+                Intent intent = new Intent(PostSession.this, Main.class);
                 startActivity(intent);
                 finish();
             }
