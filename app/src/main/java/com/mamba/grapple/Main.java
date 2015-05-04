@@ -74,24 +74,6 @@ public class Main extends FragmentActivity {
 
     }
 
-
-
-//    /**
-//     * Used to create tabview object and setting parameters
-//     *
-//     * @param context
-//     * @param text
-//     * @return
-//     */
-//    private View createTabView(final Context context, final String text) {
-//        View view = LayoutInflater.from(context).inflate(R.layout.tab_layout,
-//                null);
-//        Button _button = (Button) view.findViewById(R.id.tabText);
-//        _button.setText(text);
-//        return view;
-//    }
-
-
     // check login status every time the activity gets shown
     protected void onResume(){
         super.onResume();
