@@ -91,6 +91,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
+        getActionBar().show();
 
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -334,7 +335,9 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tutor, menu);
+        getMenuInflater().inflate(R.menu.menu_generic, menu);
+
+        //return super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -343,14 +346,16 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //TODO
+            case R.id.action_signout:
+                Intent myIntent = new Intent(Tutor.this, SignIn.class);
+                startActivity(myIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -381,7 +386,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(tutorLoc).zoom(zoom).build();
 
-            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition),new GoogleMap.CancelableCallback() {
+            gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
                 @Override
                 public void onFinish() {
                     tutorMarker.showInfoWindow();
@@ -659,7 +664,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
         private final View myContentsView;
 
-       TutorWindowAdapter() {
+        TutorWindowAdapter() {
             myContentsView = getLayoutInflater().inflate(R.layout.tutorinfowindow, null);
         }
 

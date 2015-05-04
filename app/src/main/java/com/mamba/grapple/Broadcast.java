@@ -4,60 +4,35 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Broadcast.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Broadcast#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class Broadcast extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+
 
     private OnFragmentInteractionListener mListener;
+    private int availableTime = 30;
+    private double price = 10.00;
+    private int distance = 1;
+    String[] courses =  {"Comp Sci 302", "Physics 202"};
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Broadcast.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Broadcast newInstance(String param1, String param2) {
-        Broadcast fragment = new Broadcast();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    Button broadcastButton;
 
     public Broadcast() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -67,12 +42,37 @@ public class Broadcast extends Fragment {
         return inflater.inflate(R.layout.fragment_broadcast, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onStart(){
+       super.onStart();
+       broadcastButton = (Button) getView().findViewById(R.id.broadcastButton);
+
+
+       broadcastButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+                startBroadcast();
+           }
+       });
+
     }
+
+    public void startBroadcast(){
+        Log.v("Starting Broadcast..", "Broadcast initiated");
+
+        ((Main)getActivity()).mService.startBroadcast(availableTime, distance, price, courses);
+
+    }
+
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
+
+
+
 
 
     @Override
@@ -95,5 +95,8 @@ public class Broadcast extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+
+
+
 
 }
