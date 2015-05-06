@@ -79,6 +79,16 @@ public class SignIn extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            //destroy token (log out)
+            if (extras.getString("destroy_token").equals("true")) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor e = sp.edit();
+                e.putString("token", null);
+            }
+        }
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();

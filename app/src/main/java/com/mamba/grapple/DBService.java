@@ -153,7 +153,10 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
     public String getToken(){
         return token;
+    }
 
+    public void destroyToken() {
+        this.token = null;
     }
 
 
