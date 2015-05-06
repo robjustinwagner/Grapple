@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 public class Broadcast extends Fragment {
@@ -22,10 +24,19 @@ public class Broadcast extends Fragment {
     private int distance = 1;
     String[] courses =  {"Comp Sci 302", "Physics 202"};
 
+    SeekBar seekprice;
+    SeekBar seektime;
+    SeekBar seekdist;
+    TextView priceView;
+    TextView timeView;
+    TextView distView;
     Button broadcastButton;
+
+
 
     public Broadcast() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -46,7 +57,6 @@ public class Broadcast extends Fragment {
        super.onStart();
        broadcastButton = (Button) getView().findViewById(R.id.broadcastButton);
 
-
        broadcastButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -54,6 +64,69 @@ public class Broadcast extends Fragment {
            }
        });
 
+        // update user slides
+        //Change price slider
+        priceView = (TextView) getView().findViewById(R.id.priceView);
+        seekprice = (SeekBar) getView().findViewById(R.id.seekPrice);
+
+        seekprice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                price = progress * 3;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                priceView.setText("Price: $" + price);
+            }
+        });
+
+        //change avialiableityity
+        timeView = (TextView) getView().findViewById(R.id.timeAvailable);
+        seektime = (SeekBar) getView().findViewById(R.id.seekTime);
+
+        seektime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                availableTime = progress * 5;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                timeView.setText("Availability: " + availableTime + "min");
+            }
+        });
+
+        //change travel distance
+        distView = (TextView) getView().findViewById(R.id.travelDistance);
+        seekdist = (SeekBar) getView().findViewById(R.id.seekDistance);
+
+        seekdist.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                distance = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                distView.setText("Travel Distance: " + distance + "mi");
+            }
+        });
     }
 
     public void startBroadcast(){
