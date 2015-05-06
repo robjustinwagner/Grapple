@@ -169,6 +169,7 @@ public class Results extends Activity {
                 //TODO
             case R.id.action_signout:
                 Intent myIntent = new Intent(Results.this, SignIn.class);
+                myIntent.putExtra("destroy_token", "true");
                 startActivity(myIntent);
                 return true;
             default:

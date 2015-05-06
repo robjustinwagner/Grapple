@@ -36,6 +36,7 @@ public class Account extends ActionBarActivity {
                 //TODO
             case R.id.action_signout:
                 Intent myIntent = new Intent(Account.this, SignIn.class);
+                myIntent.putExtra("destroy_token","true");
                 startActivity(myIntent);
                 return true;
             default:
