@@ -84,7 +84,6 @@
             android:label="@string/title_activity_signin"
             android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
-
         <activity
             android:name=".Account"
             android:exported="true"
@@ -129,6 +128,10 @@
         <activity
             android:name=".Main"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name=".waiting"
+            android:label="@string/title_activity_waiting" >
         </activity>
     </application>
 
