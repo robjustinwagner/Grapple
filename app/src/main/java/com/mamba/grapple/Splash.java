@@ -37,7 +37,7 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getActionBar().hide();
+//        getActionBar().hide();
 
         // check to see if the user is logged in here
         loginCheck();

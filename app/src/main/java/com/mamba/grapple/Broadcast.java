@@ -16,7 +16,6 @@ public class Broadcast extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 
-
     private OnFragmentInteractionListener mListener;
     private int availableTime = 30;
     private double price = 10.00;

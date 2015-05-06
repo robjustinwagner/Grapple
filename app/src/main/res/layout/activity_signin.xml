@@ -59,7 +59,7 @@
                 android:singleLine="true" />
 
             <Button
-                android:id="@+id/signin_button_text"
+                android:id="@+id/signin_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="75dp"
