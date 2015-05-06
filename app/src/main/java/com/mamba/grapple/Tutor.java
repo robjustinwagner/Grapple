@@ -351,6 +351,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                 //TODO
             case R.id.action_signout:
                 Intent myIntent = new Intent(Tutor.this, SignIn.class);
+                myIntent.putExtra("destroy_token", "true");
                 startActivity(myIntent);
                 return true;
             default:
