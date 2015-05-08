@@ -8,8 +8,8 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_signout"
-        android:title="@string/action_signout"
+        android:id="@+id/action_signin"
+        android:title="@string/action_signin"
         android:orderInCategory="125"
         app:showAsAction="never" />
 </menu>

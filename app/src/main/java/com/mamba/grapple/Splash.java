@@ -26,10 +26,12 @@ public class Splash extends Activity {
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     public final static String EXTRA_MESSAGE = "com.mamba.grapple.MESSAGE";
 
-    private boolean loggedIn = false;
     private String token;
     private boolean mBound = false;
     DBService mService;
+
+
+    LoginManager session;
 
     SharedPreferences sharedPreferences;
 
@@ -37,15 +39,13 @@ public class Splash extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-<<<<<<< HEAD
-//        getActionBar().hide();
-=======
->>>>>>> 53840c20faa6da2667585a0a051f2a512c6bda51
+
 
         // check to see if the user is logged in here
-        loginCheck();
+        session = new LoginManager(getApplicationContext());
+//        loginCheck();
 
-        if (loggedIn) {
+        if (session.isLoggedIn()) {
             // start the background networking thread and open up socket connection
             Log.v("DBService", "Binding DBService from Splash..");
             // we must start and bind the service so we have control of its lifecycle
@@ -60,7 +60,6 @@ public class Splash extends Activity {
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(Splash.this, Main.class);
-                mainIntent.putExtra("loggedIn", loggedIn);
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }
@@ -77,18 +76,6 @@ public class Splash extends Activity {
         }
     }
 
-
-    public void loginCheck() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        token = sharedPreferences.getString("token", null);
-        Log.v("Splash token", token);
-        if (token != null) {
-            Log.v("Preference Token", token);
-            loggedIn = true;
-            Log.v("Login Status", "User has been logged in");
-
-        }
-    }
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {

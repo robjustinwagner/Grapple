@@ -53,8 +53,8 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     private String token;
     private final IBinder myBinder = new LocalBinder();
     private final Gson gson = new Gson();
-    private static final long INTERVAL = 1000 * 10;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
+    private static final long INTERVAL = 10000 * 10;
+    private static final long FASTEST_INTERVAL = 10000 * 5;
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -135,6 +135,8 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
             broadcastInfo.put("distance", distance);
             broadcastInfo.put("price", price);
             broadcastInfo.put("courses", tutorCourses);
+            broadcastInfo.put("lat", mCurrentLocation.getLatitude());
+            broadcastInfo.put("lon", mCurrentLocation.getLongitude());
             Log.v("emitting broadcast", "user available to tutor");
             socket.emit("setAvailable",  broadcastInfo);
 
@@ -144,6 +146,9 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
     }
 
+    public Location getLocation(){
+        return mCurrentLocation;
+    }
 
     public void setToken(String token){
         Log.v("Service received token", token);

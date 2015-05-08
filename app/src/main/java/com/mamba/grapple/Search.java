@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,6 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private boolean loggedIn = false;
     SharedPreferences sharedPreferences;
 
     // UI Elements
@@ -129,45 +129,14 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
         });
 
 
-
-
-//        // Create a GoogleApiClient instance
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//
-//        // connect to the instance
-//        mGoogleApiClient.connect();
-
     }
 
 
-//    // check login status every time the activity gets shown
-//    protected void onResume(){
-//        super.onResume();
-//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        String token = sharedPreferences.getString("token", null);
-//        if(token != null) {
-//            loggedIn = true;
-//            Log.v("Search Login Status", "User has been logged in");
-//            Intent intent = new Intent(this, DBService.class);
-//            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-//
-//        }
-//    }
-//
-//    protected void onPause(){
-//        super.onPause();
-//        // Unbind from the service
-//        if (mBound){
-//            Log.v("Unbinding Service", "Search Activity");
-//            unbindService(mConnection);
-//            mBound = false;
-//        }
-//    }
+    // check login status every time the activity gets shown
+    public void onResume(){
+        super.onResume();
 
+    }
 
 
     // A private method to help us initialize our default variables and settings
@@ -252,24 +221,6 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
 
 
     }
-
-//    private ServiceConnection mConnection = new ServiceConnection(){
-//        public void onServiceConnected(ComponentName className, IBinder service){
-//            DBService.LocalBinder binder = (DBService.LocalBinder) service;
-//            mService = binder.getService();
-//            mBound = true;
-//
-//        }
-//
-//        public void onServiceDisconnected(ComponentName arg0){
-//            mBound = false;
-//        }
-//    };
-
-
-
-
-
 
     @Override
     public void onConnected(Bundle connectionHint) {

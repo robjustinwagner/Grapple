@@ -6,19 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,11 +36,15 @@ public class Results extends Activity {
 
     private Location mLastLocation;
 
+    // user session tracking
+    LoginManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        getActionBar().show();
+
+        session = new LoginManager(getApplicationContext());
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -73,27 +74,27 @@ public class Results extends Activity {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
 
-                    if (!loggedIn) {
-                        // transfer the user to the register page
-                        Intent intent = new Intent(Results.this, Register.class);
-                        // we expect the auth response
-                        startActivityForResult(intent, 1);
-                    } else {
-                        Log.v("Login status", "Logged in user");
-                        TutorObject selectedTutor = tutorList.get(position);
-                        Log.v("selected tutor", String.valueOf(selectedTutor));
-                        // transition to specific tutors page
-                        Intent intent = new Intent(Results.this, Tutor.class);
-                        intent.putExtra("selectedTutor", selectedTutor);
-                        startActivity(intent);
-                    }
+                if (!session.isLoggedIn()) {
+                    // transfer the user to the register page
+                    Intent intent = new Intent(Results.this, SignIn.class);
+                    // we expect the auth response
+                    startActivityForResult(intent, 1);
+                } else {
+                    Log.v("Login status", "Logged in user");
+                    TutorObject selectedTutor = tutorList.get(position);
+                    Log.v("selected tutor", String.valueOf(selectedTutor));
+                    // transition to specific tutors page
+                    Intent intent = new Intent(Results.this, Tutor.class);
+                    intent.putExtra("selectedTutor", selectedTutor);
+                    startActivity(intent);
+                }
                 }
             });
         }
     }
 
     // check login status every time the activity gets shown
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         loginCheck();
     }
@@ -117,15 +118,16 @@ public class Results extends Activity {
             if (token != null) {
                 // creates a new service with session token
                 createService(token);
+                session = new LoginManager(getApplicationContext());
             }
         }
     }
 
 
     public void loginCheck() {
-        String token = getToken();
-        if (token != null) {
-            Log.v("Preference Token", token);
+//        String token = getToken();
+        if (session.isLoggedIn()) {
+//            Log.v("Preference Token", token);
             loggedIn = true;
             Log.v("Login Status", "User has been logged in");
             Intent intent = new Intent(this, DBService.class);
@@ -153,10 +155,15 @@ public class Results extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_generic, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(loggedIn){
+            getMenuInflater().inflate(R.menu.menu_account, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.menu_signin, menu);
+        }
 
-        //return super.onCreateOptionsMenu(menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.mamba.grapple;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -72,7 +73,7 @@ public class Broadcast extends Fragment {
         seekprice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                price = progress * 3;
+                price = 10 +  progress;
             }
 
             @Override
@@ -86,14 +87,14 @@ public class Broadcast extends Fragment {
             }
         });
 
-        //change avialiableityity
+        //change
         timeView = (TextView) getView().findViewById(R.id.timeAvailable);
         seektime = (SeekBar) getView().findViewById(R.id.seekTime);
 
         seektime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                availableTime = progress * 5;
+                availableTime =  30 + progress * 10;
             }
 
             @Override
@@ -103,7 +104,7 @@ public class Broadcast extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                timeView.setText("Availability: " + availableTime + "min");
+                timeView.setText("Availability: " + availableTime + " min");
             }
         });
 
@@ -124,7 +125,7 @@ public class Broadcast extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                distView.setText("Travel Distance: " + distance + "mi");
+                distView.setText("Travel Distance: " + distance + " mi");
             }
         });
     }
@@ -133,6 +134,12 @@ public class Broadcast extends Fragment {
         Log.v("Starting Broadcast..", "Broadcast initiated");
 
         ((Main)getActivity()).mService.startBroadcast(availableTime, distance, price, courses);
+        Intent intent = new Intent(getActivity(), Waiting.class);
+        intent.putExtra("location",  ((Main)getActivity()).mService.getLocation());
+        startActivity(intent);
+
+
+
 
     }
 

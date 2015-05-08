@@ -62,12 +62,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAxCIzDHcvvdmWmKHHzQWpFRgAsevLjUtE" />
 
-        <activity
-            android:name=".Register"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan|adjustResize" >
-        </activity>
+
         <activity
             android:name=".Splash"
             android:exported="true"
@@ -77,12 +72,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Login"
-            android:exported="true"
-            android:label="@string/title_activity_signin"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
         </activity>
         <activity
             android:name=".Account"
@@ -130,7 +119,7 @@
             android:label="@string/title_activity_main" >
         </activity>
         <activity
-            android:name=".waiting"
+            android:name=".Waiting"
             android:label="@string/title_activity_waiting" >
         </activity>
     </application>

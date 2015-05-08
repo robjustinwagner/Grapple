@@ -4,12 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
+import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,13 +17,15 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -49,13 +50,12 @@ import java.util.List;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.net.ssl.HttpsURLConnection;
 
 
 /**
  * A login screen that offers login via email/password.
  */
-public class Register extends Activity implements LoaderCallbacks<Cursor> {
+public class Register extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
     static final String SIGNUP_PATH = "http://protected-dawn-4244.herokuapp.com/signup";
@@ -74,19 +74,34 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
     private View mLoginFormView;
     private Button loginButton;
 
+    LoginManager session;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.register_fragment, container, false);
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
 
+    }
+
+
+    public void onStart(){
+        super.onStart();
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mEmailView = (AutoCompleteTextView)  getView().findViewById(R.id.email);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mFirstNameView = (EditText) findViewById(R.id.first);
-        mLastNameView = (EditText) findViewById(R.id.last);
-        loginButton = (Button) findViewById(R.id.register_to_signin_button);
+
+        mPasswordView = (EditText)  getView().findViewById(R.id.password);
+        mFirstNameView = (EditText)  getView().findViewById(R.id.first);
+        mLastNameView = (EditText)  getView().findViewById(R.id.last);
+        loginButton = (Button)  getView().findViewById(R.id.register_to_signin_button);
 
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -101,12 +116,13 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
         loginButton.setOnClickListener(new OnClickListener(){
             public void onClick(View v){
-                Intent intent = new Intent(Register.this , Login.class );
-                startActivity(intent);
+                ((SignIn)getActivity()).goToLogin();
+//                Intent intent = new Intent(Register.this , Login.class );
+//                startActivity(intent);
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = (Button) getView().findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,13 +130,10 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = getView().findViewById(R.id.login_form);
+        mProgressView = getView().findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
-    }
 
 
     /**
@@ -174,7 +187,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
             //  send the data in a http request
             ConnectivityManager conMgr = (ConnectivityManager)
-                    getSystemService(Context.CONNECTIVITY_SERVICE);
+                    getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();
             // if there is a network connection create a request thread
             if (networkInfo != null && networkInfo.isConnected()) {
@@ -243,7 +256,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
+        return new CursorLoader(getActivity(),
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
                         ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
@@ -267,7 +280,7 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+//        addEmailsToAutoComplete(emails);
     }
 
     @Override
@@ -286,14 +299,14 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
     }
 
 
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(Register.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
+//    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
+//        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<String>(Register.this,
+//                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
+//
+//        mEmailView.setAdapter(adapter);
+//    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -347,13 +360,12 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                     // extract the token from the JSON object
                     JSONObject json = new JSONObject(result);
                     token = json.getString("token");
-                    Log.v("Extracted Token", token);
 
-                    // put the token in shared preferences
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("token", token);
-                    editor.commit();
+                    Log.v("Extracted Token", token);
+                    Log.v("Extracted User", json.getString("user"));
+
+                    // store token and log the user in
+                    ((SignIn)getActivity()).session.login(token);
 
                 } catch (JSONException e) {
 
@@ -361,10 +373,10 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
                 // make sure the parent activity acknowledges the authorized session
                 Intent authReturn = new Intent();
                 authReturn.putExtra("token", token);
-                setResult(Activity.RESULT_OK, authReturn);
+                getActivity().setResult(Activity.RESULT_OK, authReturn);
 
                 // return to results activity
-                finish();
+                getActivity().finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -439,11 +451,6 @@ public class Register extends Activity implements LoaderCallbacks<Cursor> {
             return "";
         }
 
-    }
-
-    public void gotoSignIn() {
-        Intent intent = new Intent(Register.this, SignIn.class);
-        startActivity(intent);
     }
 
 }
