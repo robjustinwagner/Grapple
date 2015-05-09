@@ -75,4 +75,7 @@ public class LoginManager {
     }
 
 
+    // TODO: create method to update the current user object and store it
+
+
 }

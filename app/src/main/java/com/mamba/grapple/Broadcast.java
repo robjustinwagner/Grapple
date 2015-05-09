@@ -15,8 +15,6 @@ import android.widget.TextView;
 
 
 public class Broadcast extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
 
     private OnFragmentInteractionListener mListener;
@@ -132,7 +130,7 @@ public class Broadcast extends Fragment {
 
     public void startBroadcast(){
         Log.v("Starting Broadcast..", "Broadcast initiated");
-
+        // TODO: add broadcast data to UserObject, access from session instance
         ((Main)getActivity()).mService.startBroadcast(availableTime, distance, price, courses);
         Intent intent = new Intent(getActivity(), Waiting.class);
         intent.putExtra("location",  ((Main)getActivity()).mService.getLocation());
@@ -142,14 +140,6 @@ public class Broadcast extends Fragment {
 
 
     }
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-
 
 
 
