@@ -21,13 +21,18 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,16 +103,16 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
         mFirstNameView = (EditText)  getView().findViewById(R.id.first);
         mLastNameView = (EditText)  getView().findViewById(R.id.last);
 
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener(){
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.password || id == EditorInfo.IME_NULL){
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
 
 
@@ -345,23 +350,25 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
             if (result.contains("token")) {
                 // handle success
                 String token = "";
+                String user = "";
                 try {
                     // extract the token from the JSON object
                     JSONObject json = new JSONObject(result);
                     token = json.getString("token");
+                    user = json.getString("user");
+
 
                     Log.v("Extracted Token", token);
-                    Log.v("Extracted User", json.getString("user"));
+                    Log.v("Extracted User", user);
 
                     // store token and log the user in
-                    ((SignIn)getActivity()).session.login(token);
+                    ((SignIn)getActivity()).session.login(token, user);
 
                 } catch (JSONException e) {
 
                 }
                 // make sure the parent activity acknowledges the authorized session
                 Intent authReturn = new Intent();
-                authReturn.putExtra("token", token);
                 getActivity().setResult(Activity.RESULT_OK, authReturn);
 
                 // return to results activity

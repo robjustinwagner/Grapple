@@ -78,17 +78,16 @@ public class Login extends Fragment {
         mProgressView =  getView().findViewById(R.id.login_progress);
         Button mEmailSignInButton = (Button)  getView().findViewById(R.id.signin_button);
 
-//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.password || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,17 +272,19 @@ public class Login extends Fragment {
             if (result.contains("token")) {
                 // handle success
                 String token = "";
+                String user = "";
                 try {
                     // extract the token from the JSON object
                     JSONObject json = new JSONObject(result);
                     token = json.getString("token");
+                    user = json.getString("user");
                     Log.v("Extracted Token", token);
 
                     Log.v("Extracted Token", token);
-                    Log.v("Extracted User", json.getString("user"));
+                    Log.v("Extracted User", user);
 
                     // store token and log the user in
-                    ((SignIn)getActivity()).session.login(token);
+                    ((SignIn)getActivity()).session.login(token, user);
 
 
                 } catch (JSONException e) {

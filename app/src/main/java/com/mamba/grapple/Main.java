@@ -29,14 +29,16 @@ public class Main extends FragmentActivity {
     ActionBar actionBar;
     ViewPager viewPager;
     FragmentPagerAdapter fragPageAdapter;
-    LoginManager session;
+
 
     // service related variables
     private boolean mBound = false;
     DBService mService;
 
+    // current user data
+    LoginManager session;
+    UserObject currentUser;
 
-    SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -74,9 +76,9 @@ public class Main extends FragmentActivity {
         super.onResume();
         session = new LoginManager(getApplicationContext());
         if(session.isLoggedIn()){
-            Log.v("Search Login Status", "User has been logged in");
+            currentUser = session.getCurrentUser();
+            Log.v("Search Login Status", currentUser.firstName +  " has been logged in");
             createService();
-
         }
     }
 

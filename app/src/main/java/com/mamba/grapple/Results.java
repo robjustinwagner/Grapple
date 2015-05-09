@@ -33,8 +33,9 @@ public class Results extends Activity {
 
     private Location mLastLocation;
 
-    // user session tracking
+    // current user data
     LoginManager session;
+    UserObject currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +56,10 @@ public class Results extends Activity {
             tutorList = extras.getParcelableArrayList("tutorList");
             Log.v("tutorList", String.valueOf(tutorList));
 
-
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             String locationProvider = LocationManager.NETWORK_PROVIDER;
             mLastLocation = locationManager.getLastKnownLocation(locationProvider);
-
-
+            
             // populate the list view
             TutorsAdapter adapter = new TutorsAdapter(this, tutorList);
             adapter.setUserLocation(mLastLocation);
@@ -101,7 +100,8 @@ public class Results extends Activity {
         invalidateOptionsMenu();
 
         if(session.isLoggedIn()){
-            Log.v("Search Login Status", "User has been logged in");
+            currentUser = session.getCurrentUser();
+            Log.v("Search Login Status", currentUser.firstName +  " has been logged in");
             createService();
         }
     }
@@ -127,8 +127,7 @@ public class Results extends Activity {
 
 
 
-    public void createService() {
-
+    public void createService(){
         Log.v("Login Status", "User has been logged in");
         startService(new Intent(this, DBService.class));
         bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);

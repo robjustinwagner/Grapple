@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 /**
  * Created by vash on 5/8/15.
  */
@@ -22,9 +24,9 @@ public class LoginManager {
 
    // Sharedpref file name
     private static final String PREF_NAME = "SessionData";
-
+    private static final String CURRENT_USER = "CurrentUser";
     private static final String IS_LOGIN = "IsLoggedIn";
-    private static final String AUTH_TOKEN = "token";
+    private static final String AUTH_TOKEN = "Token";
 
 
 
@@ -36,16 +38,17 @@ public class LoginManager {
     }
 
     // Create a login session by storing auth token
-    public void login(String token){
+    public void login(String token, String user){
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(AUTH_TOKEN, token);
+        editor.putString(CURRENT_USER, user);
         editor.commit();
     }
 
 
     // clear the token and current user data
     public void logout(){
-        Log.v("Removing Session Token ", pref.getString(AUTH_TOKEN, null));
+        Log.v("Logout", "Removing Session Token.." );
         editor.clear();
         editor.commit();
     }
@@ -59,6 +62,16 @@ public class LoginManager {
     // return auth token
     public String getToken(){
         return pref.getString(AUTH_TOKEN, null);
+    }
+
+    // returns the logged in user
+    public UserObject getCurrentUser(){
+        String user = pref.getString(CURRENT_USER, null);
+        Gson gson = new Gson();
+        UserObject currentUser = gson.fromJson(user, UserObject.class);
+
+        return currentUser;
+
     }
 
 
