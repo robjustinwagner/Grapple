@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,7 +80,7 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.register_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
 
