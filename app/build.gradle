@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'android_grapple'
+            keyPassword '848698'
+            storeFile file('C:/Users/Robert/keystores/android_grapple.jks')
+            storePassword '848698'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.mamba.grapple"
         minSdkVersion 15
@@ -15,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     sourceSets {
