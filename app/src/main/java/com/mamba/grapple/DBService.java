@@ -61,6 +61,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     Location mCurrentLocation;
     String mLastUpdateTime;
 
+    LoginManager session;
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -101,7 +102,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         // set up socket connection
         if (socket == null || !socket.connected()){
             try {
-                String url = "http://protected-dawn-4244.herokuapp.com" + "?token=" + getToken();
+                String url = "http://protected-dawn-4244.herokuapp.com" + "?token=" + session.getToken();
                 Log.v("socket url", url);
                 socket = IO.socket(url);
             } catch (URISyntaxException e){
@@ -150,19 +151,12 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         return mCurrentLocation;
     }
 
-    public void setToken(String token){
-        Log.v("Service received token", token);
-        this.token = token;
+    public void setSession(LoginManager session){
+        Log.v("Service Session", ""+session);
+        this.session = session;
 
     }
 
-    public String getToken(){
-        return token;
-    }
-
-    public void destroyToken() {
-        this.token = null;
-    }
 
 
     public IBinder onBind(Intent intent) {

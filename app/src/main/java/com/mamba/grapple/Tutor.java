@@ -78,13 +78,17 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     GoogleMap.InfoWindowAdapter iwadapter;
 
+    LoginManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
-        getActionBar().show();
 
+
+
+        session = new LoginManager(getApplicationContext());
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         mLastLocation = locationManager.getLastKnownLocation(locationProvider);
@@ -278,11 +282,17 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_signin, menu);
 
-        //return super.onCreateOptionsMenu(menu);
-        return true;
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(session.isLoggedIn()){
+            Log.v("checking login", "user logged in");
+            getMenuInflater().inflate(R.menu.menu_account, menu);
+        }else{
+            Log.v("checking login", "user not logged in");
+            getMenuInflater().inflate(R.menu.menu_signin, menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

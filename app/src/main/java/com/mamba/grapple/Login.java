@@ -50,7 +50,7 @@ public class Login extends Fragment {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mFrame;
 
     Button toRegister;
 
@@ -72,29 +72,23 @@ public class Login extends Fragment {
         super.onStart();
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView)  getView().findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) getView().findViewById(R.id.email);
         mPasswordView = (EditText)  getView().findViewById(R.id.password);
-
-
-        Button mEmailSignInButton = (Button)  getView().findViewById(R.id.signin_button);
-        Button toRegister = (Button) getView().findViewById(R.id.login_to_register_button);
-
-
-
-        mLoginFormView = getView().findViewById(R.id.login_form);
+        mFrame = getView().findViewById(R.id.frameLayout);
         mProgressView =  getView().findViewById(R.id.login_progress);
+        Button mEmailSignInButton = (Button)  getView().findViewById(R.id.signin_button);
 
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//
 
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,12 +97,6 @@ public class Login extends Fragment {
             }
         });
 
-        toRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((SignIn)getActivity()).goToRegister();
-            }
-        });
 
 
     }
@@ -148,12 +136,12 @@ public class Login extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFrame.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -169,7 +157,7 @@ public class Login extends Fragment {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

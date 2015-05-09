@@ -72,10 +72,10 @@ public class Main extends FragmentActivity {
     // check login status every time the activity gets shown
     protected void onResume(){
         super.onResume();
+        session = new LoginManager(getApplicationContext());
         if(session.isLoggedIn()){
             Log.v("Search Login Status", "User has been logged in");
-            Intent intent = new Intent(this, DBService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+            createService();
 
         }
     }
@@ -90,10 +90,27 @@ public class Main extends FragmentActivity {
         }
     }
 
+    // handles the result of login/registration
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            Log.v("Reached", "Auth Activity Result");
+//            session = new LoginManager(getApplicationContext());
+            invalidateOptionsMenu();
+        }
+    }
+
+    public void createService() {
+        Log.v("Login Status", "User has been logged in");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Results bound to new service");
+    }
+
     private ServiceConnection mConnection = new ServiceConnection(){
         public void onServiceConnected(ComponentName className, IBinder service){
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
+            mService.setSession(session);
             mBound = true;
 
         }
@@ -135,15 +152,18 @@ public class Main extends FragmentActivity {
             case R.id.action_settings:
                 //TODO
             case R.id.action_signout:
+                Intent logoffIntent = new Intent(Main.this, SignIn.class);
                 session.logout();
-                Intent myIntent = new Intent(this, SignIn.class);
-                startActivity(myIntent);
+                startActivityForResult(logoffIntent, 1);
+                return true;
+            case R.id.action_signin:
+                Intent loginIntent = new Intent(Main.this, SignIn.class);
+                startActivityForResult(loginIntent, 1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 
 }

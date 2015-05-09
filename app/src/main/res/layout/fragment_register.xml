@@ -29,16 +29,24 @@
     android:background="@color/background">
 
     <FrameLayout
-        android:id="@+id/email_login_form"
+        android:id="@+id/form_frame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-
         android:background="#ffffffff"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingTop="100dp"
-
+        android:paddingTop="60dp"
         >
+
+
+        <ProgressBar
+            android:id="@+id/login_progress"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2" >
+        </ProgressBar>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -108,7 +116,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="By creating a Grapple account, you agree to our"
             android:id="@+id/termsText1"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="220dp"
             android:layout_above="@+id/termsText2"
             android:layout_gravity="center_horizontal"
           />
@@ -120,7 +128,7 @@
             android:text="Terms of Service &amp; Privacy Policy"
             android:id="@+id/termsText2"
             android:textStyle="bold"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="250dp"
             android:layout_above="@+id/email_sign_in_button"
             android:layout_gravity="center_horizontal"
          />

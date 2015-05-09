@@ -25,9 +25,6 @@ public class Results extends Activity {
 
     ArrayList<TutorObject> tutorList;
     ListView listView;
-    SharedPreferences sharedPreferences;
-    private boolean loggedIn = false;
-    private boolean newService = false;
 
 
     // service related variables
@@ -96,7 +93,17 @@ public class Results extends Activity {
     // check login status every time the activity gets shown
     public void onResume(){
         super.onResume();
-        loginCheck();
+
+        // reset session
+        session = new LoginManager(getApplicationContext());
+
+        // reset action bar menu
+        invalidateOptionsMenu();
+
+        if(session.isLoggedIn()){
+            Log.v("Search Login Status", "User has been logged in");
+            createService();
+        }
     }
 
     protected void onPause() {
@@ -111,60 +118,38 @@ public class Results extends Activity {
 
 
     // handles the result of login/registration
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             Log.v("Reached", "Auth Activity Result");
-            String token = data.getStringExtra("token");
-            if (token != null) {
-                // creates a new service with session token
-                createService(token);
-                session = new LoginManager(getApplicationContext());
-            }
+
         }
     }
 
 
-    public void loginCheck() {
-//        String token = getToken();
-        if (session.isLoggedIn()) {
-//            Log.v("Preference Token", token);
-            loggedIn = true;
-            Log.v("Login Status", "User has been logged in");
-            Intent intent = new Intent(this, DBService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-            Log.v("Service Bound", "Results bound to service");
-        }
-    }
 
-    public String getToken() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return sharedPreferences.getString("token", null);
-    }
+    public void createService() {
 
-    public void createService(String token) {
-        Log.v("Preference Token", token);
-        loggedIn = true;
-        newService = true;
         Log.v("Login Status", "User has been logged in");
         startService(new Intent(this, DBService.class));
         bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
         Log.v("Service Bound", "Results bound to new service");
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        // Inflate the menu; this adds items to the action bar if it is present.
-        if(loggedIn){
+        if(session.isLoggedIn()){
+            Log.v("checking login", "user logged in");
             getMenuInflater().inflate(R.menu.menu_account, menu);
         }else{
+            Log.v("checking login", "user not logged in");
             getMenuInflater().inflate(R.menu.menu_signin, menu);
         }
 
         return super.onCreateOptionsMenu(menu);
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -176,7 +161,7 @@ public class Results extends Activity {
                 //TODO
             case R.id.action_signout:
                 Intent myIntent = new Intent(Results.this, SignIn.class);
-                myIntent.putExtra("destroy_token", "true");
+                session.logout();
                 startActivity(myIntent);
                 return true;
             default:
@@ -188,13 +173,8 @@ public class Results extends Activity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
+            mService.setSession(session);
             mBound = true;
-
-            if (newService) {
-                // send the token
-                mService.setToken(getToken());
-                newService = false;
-            }
         }
 
         public void onServiceDisconnected(ComponentName arg0) {

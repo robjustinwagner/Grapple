@@ -43,17 +43,22 @@ public class LoginManager {
     }
 
 
-
+    // clear the token and current user data
     public void logout(){
         Log.v("Removing Session Token ", pref.getString(AUTH_TOKEN, null));
         editor.clear();
         editor.commit();
-        Log.v("Token ", pref.getString(AUTH_TOKEN, null));
     }
 
+    // check if current user is logged in
     public boolean isLoggedIn(){
         Log.v("Checking Logged in", ""+pref.getBoolean(IS_LOGIN, false));
         return pref.getBoolean(IS_LOGIN, false);
+    }
+
+    // return auth token
+    public String getToken(){
+        return pref.getString(AUTH_TOKEN, null);
     }
 
 

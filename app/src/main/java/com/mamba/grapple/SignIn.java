@@ -113,20 +113,6 @@ public class SignIn extends FragmentActivity{
     }
 
 
-    public void goToRegister() {
-        registerFragment.setVisibility(View.VISIBLE);
-        loginFragment.setVisibility(View.GONE);
-
-    }
-
-
-    public void goToLogin(){
-        loginFragment.setVisibility(View.VISIBLE);
-        registerFragment.setVisibility(View.GONE);
-
-    }
-
-
 
 
 //

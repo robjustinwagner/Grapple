@@ -82,9 +82,7 @@ public class Splash extends Activity {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mBound = true;
-
-            // send the token
-            mService.setToken(token);
+            mService.setSession(session);
             mService.connectSocket();
         }
 

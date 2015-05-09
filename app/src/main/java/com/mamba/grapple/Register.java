@@ -21,16 +21,13 @@ import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +67,7 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
     private EditText mFirstNameView;
     private EditText mLastNameView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mFrame;
     private Button loginButton;
 
     LoginManager session;
@@ -100,26 +97,19 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
         mPasswordView = (EditText)  getView().findViewById(R.id.password);
         mFirstNameView = (EditText)  getView().findViewById(R.id.first);
         mLastNameView = (EditText)  getView().findViewById(R.id.last);
-        loginButton = (Button)  getView().findViewById(R.id.register_to_signin_button);
 
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+//                    attemptLogin();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
-        loginButton.setOnClickListener(new OnClickListener(){
-            public void onClick(View v){
-                ((SignIn)getActivity()).goToLogin();
-//                Intent intent = new Intent(Register.this , Login.class );
-//                startActivity(intent);
-            }
-        });
+
 
         Button mEmailSignInButton = (Button) getView().findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -129,7 +119,7 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
             }
         });
 
-        mLoginFormView = getView().findViewById(R.id.login_form);
+        mFrame = getView().findViewById(R.id.form_frame);
         mProgressView = getView().findViewById(R.id.login_progress);
     }
 
@@ -228,28 +218,28 @@ public class Register extends Fragment implements LoaderManager.LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFrame.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFrame.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 

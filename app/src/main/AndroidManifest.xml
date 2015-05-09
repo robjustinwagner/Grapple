@@ -113,7 +113,7 @@
         <activity
             android:name=".SignIn"
             android:label="@string/title_activity_sign_in"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".Main"
             android:label="@string/title_activity_main" >
