@@ -59,7 +59,7 @@ public class Results extends Activity {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             String locationProvider = LocationManager.NETWORK_PROVIDER;
             mLastLocation = locationManager.getLastKnownLocation(locationProvider);
-            
+
             // populate the list view
             TutorsAdapter adapter = new TutorsAdapter(this, tutorList);
             adapter.setUserLocation(mLastLocation);
@@ -106,7 +106,7 @@ public class Results extends Activity {
         }
     }
 
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         // Unbind from the service
         if (mBound) {
@@ -124,8 +124,6 @@ public class Results extends Activity {
 
         }
     }
-
-
 
     public void createService(){
         Log.v("Login Status", "User has been logged in");
