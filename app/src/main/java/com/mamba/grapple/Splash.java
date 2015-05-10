@@ -1,6 +1,7 @@
 package com.mamba.grapple;
 
 // *android imports*
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,27 +26,31 @@ public class Splash extends Activity {
     private final int SPLASH_DISPLAY_LENGTH = 2000;
     public final static String EXTRA_MESSAGE = "com.mamba.grapple.MESSAGE";
 
-    private boolean loggedIn = false;
     private String token;
     private boolean mBound = false;
     DBService mService;
 
-    SharedPreferences sharedPreferences;
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
 
+    LoginManager session;
+
+    SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // check to see if the user is logged in here
-        loginCheck();
 
-        if(loggedIn){
+        // check to see if the user is logged in here
+        session = new LoginManager(getApplicationContext());
+//        loginCheck();
+
+        if (session.isLoggedIn()) {
             // start the background networking thread and open up socket connection
             Log.v("DBService", "Binding DBService from Splash..");
             // we must start and bind the service so we have control of its lifecycle
             startService(new Intent(this, DBService.class));
-            bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE );
+            bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
         }
 
         /* New Handler to start the Menu-Activity
@@ -55,7 +60,6 @@ public class Splash extends Activity {
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(Splash.this, Main.class);
-                mainIntent.putExtra("loggedIn", loggedIn);
                 Splash.this.startActivity(mainIntent);
                 Splash.this.finish();
             }
@@ -63,7 +67,7 @@ public class Splash extends Activity {
     }
 
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         // Unbind from the service
         if (mBound) {
@@ -72,35 +76,19 @@ public class Splash extends Activity {
         }
     }
 
-
-    public void loginCheck(){
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        token = sharedPreferences.getString("token", null);
-        Log.v("Splash token", token);
-        if(token != null){
-            Log.v("Preference Token", token);
-            loggedIn = true;
-            Log.v("Login Status", "User has been logged in");
-
-        }
-    }
-
-    private ServiceConnection mConnection = new ServiceConnection(){
-        public void onServiceConnected(ComponentName className, IBinder service){
-           DBService.LocalBinder binder = (DBService.LocalBinder) service;
-           mService = binder.getService();
-           mBound = true;
-
-           // send the token
-           mService.setToken(token);
-           mService.connectSocket();
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+            mService.setSession(session);
+            mService.connectSocket();
         }
 
-        public void onServiceDisconnected(ComponentName arg0){
+        public void onServiceDisconnected(ComponentName arg0) {
             mBound = false;
         }
     };
-
 
 
 }

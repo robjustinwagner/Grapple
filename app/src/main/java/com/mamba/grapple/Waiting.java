@@ -4,9 +4,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.IBinder;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,11 +15,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
-public class PreSession extends ActionBarActivity {
+public class Waiting extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private MapFragment mapFragment;
+    Button grappleButton;
     LoginManager session;
 
     private Location mLastLocation;
@@ -31,14 +43,22 @@ public class PreSession extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_presession);
-        getActionBar().show();
+        setContentView(R.layout.activity_tutorselect);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey("location")) {
             mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
+            Log.v("Current user location",  mLastLocation.getLatitude() +  " , " + mLastLocation.getLongitude());
         }
+
+        grappleButton = (Button) findViewById(R.id.grappleButton);
+        grappleButton.setVisibility(View.GONE);
+
+        session = new LoginManager(getApplicationContext());
+
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
     }
 
 
@@ -84,7 +104,7 @@ public class PreSession extends ActionBarActivity {
             case R.id.action_settings:
                 //TODO
             case R.id.action_signout:
-                Intent myIntent = new Intent(PreSession.this, SignIn.class);
+                Intent myIntent = new Intent(Waiting.this, SignIn.class);
                 myIntent.putExtra("destroy_token", "true");
                 startActivity(myIntent);
                 return true;
@@ -92,6 +112,41 @@ public class PreSession extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.setMyLocationEnabled(true);
+        LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 14));
+
+        String distance = session.getCurrentUser().getDistance(userLoc);
+        googleMap.addCircle(new CircleOptions()
+                .center(userLoc)
+                .radius(Double.parseDouble(distance))
+                .strokeColor(Color.LTGRAY)
+                .fillColor(Color.DKGRAY));
+    }
+
 
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {

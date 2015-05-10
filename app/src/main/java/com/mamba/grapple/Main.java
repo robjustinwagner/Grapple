@@ -1,8 +1,6 @@
 package com.mamba.grapple;
 
 import android.app.ActionBar;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -11,16 +9,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TabHost;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -36,18 +30,21 @@ public class Main extends FragmentActivity {
     ViewPager viewPager;
     FragmentPagerAdapter fragPageAdapter;
 
+
     // service related variables
     private boolean mBound = false;
     DBService mService;
 
-    private boolean loggedIn = false;
+    // current user data
+    LoginManager session;
+    UserObject currentUser;
 
-    SharedPreferences sharedPreferences;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        session = new LoginManager(getApplicationContext());
 
         mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
@@ -77,14 +74,11 @@ public class Main extends FragmentActivity {
     // check login status every time the activity gets shown
     protected void onResume(){
         super.onResume();
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String token = sharedPreferences.getString("token", null);
-        if(token != null) {
-            loggedIn = true;
-            Log.v("Search Login Status", "User has been logged in");
-            Intent intent = new Intent(this, DBService.class);
-            bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
+        session = new LoginManager(getApplicationContext());
+        if(session.isLoggedIn()){
+            currentUser = session.getCurrentUser();
+            Log.v("Search Login Status", currentUser.firstName +  " has been logged in");
+            createService();
         }
     }
 
@@ -98,10 +92,27 @@ public class Main extends FragmentActivity {
         }
     }
 
+    // handles the result of login/registration
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            Log.v("Reached", "Auth Activity Result");
+//            session = new LoginManager(getApplicationContext());
+            invalidateOptionsMenu();
+        }
+    }
+
+    public void createService() {
+        Log.v("Login Status", "User has been logged in");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Results bound to new service");
+    }
+
     private ServiceConnection mConnection = new ServiceConnection(){
         public void onServiceConnected(ComponentName className, IBinder service){
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
+            mService.setSession(session);
             mBound = true;
 
         }
@@ -116,6 +127,45 @@ public class Main extends FragmentActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if(session.isLoggedIn()){
+            Log.v("checking login", "user logged in");
+            getMenuInflater().inflate(R.menu.menu_account, menu);
+        }else{
+            Log.v("checking login", "user not logged in");
+           getMenuInflater().inflate(R.menu.menu_signin, menu);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //TODO
+            case R.id.action_signout:
+                Intent logoffIntent = new Intent(Main.this, SignIn.class);
+                session.logout();
+                startActivityForResult(logoffIntent, 1);
+                return true;
+            case R.id.action_signin:
+                Intent loginIntent = new Intent(Main.this, SignIn.class);
+                startActivityForResult(loginIntent, 1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 
 }

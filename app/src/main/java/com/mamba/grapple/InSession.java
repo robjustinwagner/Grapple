@@ -1,8 +1,13 @@
 package com.mamba.grapple;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.location.Location;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,49 +36,57 @@ public class InSession extends Activity {
     private long sessionRemaining = MS_IN_MIN * 30;    // set from tutor's set max (default 30 min)
     private boolean sessionPaused = false;
 
+    LoginManager session;
+
+    private Location mLastLocation;
+
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insession);
+        getActionBar().show();
         textViewTime = (TextView) findViewById(R.id.textViewTime);
         btnStop = (Button) findViewById(R.id.endBtn);
         btnPause = (Button) findViewById(R.id.pauseBtn);
 
         Bundle extras = getIntent().getExtras();
-
-        if(extras != null){
+        if (extras != null && extras.containsKey("tutor")) {
             tutor = extras.getParcelable("tutor");
 
-           // convert to long in ms
-           long sessionLength = MS_IN_MIN * (long) tutor.session.maxLength;
-           if(sessionLength > sessionRemaining){
-               sessionRemaining = sessionLength;
-           }
+            // convert to long in ms
+            long sessionLength = MS_IN_MIN * (long) tutor.session.maxLength;
+            if (sessionLength > sessionRemaining) {
+                sessionRemaining = sessionLength;
+            }
         }
-
 
         startCountdown();
 
-        btnPause.setOnClickListener(new View.OnClickListener(){
-               public void onClick(View v){
-                   // if the session is already paused resume it
-                   if(sessionPaused){
-                       startCountdown();
-                       btnPause.setText("Pause Session");
-                       sessionPaused = false;
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // if the session is already paused resume it
+                if (sessionPaused) {
+                    startCountdown();
+                    btnPause.setText("Pause Session");
+                    sessionPaused = false;
 
-                   }else{
-                       timer.cancel();
-                       btnPause.setText("Resume Session");
-                       sessionPaused = true;
-                   }
-               }
+                } else {
+                    timer.cancel();
+                    btnPause.setText("Resume Session");
+                    sessionPaused = true;
+                }
+            }
 
         });
 
 
-        btnStop.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 timer.cancel();
                 timer.onFinish();
 
@@ -84,11 +99,33 @@ public class InSession extends Activity {
             }
         });
 
-
     }
 
+    public void onResume() {
+        super.onResume();
+        if (session.isLoggedIn()) {
+            createService();
+        }
+    }
 
-    private void startCountdown(){
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    public void createService() {
+        Log.v("Waiting Page", "Creating Service..");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Results bound to new service");
+    }
+
+    private void startCountdown() {
         timer = new SessionCounter(sessionRemaining, 1000);
         timer.start();
     }
@@ -106,16 +143,13 @@ public class InSession extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //TODO
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
-
 
 
     private class SessionCounter extends CountDownTimer {
@@ -125,6 +159,7 @@ public class InSession extends Activity {
         public SessionCounter(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
         }
+
         @Override
         public void onFinish() {
             textViewTime.setText("Completed.");
@@ -142,11 +177,20 @@ public class InSession extends Activity {
         }
 
 
-
-
     }
 
-
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mService.setSession(session);
+            mBound = true;
+            mLastLocation = mService.getLocation();
+        }
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
 }
 

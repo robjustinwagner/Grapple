@@ -74,6 +74,7 @@
             android:text="Session Price: $10.00 "
             android:layout_gravity="center"
             android:textSize="16dp"
+            android:id="@+id/priceView"
              />
 
         <SeekBar
