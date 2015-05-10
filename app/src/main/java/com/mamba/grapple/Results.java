@@ -116,6 +116,16 @@ public class Results extends Activity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
 
     // handles the result of login/registration
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -178,6 +188,5 @@ public class Results extends Activity {
             mBound = false;
         }
     };
-
 
 }

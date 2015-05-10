@@ -21,7 +21,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 
 public class Waiting extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -43,9 +45,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         setContentView(R.layout.activity_tutorselect);
 
         Bundle extras = getIntent().getExtras();
-
-
-        if(extras != null){
+        if (extras.containsKey("location")) {
             mLastLocation = extras.getParcelable("location");
             Log.v("Current user location",  mLastLocation.getLatitude() +  " , " + mLastLocation.getLongitude());
         }
@@ -65,6 +65,16 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         super.onResume();
         if (session.isLoggedIn()) {
             createService();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
         }
     }
 
@@ -124,12 +134,12 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // TODO: use the session object to get the current user data (must implement method in LoginManager first)
-        // TODO: get distance travelled radius from current user data and show it on map
-
         googleMap.setMyLocationEnabled(true);
         LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        googleMap.moveCamera( CameraUpdateFactory.newLatLngZoom(userLoc, 14) );
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 14));
+
+        String distance = session.getCurrentUser().getDistance(userLoc);
+        // TODO: get distance travelled radius from current user data and show it on map
     }
 
 

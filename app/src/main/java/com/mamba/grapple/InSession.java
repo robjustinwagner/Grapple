@@ -1,8 +1,13 @@
 package com.mamba.grapple;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.location.Location;
 import android.os.CountDownTimer;
+import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,6 +36,15 @@ public class InSession extends Activity {
     private long sessionRemaining = MS_IN_MIN * 30;    // set from tutor's set max (default 30 min)
     private boolean sessionPaused = false;
 
+    LoginManager session;
+
+    private Location mLastLocation;
+
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +55,7 @@ public class InSession extends Activity {
         btnPause = (Button) findViewById(R.id.pauseBtn);
 
         Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
+        if (extras.containsKey("tutor")) {
             tutor = extras.getParcelable("tutor");
 
             // convert to long in ms
@@ -49,6 +64,11 @@ public class InSession extends Activity {
                 sessionRemaining = sessionLength;
             }
         }
+        if(extras.containsKey("location")){
+            mLastLocation = extras.getParcelable("location");
+            Log.v("Current user location",  mLastLocation.getLatitude() +  " , " + mLastLocation.getLongitude());
+        }
+        session = new LoginManager(getApplicationContext());
 
 
         startCountdown();
@@ -85,9 +105,32 @@ public class InSession extends Activity {
             }
         });
 
-
     }
 
+
+    public void onResume() {
+        super.onResume();
+        if (session.isLoggedIn()) {
+            createService();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    public void createService() {
+        Log.v("Waiting Page", "Creating Service..");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Results bound to new service");
+    }
 
     private void startCountdown() {
         timer = new SessionCounter(sessionRemaining, 1000);
@@ -143,6 +186,18 @@ public class InSession extends Activity {
 
     }
 
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mService.setSession(session);
+            mBound = true;
+            mLastLocation = mService.getLocation();
+        }
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
 }
 

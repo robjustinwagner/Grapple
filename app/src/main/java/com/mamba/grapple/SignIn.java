@@ -6,14 +6,17 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,6 +24,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -40,6 +44,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,23 +75,32 @@ public class SignIn extends FragmentActivity{
     View loginFragment;
     View registerFragment;
 
+    TabHost mTabHost;
 
     LoginManager session;
 
-    TabHost mTabHost;
+    private Location mLastLocation;
+
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras.containsKey("location")) {
+            mLastLocation = extras.getParcelable("location");
+            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
+        }
 
         session = new LoginManager(getApplicationContext());
 
         loginFragment = findViewById(R.id.login_view);
         registerFragment = findViewById(R.id.register_view);
-
-
 
         mTabHost = (TabHost) findViewById(R.id.tabHost2);
         mTabHost.setup();
@@ -109,11 +124,46 @@ public class SignIn extends FragmentActivity{
             }
         });
 
-
     }
 
 
+    public void onResume() {
+        super.onResume();
+        if (session.isLoggedIn()) {
+            createService();
+        }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+    public void createService() {
+        Log.v("Waiting Page", "Creating Service..");
+        startService(new Intent(this, DBService.class));
+        bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
+        Log.v("Service Bound", "Results bound to new service");
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mService.setSession(session);
+            mBound = true;
+            mLastLocation = mService.getLocation();
+        }
+
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
 
 //
 //    @Override

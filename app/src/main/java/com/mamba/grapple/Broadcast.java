@@ -132,17 +132,11 @@ public class Broadcast extends Fragment {
         Log.v("Starting Broadcast..", "Broadcast initiated");
         // TODO: add broadcast data to UserObject, access from session instance
         ((Main)getActivity()).mService.startBroadcast(availableTime, distance, price, courses);
+        //((Main)getActivity()).session.updateCurrentUser();
         Intent intent = new Intent(getActivity(), Waiting.class);
         intent.putExtra("location",  ((Main)getActivity()).mService.getLocation());
         startActivity(intent);
-
-
-
-
     }
-
-
-
 
     @Override
     public void onDetach() {

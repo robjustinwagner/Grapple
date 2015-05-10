@@ -28,7 +28,8 @@ public class LoginManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String AUTH_TOKEN = "Token";
 
-
+    // Current User
+    UserObject currentUser = null;
 
     // Constructor
     public LoginManager(Context context){
@@ -48,14 +49,14 @@ public class LoginManager {
 
     // clear the token and current user data
     public void logout(){
-        Log.v("Logout", "Removing Session Token.." );
+        Log.v("Logout", "Removing Session Token..");
         editor.clear();
         editor.commit();
     }
 
     // check if current user is logged in
     public boolean isLoggedIn(){
-        Log.v("Checking Logged in", ""+pref.getBoolean(IS_LOGIN, false));
+        Log.v("Checking Logged in", "" + pref.getBoolean(IS_LOGIN, false));
         return pref.getBoolean(IS_LOGIN, false);
     }
 
@@ -68,14 +69,13 @@ public class LoginManager {
     public UserObject getCurrentUser(){
         String user = pref.getString(CURRENT_USER, null);
         Gson gson = new Gson();
-        UserObject currentUser = gson.fromJson(user, UserObject.class);
+        currentUser = gson.fromJson(user, UserObject.class);
 
         return currentUser;
-
     }
 
-
     // TODO: create method to update the current user object and store it
-
-
+    public void updateCurrentUser() {
+        //currentUser.
+    }
 }
