@@ -86,16 +86,19 @@ public class SignIn extends FragmentActivity{
     DBService mService;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras.containsKey("location")) {
-            mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
-        }
+//        Bundle extras = getIntent().getExtras();
+//
+////        if (extras != null && extras.containsKey("location")) {
+////            mLastLocation = extras.getParcelable("location");
+////            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
+////        }
 
         session = new LoginManager(getApplicationContext());
 
