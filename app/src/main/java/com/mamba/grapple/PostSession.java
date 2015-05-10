@@ -60,7 +60,7 @@ public class PostSession extends Activity {
         });
 
         Bundle extras = getIntent().getExtras();
-        if(extras.containsKey("tutor")){
+        if (extras != null && extras.containsKey("tutor")) {
             TutorObject tutor = extras.getParcelable("tutor");
             // TEMP DUMMY TUTORS
 
@@ -77,14 +77,7 @@ public class PostSession extends Activity {
                     break;
             }
         }
-        if(extras.containsKey("location")){
-            mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
-        }
-
-        session = new LoginManager(getApplicationContext());
     }
-
 
     public void onResume() {
         super.onResume();

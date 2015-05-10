@@ -33,18 +33,7 @@ public class Account extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         getActionBar().show();
-
-        Bundle extras = getIntent().getExtras();
-
-        if(extras != null){
-            mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
-        }
-
-        session = new LoginManager(getApplicationContext());
-
     }
-
 
     public void onResume() {
         super.onResume();

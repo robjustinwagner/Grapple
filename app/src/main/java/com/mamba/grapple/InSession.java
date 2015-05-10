@@ -55,7 +55,7 @@ public class InSession extends Activity {
         btnPause = (Button) findViewById(R.id.pauseBtn);
 
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey("tutor")) {
+        if (extras != null && extras.containsKey("tutor")) {
             tutor = extras.getParcelable("tutor");
 
             // convert to long in ms
@@ -64,12 +64,6 @@ public class InSession extends Activity {
                 sessionRemaining = sessionLength;
             }
         }
-        if(extras.containsKey("location")){
-            mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location",  mLastLocation.getLatitude() +  " , " + mLastLocation.getLongitude());
-        }
-        session = new LoginManager(getApplicationContext());
-
 
         startCountdown();
 
@@ -106,7 +100,6 @@ public class InSession extends Activity {
         });
 
     }
-
 
     public void onResume() {
         super.onResume();

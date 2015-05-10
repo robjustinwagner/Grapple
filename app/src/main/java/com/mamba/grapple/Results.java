@@ -126,7 +126,6 @@ public class Results extends Activity {
         }
     }
 
-
     // handles the result of login/registration
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {

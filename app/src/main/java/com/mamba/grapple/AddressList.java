@@ -44,14 +44,6 @@ public class AddressList extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addresslist);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            mLastLocation = extras.getParcelable("location");
-            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
-        }
-
-        session = new LoginManager(getApplicationContext());
-
         dummyPopulate();
 
         locationsContainer = (ListView) findViewById(R.id.addressList);
@@ -78,7 +70,6 @@ public class AddressList extends Activity {
         });
 
     }
-
 
     public void onResume() {
         super.onResume();
