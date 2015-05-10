@@ -41,7 +41,10 @@ import com.google.android.gms.location.LocationServices;
 
 // *json imports*
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 
 public class Search extends Fragment implements ConnectionCallbacks, OnConnectionFailedListener {
@@ -70,6 +73,7 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
 
     // temporary until DB load setup (use SimpleCursorAdapter for DB)
     static final String[] COURSES = {"Chemistry 103", "Comp Sci 302", "French 4", "Math 234", "Physics 202"};
+    ArrayList<String> courseList = new ArrayList();
     // current url path for tutor list retrieval
     static final String TUTOR_PATH = "http://protected-dawn-4244.herokuapp.com/tutors";
 
@@ -176,10 +180,11 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
         listView = (ListView) getView().findViewById(R.id.list);
         distanceView = (TextView) getView().findViewById(R.id.textView5);
         search = (Button) getView().findViewById(R.id.button);
+        courseList = getCourseList();
 
         //add elements from array to list view
         listView.setAdapter(new ArrayAdapter<String>(getActivity(),
-                R.layout.row, COURSES){
+                R.layout.row, COURSES){ // TODO swap COURSES with courseList
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent)
@@ -300,6 +305,22 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
     }
 
 
+
+    private ArrayList<String> getCourseList(){
+        ArrayList<String> classList = null;
+        try {
+            Gson gson = new Gson();
+            JsonElement json = downloadUrl(urls[0]); // TODO
+            Type type = new TypeToken<ArrayList<String>>() {}.getType();
+            classList = gson.fromJson(json, type);
+            return classList;
+        } catch (IOException e) {
+            Log.e("IO","Unable to retrieve web page. URL may be invalid.");
+            return classList;
+        }
+    }
+
+
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a
     // URL string and uses it to create an HttpUrlConnection. Once the connection
     // has been established, the AsyncTask downloads the contents of the webpage as
@@ -340,7 +361,6 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
             intent.putParcelableArrayListExtra("tutorList", tutorList);
             intent.putExtra("distance", distance);
             startActivity(intent);
-
         }
     }
 
