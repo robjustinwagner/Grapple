@@ -41,6 +41,14 @@ public class UserObject implements Parcelable {
 
 
 
+    public void setTravelDistance(float distance){
+        this.distance = distance;
+    }
+
+    public float travelDistance(){
+        return this.distance;
+    }
+
     public String getDistance(Location userLocation){
 
         double lat1 = userLocation.getLatitude();
