@@ -39,6 +39,7 @@ public class PreSession extends ActionBarActivity {
             mLastLocation = extras.getParcelable("location");
             Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
         }
+        session = new LoginManager(getApplicationContext());
     }
 
 

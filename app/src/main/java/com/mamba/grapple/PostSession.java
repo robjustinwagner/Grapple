@@ -77,6 +77,7 @@ public class PostSession extends Activity {
                     break;
             }
         }
+        session = new LoginManager(getApplicationContext());
     }
 
     public void onResume() {
