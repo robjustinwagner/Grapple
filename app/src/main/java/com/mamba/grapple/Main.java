@@ -64,11 +64,11 @@ public class Main extends FragmentActivity {
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-               Log.v("tab switch ", tabId);
+                Log.v("tab switch ", tabId);
             }
         });
 
-
+        session = new LoginManager(getApplicationContext());
     }
 
     // check login status every time the activity gets shown
