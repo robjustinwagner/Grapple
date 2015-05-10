@@ -115,6 +115,8 @@ public class SignIn extends FragmentActivity{
             }
         });
 
+        session = new LoginManager(getApplicationContext());
+
     }
 
 

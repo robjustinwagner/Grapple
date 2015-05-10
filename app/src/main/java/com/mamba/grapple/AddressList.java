@@ -68,7 +68,7 @@ public class AddressList extends Activity {
 
             }
         });
-
+        session = new LoginManager(getApplicationContext());
     }
 
     public void onResume() {

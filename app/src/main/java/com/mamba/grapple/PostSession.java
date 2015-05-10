@@ -16,7 +16,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.google.android.gms.maps.MapFragment;
+
+import org.json.JSONObject;
 
 /**
  * Created by vash on 4/18/15.
@@ -49,9 +52,8 @@ public class PostSession extends Activity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: get tutor rating
                 int numStars = rating.getNumStars();
-
+                mService.startBroadcast(session.getCurrentUser().getId(), numStars);
                 // return to search and finish
                 Intent intent = new Intent(PostSession.this, Main.class);
                 startActivity(intent);
@@ -77,6 +79,7 @@ public class PostSession extends Activity {
                     break;
             }
         }
+        session = new LoginManager(getApplicationContext());
     }
 
     public void onResume() {

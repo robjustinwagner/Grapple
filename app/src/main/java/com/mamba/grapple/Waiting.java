@@ -142,9 +142,10 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         String distance = session.getCurrentUser().getDistance(userLoc);
         googleMap.addCircle(new CircleOptions()
                 .center(userLoc)
-                .radius(Double.parseDouble(distance))
+                .radius(Double.parseDouble(distance)+100)
                 .strokeColor(Color.LTGRAY)
-                .fillColor(Color.DKGRAY));
+                .fillColor(Color.DKGRAY)
+                .visible(true));
     }
 
 

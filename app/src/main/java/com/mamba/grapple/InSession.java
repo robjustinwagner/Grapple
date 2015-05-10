@@ -99,6 +99,7 @@ public class InSession extends Activity {
             }
         });
 
+        session = new LoginManager(getApplicationContext());
     }
 
     public void onResume() {

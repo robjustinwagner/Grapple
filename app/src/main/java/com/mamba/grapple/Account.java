@@ -33,6 +33,7 @@ public class Account extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         getActionBar().show();
+        session = new LoginManager(getApplicationContext());
     }
 
     public void onResume() {
