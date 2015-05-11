@@ -31,6 +31,9 @@ public class LoginManager {
     // Current User
     UserObject currentUser = null;
 
+
+    Gson gson = new Gson();
+
     // Constructor
     public LoginManager(Context context){
         this._context = context;
@@ -68,13 +71,15 @@ public class LoginManager {
     // returns the logged in user
     public UserObject getCurrentUser(){
         String user = pref.getString(CURRENT_USER, null);
-        Gson gson = new Gson();
         currentUser = gson.fromJson(user, UserObject.class);
 
         return currentUser;
     }
 
     public void updateCurrentUserDistance(int distance) {
-        currentUser.distance = distance;
+        currentUser.setTravelDistance(distance);
+        String user = gson.toJson(currentUser);
+        editor.putString(CURRENT_USER, user);
+        editor.commit();
     }
 }

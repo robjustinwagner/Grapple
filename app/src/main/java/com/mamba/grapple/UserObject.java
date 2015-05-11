@@ -16,15 +16,15 @@ import java.text.DecimalFormat;
 public class UserObject implements Parcelable {
 
     // the attributes of each tutor
-    public String id;
-    public String firstName;
-    public String lastName;
-    public String email;
-    public int rating;
-    public String profilePic;
-    public float distance;
-    public LocationObject location;
-    public TutorSession session;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private int rating;
+    private String profilePic;
+    private float distance;
+    private LocationObject location;
+    private TutorSession session;
 
 
     // rounds to two decimal places
@@ -50,6 +50,8 @@ public class UserObject implements Parcelable {
         return this.distance;
     }
 
+
+
     public String getDistance(Location userLocation){
 
         double lat1 = userLocation.getLatitude();
@@ -66,6 +68,10 @@ public class UserObject implements Parcelable {
         dist = dist * 60 * 1.1515;
 
         return twoDeci.format(dist);
+    }
+
+    public String getName(){
+        return this.firstName + " " + this.lastName;
     }
 
     public String getDistance(LatLng location){

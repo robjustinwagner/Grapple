@@ -137,17 +137,19 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
     public void onMapReady(GoogleMap googleMap) {
         googleMap.setMyLocationEnabled(true);
         LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 14));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 11));
 
 
         // TODO: get distance travelled radius from current user data and show it on map
 
-        String distance = session.getCurrentUser().getDistance(userLoc);
+        Float distance = session.getCurrentUser().travelDistance();
+        Log.v("Tutor travel dist", distance +"");
         googleMap.addCircle(new CircleOptions()
                 .center(userLoc)
-                .radius(Double.parseDouble(distance)+100)
-                .strokeColor(Color.LTGRAY)
-                .fillColor(Color.DKGRAY)
+                .radius(distance * 1609.34)
+                .strokeColor(Color.DKGRAY)
+                .strokeWidth(2)
+                .fillColor(Color.parseColor("#500084d3"))
                 .visible(true));
 
     }

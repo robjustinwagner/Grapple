@@ -77,7 +77,7 @@ public class Main extends FragmentActivity {
         session = new LoginManager(getApplicationContext());
         if(session.isLoggedIn()){
             currentUser = session.getCurrentUser();
-            Log.v("Search Login Status", currentUser.firstName +  " has been logged in");
+            Log.v("Search Login Status", currentUser.getName() +  " has been logged in");
             createService();
         }
     }

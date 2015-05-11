@@ -53,7 +53,7 @@ public class PostSession extends Activity {
             @Override
             public void onClick(View v) {
                 int numStars = rating.getNumStars();
-                mService.startBroadcast(session.getCurrentUser().getId(), numStars);
+                mService.updateRating(session.getCurrentUser().getId(), numStars);
                 // return to search and finish
                 Intent intent = new Intent(PostSession.this, Main.class);
                 startActivity(intent);

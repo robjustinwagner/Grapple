@@ -121,17 +121,17 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     }
 
     //broadcast used to update the tutor rating
-    public void startBroadcast(String tutorId, int updatedTutorRating){
+    public void updateRating(String tutorId, int updatedTutorRating){
 
         JSONObject broadcastInfo = new JSONObject();
         JSONArray tutorCourses = new JSONArray();
 
         try{
 
-            broadcastInfo.put("tutorId", tutorId);
-            broadcastInfo.put("updatedTutorRating", updatedTutorRating);
+            broadcastInfo.put("id", tutorId);
+            broadcastInfo.put("rating", updatedTutorRating);
             Log.v("emitting broadcast", "updated tutor rating");
-            socket.emit("tutorRating", broadcastInfo);
+            socket.emit("updateRating", broadcastInfo);
 
         }catch (JSONException e){
             e.printStackTrace();
