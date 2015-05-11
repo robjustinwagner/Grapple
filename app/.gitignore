@@ -32,3 +32,4 @@ Thumbs.db
 .gradle
 build/
 api_key.xml
+keys.xml

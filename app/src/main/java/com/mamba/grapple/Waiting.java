@@ -138,7 +138,6 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 14));
 
-        String distance = session.getCurrentUser().getDistance(userLoc);
         // TODO: get distance travelled radius from current user data and show it on map
     }
 

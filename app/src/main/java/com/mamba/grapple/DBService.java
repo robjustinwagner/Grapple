@@ -166,7 +166,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
 
     public class LocalBinder extends Binder {
-        public DBService getService() {
+        public DBService getService(){
             System.out.println("I am in Localbinder ");
             return DBService.this;
 
