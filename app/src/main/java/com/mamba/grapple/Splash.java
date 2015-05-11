@@ -76,7 +76,6 @@ public class Splash extends Activity {
         }
     }
 
-
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;

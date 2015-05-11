@@ -85,22 +85,10 @@ public class SignIn extends FragmentActivity{
     private boolean mBound = false;
     DBService mService;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
-//        Bundle extras = getIntent().getExtras();
-//
-////        if (extras != null && extras.containsKey("location")) {
-////            mLastLocation = extras.getParcelable("location");
-////            Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
-////        }
-
-        session = new LoginManager(getApplicationContext());
 
         loginFragment = findViewById(R.id.login_view);
         registerFragment = findViewById(R.id.register_view);
@@ -126,6 +114,8 @@ public class SignIn extends FragmentActivity{
                 Log.v("tab switch ", tabId);
             }
         });
+
+        session = new LoginManager(getApplicationContext());
 
     }
 

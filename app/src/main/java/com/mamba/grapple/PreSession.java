@@ -35,11 +35,10 @@ public class PreSession extends ActionBarActivity {
         getActionBar().show();
 
         Bundle extras = getIntent().getExtras();
-        if(extras.containsKey("location")){
+        if (extras != null && extras.containsKey("location")) {
             mLastLocation = extras.getParcelable("location");
             Log.v("Current user location", mLastLocation.getLatitude() + " , " + mLastLocation.getLongitude());
         }
-
         session = new LoginManager(getApplicationContext());
     }
 

@@ -74,8 +74,7 @@ public class LoginManager {
         return currentUser;
     }
 
-    // TODO: create method to update the current user object and store it
-    public void updateCurrentUser() {
-        //currentUser.
+    public void updateCurrentUserDistance(int distance) {
+        currentUser.distance = distance;
     }
 }

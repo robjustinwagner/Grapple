@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 
 /**
@@ -85,6 +86,9 @@ public class UserObject implements Parcelable {
         return twoDeci.format(dist);
     }
 
+    public String getId() {
+        return this.id;
+    }
 
     // conversions
     private double deg2rad(double deg) {

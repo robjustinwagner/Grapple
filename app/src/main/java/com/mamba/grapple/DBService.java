@@ -117,10 +117,29 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         socket.on("startSessionRequest", startSessionRequest);
         socket.on("grapple", grapple);
 
-
         socket.connect();
     }
 
+    //broadcast used to update the tutor rating
+    public void startBroadcast(String tutorId, int updatedTutorRating){
+
+        JSONObject broadcastInfo = new JSONObject();
+        JSONArray tutorCourses = new JSONArray();
+
+        try{
+
+            broadcastInfo.put("tutorId", tutorId);
+            broadcastInfo.put("updatedTutorRating", updatedTutorRating);
+            Log.v("emitting broadcast", "updated tutor rating");
+            socket.emit("tutorRating", broadcastInfo);
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    //broadcast used to grapple
     public void startBroadcast(int time, int distance, double price, String[] courses){
 
         JSONObject broadcastInfo = new JSONObject();
@@ -223,9 +242,6 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
             // parse data and broadcast
         }
     };
-
-
-
 
     private void broadcast(Intent intent){
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);

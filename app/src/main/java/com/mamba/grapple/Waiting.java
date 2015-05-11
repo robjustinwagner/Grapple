@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
@@ -45,7 +46,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         setContentView(R.layout.activity_tutorselect);
 
         Bundle extras = getIntent().getExtras();
-        if (extras.containsKey("location")) {
+        if (extras != null && extras.containsKey("location")) {
             mLastLocation = extras.getParcelable("location");
             Log.v("Current user location",  mLastLocation.getLatitude() +  " , " + mLastLocation.getLongitude());
         }
@@ -138,7 +139,17 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 14));
 
+
         // TODO: get distance travelled radius from current user data and show it on map
+
+        String distance = session.getCurrentUser().getDistance(userLoc);
+        googleMap.addCircle(new CircleOptions()
+                .center(userLoc)
+                .radius(Double.parseDouble(distance)+100)
+                .strokeColor(Color.LTGRAY)
+                .fillColor(Color.DKGRAY)
+                .visible(true));
+
     }
 
 
