@@ -70,12 +70,16 @@ public class PostSession extends Activity {
 
             switch (tutor.firstName){
                 case "Jess": tutorPic.setImageResource(R.drawable.jess);
+                    tutor.setId("0");
                     break;
                 case "Eric": tutorPic.setImageResource(R.drawable.eric);
+                    tutor.setId("1");
                     break;
                 case "Robert": tutorPic.setImageResource(R.drawable.robert);
+                    tutor.setId("2");
                     break;
                 case "Nadia": tutorPic.setImageResource(R.drawable.nadia);
+                    tutor.setId("3");
                     break;
             }
         }

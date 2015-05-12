@@ -40,7 +40,9 @@ public class TutorObject implements Parcelable {
         Log.v("Session Price: ", String.valueOf(this.session.price));
     }
 
-
+    public void setId(String ID){
+        this.id = ID;
+    }
 
 
 
