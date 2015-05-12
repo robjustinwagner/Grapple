@@ -218,6 +218,8 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
     // enters the chat with the tutor
     public void grappleTutor(View view) {
+        Log.v("grappleEvent", "tutor id = " + tutor.id);
+        mService.startGrapple(tutor.id);
         Intent intent = new Intent(this, Chat.class);
         intent.putExtra("selectedTutor", tutor);
         startActivity(intent);
