@@ -37,6 +37,8 @@ public class Results extends Activity {
     LoginManager session;
     UserObject currentUser;
 
+    TutorsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +58,9 @@ public class Results extends Activity {
             tutorList = extras.getParcelableArrayList("tutorList");
             Log.v("tutorList", String.valueOf(tutorList));
 
-            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            String locationProvider = LocationManager.NETWORK_PROVIDER;
-            mLastLocation = locationManager.getLastKnownLocation(locationProvider);
-
             // populate the list view
-            TutorsAdapter adapter = new TutorsAdapter(this, tutorList);
-            adapter.setUserLocation(mLastLocation);
+            adapter = new TutorsAdapter(this, tutorList);
+
             listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(adapter);
 
@@ -180,6 +178,7 @@ public class Results extends Activity {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mService.setSession(session);
+            adapter.setUserLocation(mService.getLocation());
             mBound = true;
         }
 

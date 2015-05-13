@@ -85,7 +85,8 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
 
 
     public void setUserLocation(Location userLocation){
-        this.userLocation = userLocation;
+        if(userLocation != null)
+            this.userLocation = userLocation;
     }
 
 }

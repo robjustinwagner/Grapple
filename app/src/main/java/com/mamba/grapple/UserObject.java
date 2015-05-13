@@ -54,8 +54,19 @@ public class UserObject implements Parcelable {
 
     public String getDistance(Location userLocation){
 
-        double lat1 = userLocation.getLatitude();
-        double lon1 = userLocation.getLongitude();
+        double lat1;
+        double lon1;
+
+        if(userLocation != null){
+            lat1 = userLocation.getLatitude();
+            lon1 = userLocation.getLongitude();
+        }else{
+            // create dummy lat/lon for emulator
+            lat1 = 43.076592;
+            lon1 = -89.412487;
+        }
+
+
         double lat2 = this.location.xPos;
         double lon2 = this.location.yPos;
 

@@ -284,7 +284,9 @@ public class Login extends Fragment {
                     Log.v("Extracted User", user);
 
                     // store token and log the user in
-                    ((SignIn)getActivity()).session.login(token, user);
+                    ((SignIn)getActivity()).login(token, user);
+
+
 
 
                 } catch (JSONException e) {

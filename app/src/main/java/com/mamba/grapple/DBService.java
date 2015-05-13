@@ -56,13 +56,15 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     private final Gson gson = new Gson();
     private static final long INTERVAL = 10000 * 10;
     private static final long FASTEST_INTERVAL = 10000 * 5;
-
+    private String grappledUser;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mCurrentLocation;
     String mLastUpdateTime;
 
     LoginManager session;
+
+    Activity boundActivity;
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -149,13 +151,16 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     }
 
     public void startGrapple(String id) {
-        Gson gson = new Gson();
         // serialize tutor.id, lat, and long
         Location loc = getLocation();
         double lat = loc.getLatitude();
         double lon = loc.getLongitude();
+        if(id == null){
+            id = session.currentUser.getId();
+        }
         Log.v("grappleEvent", "id passed in is: " + id);
         try {
+
             JSONObject idAndLocJson = new JSONObject();
             idAndLocJson.put("id", id);
             idAndLocJson.put("lat", lat);
@@ -176,12 +181,10 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         JSONArray tutorCourses = new JSONArray();
 
         try{
-
             broadcastInfo.put("id", tutorId);
             broadcastInfo.put("rating", updatedTutorRating);
             Log.v("emitting broadcast", "updated tutor rating");
             socket.emit("updateRating", broadcastInfo);
-
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -230,7 +233,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and broadcast
-//            LocationObject location = gson.fromJson();
+            // LocationObject location = gson.fromJson();
 
 
             Intent intent = new Intent("locationUpdate");
@@ -251,7 +254,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     private Emitter.Listener startSessionRequest = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            JSONObject data = (JSONObject) args[0];
+            JSONArray data = (JSONArray) args[0];
             // parse data and broadcast
         }
     };
@@ -259,12 +262,23 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
     private Emitter.Listener grapple = new Emitter.Listener() {
         @Override
-        public void call(final Object... args) {
-            JSONObject data = (JSONObject) args[0];
+        public void call(final Object... args){
 
-             // when a person cl
+            Log.v("Gettin Grappled..", String.valueOf(args));
+            JSONObject data = (JSONObject) args[0];
+            try{
+                String grappledUser = data.getString("id");
+                //
+                Log.v("Grappled", session.currentUser.getName() + " just got grappled by " + grappledUser);
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+
+            // when a person cl
             // TODO serialize data into UserObject
             // and broadcast
+
+
         }
     };
 
@@ -273,6 +287,10 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
     private void broadcast(Intent intent){
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    public void setActivity(Activity activity){
+        boundActivity = activity;
     }
 
 

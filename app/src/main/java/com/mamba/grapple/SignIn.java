@@ -149,6 +149,7 @@ public class SignIn extends FragmentActivity{
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
             mService.setSession(session);
+            mService.connectSocket();
             mBound = true;
             mLastLocation = mService.getLocation();
         }
@@ -158,6 +159,11 @@ public class SignIn extends FragmentActivity{
         }
     };
 
+
+    public void login(String token, String user){
+        session.login(token, user);
+        createService();
+    }
 //
 //    @Override
 //    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
