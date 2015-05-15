@@ -6,11 +6,13 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -29,6 +31,7 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -85,6 +88,10 @@ public class SignIn extends FragmentActivity{
     private boolean mBound = false;
     DBService mService;
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +123,8 @@ public class SignIn extends FragmentActivity{
         });
 
         session = new LoginManager(getApplicationContext());
+
+
 
     }
 
@@ -164,6 +173,10 @@ public class SignIn extends FragmentActivity{
         session.login(token, user);
         createService();
     }
+
+
+
+
 //
 //    @Override
 //    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {

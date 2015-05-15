@@ -81,7 +81,7 @@
             android:exported="true"
             android:label="@string/title_activity_results" />
         <activity
-            android:name=".Tutor"
+            android:name=".Meetup"
             android:exported="true"
             android:label="@string/title_activity_tutor" />
         <activity

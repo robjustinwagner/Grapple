@@ -1,9 +1,11 @@
 package com.mamba.grapple;
 
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -38,6 +41,22 @@ public class Main extends FragmentActivity {
     // current user data
     LoginManager session;
     UserObject currentUser;
+
+    private BroadcastReceiver responseReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent){
+            // intent can contain any data
+            Bundle extras = intent.getExtras();
+
+            if(extras != null){
+                String responseType = extras.getString("responseType");
+                Log.v("responseType", responseType);
+                Log.v("Main Activity", "received response: " + responseType);
+
+            }
+        }
+    };
 
 
     public void onCreate(Bundle savedInstanceState){
@@ -69,6 +88,10 @@ public class Main extends FragmentActivity {
         });
 
         session = new LoginManager(getApplicationContext());
+
+        // register broadcast receiver for grapple
+        LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver,
+                new IntentFilter("mainReceiver"));
     }
 
     // check login status every time the activity gets shown

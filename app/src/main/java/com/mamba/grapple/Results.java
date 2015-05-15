@@ -5,11 +5,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -78,7 +75,7 @@ public class Results extends Activity {
                     TutorObject selectedTutor = tutorList.get(position);
                     Log.v("selected tutor", String.valueOf(selectedTutor));
                     // transition to specific tutors page
-                    Intent intent = new Intent(Results.this, Tutor.class);
+                    Intent intent = new Intent(Results.this, Meetup.class);
                     intent.putExtra("selectedTutor", selectedTutor);
                     startActivity(intent);
                 }

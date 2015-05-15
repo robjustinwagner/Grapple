@@ -8,18 +8,13 @@ import android.location.Location;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.ListView;
 
 // *socket.io imports*
 import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.Socket;
 import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.IO.*;
-import com.github.nkzawa.socketio.client.SocketIOException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,23 +24,16 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
+
 import java.net.*; // for URIexception
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Properties;
 
 
 public class DBService extends Service implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -62,19 +50,14 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     Location mCurrentLocation;
     String mLastUpdateTime;
 
-    LoginManager session;
-
     Activity boundActivity;
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
+    LoginManager session;
+    UserObject currentUser;
 
 
 
+    /****************************************************************************** Service Related Methods  *********************************************************************/
     @Override
     public void onCreate() {
         System.out.println("DBService Created");
@@ -119,87 +102,18 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         socket.on("meetingSuggestion", meetingSuggestion);
         socket.on("startSessionRequest", startSessionRequest);
         socket.on("grapple", grapple);
+        socket.on("removeAvailableDone", serverResponse);
 
 
         socket.connect();
     }
 
-    public void startBroadcast(int time, int distance, double price, String[] courses){
-
-        JSONObject broadcastInfo = new JSONObject();
-        JSONArray tutorCourses = new JSONArray();
-
-        try{
-
-            for(String course : courses){
-                tutorCourses.put(course);
-            }
-
-            broadcastInfo.put("time", time);
-            broadcastInfo.put("distance", distance);
-            broadcastInfo.put("price", price);
-            broadcastInfo.put("courses", tutorCourses);
-            broadcastInfo.put("lat", mCurrentLocation.getLatitude());
-            broadcastInfo.put("lon", mCurrentLocation.getLongitude());
-            Log.v("emitting broadcast", "user available to tutor");
-            socket.emit("setAvailable",  broadcastInfo); //
-
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public void startGrapple(String id) {
-        // serialize tutor.id, lat, and long
-        Location loc = getLocation();
-        double lat = loc.getLatitude();
-        double lon = loc.getLongitude();
-        if(id == null){
-            id = session.currentUser.getId();
-        }
-        Log.v("grappleEvent", "id passed in is: " + id);
-        try {
-
-            JSONObject idAndLocJson = new JSONObject();
-            idAndLocJson.put("id", id);
-            idAndLocJson.put("lat", lat);
-            idAndLocJson.put("lon", lon);
-            Log.v("grapple", "emitting grapple event");
-            socket.emit("grapple", idAndLocJson);
-        }
-        catch(JSONException ex){
-            Log.e("grapple", "could build and send json");
-        }
-    }
-
-
-    //broadcast used to update the tutor rating
-    public void updateRating(String tutorId, int updatedTutorRating){
-
-        JSONObject broadcastInfo = new JSONObject();
-        JSONArray tutorCourses = new JSONArray();
-
-        try{
-            broadcastInfo.put("id", tutorId);
-            broadcastInfo.put("rating", updatedTutorRating);
-            Log.v("emitting broadcast", "updated tutor rating");
-            socket.emit("updateRating", broadcastInfo);
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-    }
 
     public Location getLocation(){
         return mCurrentLocation;
     }
 
-    public void setSession(LoginManager session){
-        Log.v("Service Session", ""+session);
-        this.session = session;
 
-    }
 
 
 
@@ -217,8 +131,111 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         }
     }
 
+    public void setActivity(Activity activity){
+        boundActivity = activity;
+    }
 
-    // listener responses
+
+
+    // sends updated socket data to UI
+    private void clientBroadcast(Intent intent){
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    /****************************************************************************** User Session Management *********************************************************************/
+    // gets the latest session from activity, also gets updated current user data
+    public void setSession(LoginManager session){
+        Log.v("Service Session", ""+session);
+        this.session = session;
+        this.currentUser = session.getCurrentUser();
+    }
+
+
+
+
+
+    /****************************************************************************** Socket Emits *********************************************************************/
+
+    // lets a tutor broadcast their availability
+    public void startBroadcast(int time, int distance, double price, String[] courses){
+
+        JSONObject broadcastInfo = new JSONObject();
+        JSONArray tutorCourses = new JSONArray();
+
+        try{
+
+            for(String course : courses){
+                tutorCourses.put(course);
+            }
+
+            broadcastInfo.put("time", time);
+            broadcastInfo.put("distance", distance);
+            broadcastInfo.put("price", price);
+            broadcastInfo.put("courses", tutorCourses);
+            broadcastInfo.put("lat", mCurrentLocation.getLatitude());
+            broadcastInfo.put("lon", mCurrentLocation.getLongitude());
+            Log.v("Emitting..", "Set Available");
+            socket.emit("setAvailable",  broadcastInfo); //
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    // stops tutor from broadcasting their availability
+    public void endBroadcast(){
+        Log.v("Emitting..", "Remove Available");
+        socket.emit("removeAvailable");
+    }
+
+    // initiates the grappling of a tutor
+    public void startGrapple(String id) {
+        // serialize tutor.id, lat, and long
+        Location loc = getLocation();
+        double lat = loc.getLatitude();
+        double lon = loc.getLongitude();
+        if(id == null){
+            id = session.currentUser.getId();
+        }
+        Log.v("grappleEvent", "id passed in is: " + id);
+        try {
+            JSONObject idAndLocJson = new JSONObject();
+            idAndLocJson.put("id", id);
+            idAndLocJson.put("lat", lat);
+            idAndLocJson.put("lon", lon);
+            Log.v("Emitting..", "Grapple User");
+            socket.emit("grapple", idAndLocJson);
+        }
+        catch(JSONException ex){
+            Log.e("grapple", "could build and send json");
+        }
+    }
+
+
+    // broadcast used to update the user's rating
+    public void updateRating(String userID, int updatedRating){
+
+        JSONObject broadcastInfo = new JSONObject();
+        JSONArray tutorCourses = new JSONArray();
+
+        try{
+            broadcastInfo.put("id", userID);
+            broadcastInfo.put("rating", updatedRating);
+            Log.v("Emitting..", "Update Rating");
+            socket.emit("updateRating", broadcastInfo);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+    /****************************************************************************** Socket Listeners *********************************************************************/
+
     private Emitter.Listener message = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -268,33 +285,45 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
             JSONObject data = (JSONObject) args[0];
             try{
                 String grappledUser = data.getString("id");
-                //
                 Log.v("Grappled", session.currentUser.getName() + " just got grappled by " + grappledUser);
+                UserObject user = gson.fromJson(grappledUser, UserObject.class);
+                Intent intent = new Intent("grappled");
+                intent.putExtra("user", user);
+
+                clientBroadcast(intent);
             }catch(JSONException e){
                 e.printStackTrace();
             }
-
-            // when a person cl
-            // TODO serialize data into UserObject
-            // and broadcast
-
 
         }
     };
 
 
+    private Emitter.Listener serverResponse = new Emitter.Listener(){
+
+        @Override
+        public void call(final Object... args) {
+            Log.v("Received response", "End Broadcast");
+
+            JSONObject data = (JSONObject) args[0];
+
+            try{
+                // get responses from server and alert the current activity
+                String responseType = data.getString("responseType");
+                Intent intent = new Intent("serverResponse");
+                intent.putExtra("responseType", responseType);
+                clientBroadcast(intent);
+
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+    };
 
 
-    private void broadcast(Intent intent){
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
 
-    public void setActivity(Activity activity){
-        boundActivity = activity;
-    }
-
-
-    /// Google Play Stuff //////////////////
+    /****************************************************************************** Location Services *********************************************************************/
     @Override
     public void onConnected(Bundle bundle) {
         Log.v("Location Api Connected" , String.valueOf(mGoogleApiClient.isConnected()));
@@ -334,6 +363,14 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
                 mGoogleApiClient, mLocationRequest, this);
 
     }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
 
 
 }

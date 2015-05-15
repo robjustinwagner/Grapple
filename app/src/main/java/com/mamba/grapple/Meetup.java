@@ -56,7 +56,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tutor extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
+public class Meetup extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
 
     private MapFragment mapFragment;
     private GoogleMap gMap;
@@ -74,7 +74,6 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
     private LocationRequest mLocationRequest;
 
     Marker tutorMarker;
-    Marker studentMarker;
 
     GoogleMap.InfoWindowAdapter iwadapter;
 
@@ -119,10 +118,10 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         Log.v("Service Bound", "Tutor select bound to service");
     }
 
-    protected void onPause() {
+    protected void onPause(){
         super.onPause();
         // Unbind from the service
-        if (mBound) {
+        if (mBound){
             Log.v("Unbinding Service", "Results Activity");
             unbindService(mConnection);
             mBound = false;
@@ -186,7 +185,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                 gMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Intent intent = new Intent(Tutor.this, InSession.class);
+                        Intent intent = new Intent(Meetup.this, InSession.class);
                         intent.putExtra("tutor", tutor);
                         startActivity(intent);
                         finish();
@@ -196,7 +195,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
 
                 chatButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        Intent intent = new Intent(Tutor.this, Chat.class);
+                        Intent intent = new Intent(Meetup.this, Chat.class);
                         intent.putExtra("selectedTutor", tutor);
                         intent.putExtra("meetingPoint", meetingPoint);  // if the meeting point is added we know the tutor has been grappled
                         startActivity(intent);
@@ -264,8 +263,6 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
                     tutorPic.setImageResource(R.drawable.nadia);
                     break;
             }
-
-
         }
     }
 
@@ -306,7 +303,7 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
             case R.id.action_settings:
                 //TODO
             case R.id.action_signout:
-                Intent myIntent = new Intent(Tutor.this, SignIn.class);
+                Intent myIntent = new Intent(Meetup.this, SignIn.class);
                 myIntent.putExtra("destroy_token", "true");
                 startActivity(myIntent);
                 return true;
@@ -368,18 +365,13 @@ public class Tutor extends FragmentActivity implements OnMapReadyCallback, Conne
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
 
-
         if (mLastLocation == null) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-
         }
-
 
         Log.v("latitude", String.valueOf(mLastLocation.getLatitude()));
 
-//        gMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))
-//                .title("You"));
+
 
     }
 

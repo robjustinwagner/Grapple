@@ -1,14 +1,17 @@
 package com.mamba.grapple;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,8 +43,32 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
     DBService mService;
 
 
+    // receiver to handle server responses for this activity
+    private BroadcastReceiver responseReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // intent can contain any data
+            Bundle extras = intent.getExtras();
+
+            if(extras != null){
+                String responseType = extras.getString("responseType");
+                Log.v("responseType", responseType);
+                Log.v("Waiting Activity", "received response: " + responseType);
+                if(responseType == "grapple"){
+                    // take them to chat view with user
+
+                }
+
+            }
+        }
+    };
+
+
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorselect);
 
@@ -54,15 +81,21 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         grappleButton = (Button) findViewById(R.id.grappleButton);
         grappleButton.setVisibility(View.GONE);
 
+        // track user session data
         session = new LoginManager(getApplicationContext());
 
+        //create map
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        // register broadcast receiver for this activity
+        LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver,
+                new IntentFilter("waitingReceiver"));
 
     }
 
 
-    public void onResume() {
+    public void onResume(){
         super.onResume();
         if (session.isLoggedIn()) {
             createService();
@@ -79,7 +112,13 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         }
     }
 
-    public void createService() {
+    @Override
+    public void onBackPressed(){
+        mService.endBroadcast();
+        finish();
+    }
+
+    public void createService(){
         Log.v("Waiting Page", "Creating Service..");
         startService(new Intent(this, DBService.class));
         bindService(new Intent(this, DBService.class), mConnection, Context.BIND_AUTO_CREATE);
@@ -139,9 +178,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         LatLng userLoc = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc, 11));
 
-
         // TODO: get distance travelled radius from current user data and show it on map
-
         Float distance = session.getCurrentUser().travelDistance();
         Log.v("Tutor travel dist", distance +"");
         googleMap.addCircle(new CircleOptions()
@@ -167,4 +204,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
             mBound = false;
         }
     };
+
+
+
 }

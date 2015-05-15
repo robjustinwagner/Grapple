@@ -18,7 +18,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -75,7 +74,7 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
             @Override
             public void onClick(View v) {
                 // send the data to the tutor view and finish
-                Intent intent = new Intent(MapDialog.this, Tutor.class);
+                Intent intent = new Intent(MapDialog.this, Meetup.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra("meetingPoint", meetingPoint);
                 startActivity(intent);
