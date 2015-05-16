@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class Results extends Activity {
 
-    ArrayList<TutorObject> tutorList;
+    ArrayList<UserObject> tutorList;
     ListView listView;
 
 
@@ -68,11 +68,12 @@ public class Results extends Activity {
                 if (!session.isLoggedIn()) {
                     // transfer the user to the register page
                     Intent intent = new Intent(Results.this, SignIn.class);
+
                     // we expect the auth response
                     startActivityForResult(intent, 1);
                 } else {
                     Log.v("Login status", "Logged in user");
-                    TutorObject selectedTutor = tutorList.get(position);
+                    UserObject selectedTutor = tutorList.get(position);
                     Log.v("selected tutor", String.valueOf(selectedTutor));
                     // transition to specific tutors page
                     Intent intent = new Intent(Results.this, Meetup.class);

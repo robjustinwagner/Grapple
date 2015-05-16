@@ -102,7 +102,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         socket.on("meetingSuggestion", meetingSuggestion);
         socket.on("startSessionRequest", startSessionRequest);
         socket.on("grapple", grapple);
-        socket.on("removeAvailableDone", serverResponse);
+        socket.on("removeAvailableDone", removeAvailableDone);
 
 
         socket.connect();
@@ -213,6 +213,46 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     }
 
 
+    // send text message
+    public void sendMessage(String senderName, String senderID, String recipID, String message){
+
+        try{
+            JSONObject messageData = new JSONObject();
+            messageData.put("recipID", recipID);
+            messageData.put("senderID", senderID);
+            messageData.put("message", message);
+            Log.v("Emitting..", "Message");
+            socket.emit("message" , messageData);
+
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    // send location message
+    public void sendMessage(String senderName, String senderID, String recipID, String message, double latitude, double longitude){
+
+        try{
+            JSONObject messageData = new JSONObject();
+            messageData.put("senderID", senderID);
+            messageData.put("recipID", recipID);
+            messageData.put("message", message);
+            messageData.put("lat", latitude);
+            messageData.put("lon", longitude);
+            Log.v("Emitting..", " Location Message");
+            socket.emit("message" , messageData);
+
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
     // broadcast used to update the user's rating
     public void updateRating(String userID, int updatedRating){
 
@@ -240,7 +280,15 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         @Override
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
-            // parse data and broadcast
+            // parse data and create message object
+
+
+
+            // broadcast to chat
+            Intent intent = new Intent("chatReciever");
+            intent.putExtra("responseType", "message");
+            clientBroadcast(intent);
+
 
         }
     };
@@ -277,29 +325,30 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
     };
 
 
-    private Emitter.Listener grapple = new Emitter.Listener() {
+    private Emitter.Listener grapple = new Emitter.Listener(){
         @Override
         public void call(final Object... args){
 
-            Log.v("Gettin Grappled..", String.valueOf(args));
+            Log.v("Emit Received..", "Grapple");
             JSONObject data = (JSONObject) args[0];
+
             try{
                 String grappledUser = data.getString("id");
                 Log.v("Grappled", session.currentUser.getName() + " just got grappled by " + grappledUser);
                 UserObject user = gson.fromJson(grappledUser, UserObject.class);
-                Intent intent = new Intent("grappled");
+                // send to the waiting receiver on grapple
+                Intent intent = new Intent("waitingReceiver");
+                intent.putExtra("responseType", "grapple");
                 intent.putExtra("user", user);
-
                 clientBroadcast(intent);
             }catch(JSONException e){
                 e.printStackTrace();
             }
-
         }
     };
 
 
-    private Emitter.Listener serverResponse = new Emitter.Listener(){
+    private Emitter.Listener removeAvailableDone = new Emitter.Listener(){
 
         @Override
         public void call(final Object... args) {
@@ -308,9 +357,9 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
             JSONObject data = (JSONObject) args[0];
 
             try{
-                // get responses from server and alert the current activity
+                // get responses from server and multicast them out
                 String responseType = data.getString("responseType");
-                Intent intent = new Intent("serverResponse");
+                Intent intent = new Intent("multicastReceiver");
                 intent.putExtra("responseType", responseType);
                 clientBroadcast(intent);
 
@@ -318,7 +367,6 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
                 e.printStackTrace();
             }
         }
-
     };
 
 

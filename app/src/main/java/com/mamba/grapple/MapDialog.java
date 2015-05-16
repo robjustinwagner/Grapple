@@ -64,8 +64,8 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
         if(extras != null){
             meetingPoint = extras.getParcelable("meetingPoint");
             tutor = extras.getParcelable("tutor");
-            tutorLat = tutor.location.xPos;
-            tutorLon = tutor.location.yPos;
+            tutorLat = tutor.getLatitude();
+            tutorLon = tutor.getLongitude();
         }
 
 

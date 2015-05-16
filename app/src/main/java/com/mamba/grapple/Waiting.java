@@ -1,8 +1,10 @@
 package com.mamba.grapple;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -44,7 +46,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
 
 
     // receiver to handle server responses for this activity
-    private BroadcastReceiver responseReceiver = new BroadcastReceiver(){
+    private BroadcastReceiver waitingReceiver = new BroadcastReceiver(){
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -57,7 +59,10 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
                 Log.v("Waiting Activity", "received response: " + responseType);
                 if(responseType == "grapple"){
                     // take them to chat view with user
-
+                    UserObject user = extras.getParcelable("user");
+                    Intent chatIntent = new Intent(Waiting.this, Chat.class);
+                    chatIntent.putExtra("user", user);
+                    startActivity(chatIntent);
                 }
 
             }
@@ -65,6 +70,23 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
     };
 
 
+    // receiver to handle multicast responses
+    private BroadcastReceiver multicastReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // intent can contain any data
+            Bundle extras = intent.getExtras();
+
+            if(extras != null){
+                String responseType = extras.getString("responseType");
+                Log.v("responseType", responseType);
+                Log.v("Waiting Activity", "received response: " + responseType);
+            }
+        }
+
+    };
 
 
     @Override
@@ -88,9 +110,7 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // register broadcast receiver for this activity
-        LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver,
-                new IntentFilter("waitingReceiver"));
+
 
     }
 
@@ -100,6 +120,15 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         if (session.isLoggedIn()) {
             createService();
         }
+
+        // register broadcast receiver for this activity
+        LocalBroadcastManager.getInstance(this).registerReceiver(waitingReceiver,
+                new IntentFilter("waitingReceiver"));
+
+
+        // register broadcast receiver for this activity
+        LocalBroadcastManager.getInstance(this).registerReceiver(multicastReceiver,
+                new IntentFilter("multicastReceiver"));
     }
 
     @Override
@@ -110,12 +139,14 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
             unbindService(mConnection);
             mBound = false;
         }
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(multicastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(waitingReceiver);
     }
 
     @Override
     public void onBackPressed(){
-        mService.endBroadcast();
-        finish();
+        endBroadcastPrompt();
     }
 
     public void createService(){
@@ -205,6 +236,27 @@ public class Waiting extends FragmentActivity implements OnMapReadyCallback, Goo
         }
     };
 
+
+    private void endBroadcastPrompt(){
+        new AlertDialog.Builder(this)
+                .setTitle("Stop Broadcast")
+                .setMessage("Are you sure you want to stop broadcasting?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with ending broadcast
+                        mService.endBroadcast();
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
 
 
 }

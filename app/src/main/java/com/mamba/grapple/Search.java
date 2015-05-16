@@ -347,8 +347,8 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
             Log.v("postResult", result);
             Gson gson = new Gson();
 
-            ArrayList<TutorObject> tutorList = new ArrayList<>();
-            Type resultType = new TypeToken<ArrayList<TutorObject>>(){}.getType();
+            ArrayList<UserObject> tutorList = new ArrayList<>();
+            Type resultType = new TypeToken<ArrayList<UserObject>>(){}.getType();
             tutorList = gson.fromJson(result, resultType);
 
             Intent intent = new Intent(getActivity(), Results.class);
@@ -429,23 +429,23 @@ public class Search extends Fragment implements ConnectionCallbacks, OnConnectio
     }
 
 
-    private void dummyPopulate(ArrayList<TutorObject> tutorList){
+    private void dummyPopulate(ArrayList<UserObject> tutorList){
 
         LocationObject loc1 = new LocationObject(43.0719139, -89.4081352);
         TutorSession session1 = new TutorSession(15, 60, true);
-        TutorObject tutor1 = new TutorObject("Jess", "Kannon", 5, loc1, session1);
+        UserObject tutor1 = new UserObject("Jess", "Kannon", "5", "dummy@test.com" , "", loc1, session1);
 
         LocationObject loc2 = new LocationObject(43.0767057, -89.4010609);
         TutorSession session2 = new TutorSession(15, 60, true);
-        TutorObject tutor2 = new TutorObject("Eric", "Trac", 3, loc2, session2);
+        UserObject tutor2 = new UserObject("Eric", "Trac", "3", "dummy@test.com", "", loc2, session2);
 
         LocationObject loc3 = new LocationObject(43.0726811,-89.40169209999999);
         TutorSession session3 = new TutorSession(16, 60, true);
-        TutorObject tutor3 = new TutorObject("Robert", "Williams", 4, loc3, session3);
+        UserObject tutor3 = new UserObject("Robert", "Williams", "4" , "dummy@test.com",  "", loc3, session3);
 
         LocationObject loc4 = new LocationObject(43.0726811,-89.40169209999999);
         TutorSession session4 = new TutorSession(18, 60, true);
-        TutorObject tutor4 = new TutorObject("Nadia", "Martinez", 5, loc4, session4);
+        UserObject tutor4 = new UserObject("Nadia", "Martinez", "5", "dummy@test.com",  "", loc4, session4);
 
         tutorList.add(tutor1);
         tutorList.add(tutor2);

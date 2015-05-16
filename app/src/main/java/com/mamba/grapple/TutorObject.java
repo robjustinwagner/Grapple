@@ -16,21 +16,22 @@ import java.text.DecimalFormat;
 public class TutorObject implements Parcelable {
 
     // the attributes of each tutor
-    public String id;
-    public String firstName;
-    public String lastName;
-    public int rating;
-    public String profilePic;
-    public float distance;
-    public LocationObject location;
-    public TutorSession session;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private int rating;
+    private String profilePic;
+    private float distance;
+    private LocationObject location;
+    private TutorSession session;
 
 
     // rounds to two decimal places
     DecimalFormat twoDeci = new DecimalFormat("##.00");
 
     // constructor
-    public TutorObject(String firstName, String lastName, int rating, LocationObject location, TutorSession session){
+    public TutorObject(String firstName, String lastName, int rating, LocationObject location, TutorSession session, String id){
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
@@ -40,11 +41,40 @@ public class TutorObject implements Parcelable {
         Log.v("Session Price: ", String.valueOf(this.session.price));
     }
 
+    public String getName(){
+        return this.firstName + " " + this.lastName;
+    }
+
+    public String firstName(){ return this.firstName; }
+
+    public int getRating(){
+        return this.rating;
+    }
+
+    public int getPrice(){
+        return this.session.price;
+    }
+
+    public int sessionLength(){
+        return this.session.maxLength;
+    }
+
     public void setId(String ID){
         this.id = ID;
     }
 
 
+    public String getID(){
+        return this.id;
+    }
+
+    public double getLatitude(){
+        return this.location.xPos;
+    }
+
+    public double getLongitude(){
+        return this.location.yPos;
+    }
 
 
 

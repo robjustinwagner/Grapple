@@ -9,16 +9,17 @@ public class MessageObject {
     private boolean isSelf;
     private boolean isLocation = false;
     private LocationObject location;
-
+    private String senderID;
 
     public MessageObject() {
     }
 
-    public MessageObject(String fromName, String message, boolean isSelf, LocationObject loc) {
+    public MessageObject(String fromName, String message, String senderID, String recieverID,  boolean isSelf, LocationObject loc) {
         this.fromName = fromName;
         this.message = message;
         this.isSelf = isSelf;
 
+        //if the message is a location message
         if(loc != null){
             this.isLocation = true;
             location = loc;

@@ -3,12 +3,17 @@ package com.mamba.grapple;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -36,7 +41,7 @@ import java.util.List;
 public class Chat extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
-    private TutorObject tutor;
+
     private LocationObject presetLoc;
     private BroadcastReceiver mBroadcastReceiver;
 
@@ -47,6 +52,10 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
     private LocationsAdapter locationsAdapter;
     private List<LocationObject> locationList;
     private LocationObject selectedLocation;
+
+
+    private UserObject recipient;
+    private UserObject currentUser;
 
 
     ListView messagesContainer;
@@ -60,13 +69,65 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
     private boolean seen = false;
 
+    LoginManager session;
+
+
+    // service related variables
+    private boolean mBound = false;
+    DBService mService;
+
+
+
+    // service connection event handler
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DBService.LocalBinder binder = (DBService.LocalBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
+
+    // receiver to handle server responses for this activity
+    private BroadcastReceiver chatReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // intent can contain any data
+            Bundle extras = intent.getExtras();
+
+            if(extras != null){
+                String responseType = extras.getString("responseType");
+                Log.v("responseType", responseType);
+                Log.v("Chat Activity", "received response: " + responseType);
+
+                if(responseType == "message"){
+
+                }
+            }
+        }
+    };
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorchat);
 
-        retrieveTutorInfo();
+        retrieveInfo(); // gets info about other chat member
         dummyPopulate();
+
+        // Register to receive messages.
+        // We are registering an observer (mMessageReceiver) to receive Intents
+        // with actions named "custom-event-name".
+        LocalBroadcastManager.getInstance(this).registerReceiver(chatReceiver,
+                new IntentFilter("chatReceiver"));
+
 
         messagesContainer = (ListView) findViewById(R.id.list_view_messages);
         sendButton = (ImageButton) findViewById(R.id.btnSend);
@@ -76,12 +137,16 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
         sendButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                // TODO: send message to server
 
                 // display locally
-                MessageObject msg = new MessageObject("Student", chatInput.getText().toString(), true, null);
+                String msgText = chatInput.getText().toString();
+                // create message object with params: first name, message text, senderID, recipID, isSelf, loc
+                MessageObject msg = new MessageObject(currentUser.firstName(), msgText , currentUser.getId(), recipient.getId(), true, null);
                 messageList.add(msg);
                 adapter.notifyDataSetChanged();
+
+                // TODO: send message to server
+                mService.sendMessage(currentUser.firstName(), currentUser.getId(), recipient.getId(), msgText);
 
                 // clear input field
                 chatInput.setText("");
@@ -105,15 +170,6 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         messagesContainer.setAdapter(adapter);
 
 
-//        mGoogleApiClient = new GoogleApiClient
-//                .Builder(this)
-//                .addApi(Places.GEO_DATA_API)
-//                .addApi(Places.PLACE_DETECTION_API)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .build();
-
-
         messagesContainer.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -124,7 +180,7 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
                 if(message.isLocation()){
                     Intent intent = new Intent(Chat.this, MapDialog.class);
                     intent.putExtra("meetingPoint", message.getLocation());
-                    intent.putExtra("tutor", tutor);
+                    intent.putExtra("tutor", recipient);
                     startActivity(intent);
                 }
 
@@ -136,13 +192,26 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
     @Override
     protected void onResume(){
         super.onResume();
-        if(!seen){
-            Log.v("Dummy Msg", "Sending dummy message");
-            sendDummyMsg();
-            seen = true;
+
+        //get the latest session and user data
+        session = new LoginManager(getApplicationContext());
+        currentUser = session.getCurrentUser();
+
+        // bind to service
+        Intent intent = new Intent(this, DBService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+    }
+
+
+    @Override
+    protected void onPause(){
+        // Unbind from the service
+        if (mBound){
+            Log.v("Unbinding Service", "Meetup Activity");
+            unbindService(mConnection);
+            mBound = false;
         }
-
-
     }
 
 
@@ -159,42 +228,13 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
 
-
-
-//    // places the selected chosen location from the address list into the location suggest input
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-//        if (requestCode == 1 && resultCode == RESULT_OK && data != null){
-//            Log.v("Chat Activity", "Location Result Received");
-//            presetLoc = data.getParcelableExtra("location");
-//            locInput.setText(presetLoc.getAddress());
-//        }
-//    }
-//
-
-    public void retrieveTutorInfo(){
-        // get the tutor data
+    public void retrieveInfo(){
+        // get the connected users data
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            tutor = extras.getParcelable("selectedTutor");
 
-            String fullName = tutor.firstName + " " + tutor.lastName;
-            getActionBar().setTitle(fullName);
-
-
-
-            // TEMP DUMMY TUTORS/////////////////////////////////////////////
-            switch (tutor.firstName){
-                case "Jess": getActionBar().setIcon(R.drawable.jess);
-                    break;
-                case "Eric": getActionBar().setIcon(R.drawable.eric);
-                    break;
-                case "Robert": getActionBar().setIcon(R.drawable.robert);
-                    break;
-                case "Nadia": getActionBar().setIcon(R.drawable.nadia);
-                    break;
-            }
-
-
+            recipient = extras.getParcelable("user");
+            getActionBar().setTitle(recipient.getName());
         }
     }
 
@@ -252,7 +292,7 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
             public void onClick(View v) {
                 alert.cancel();
                 if(selectedLocation != null){
-                    MessageObject msg = new MessageObject("Student", selectedLocation.getAddress(), true, selectedLocation);
+                    MessageObject msg = new MessageObject(currentUser.firstName(), selectedLocation.getAddress(), currentUser.getId(),  recipient.getId(), true,  selectedLocation);
                     messageList.add(msg);
                     adapter.notifyDataSetChanged();
                 }
@@ -291,49 +331,49 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
     }
 
-
-    public void sendDummyMsg(){
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // display locally
-                MessageObject msg  = new MessageObject(tutor.firstName, "Hi!", false, null);
-                messageList.add(msg);
-                adapter.notifyDataSetChanged();
-            }
-        }, 2000);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // display locally
-                MessageObject msg = new MessageObject(tutor.firstName, "Can you meet here? I've got a table reserved: ", false, null);
-                messageList.add(msg);
-                adapter.notifyDataSetChanged();
-
-            }
-        }, 3200);
-
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // display locally
-                LocationObject loc = new LocationObject(43.071394, -89.408676);
-                MessageObject msg = new MessageObject(tutor.firstName, "215 N Randall Ave, Madison, WI 53706" , false, loc);
-                messageList.add(msg);
-                adapter.notifyDataSetChanged();
-            }
-        }, 4000);
-
-
-
-
-
-    }
-
+//
+//    public void sendDummyMsg(){
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // display locally
+//                MessageObject msg  = new MessageObject(tutor.firstName(), "Hi!", false, null);
+//                messageList.add(msg);
+//                adapter.notifyDataSetChanged();
+//            }
+//        }, 2000);
+//
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // display locally
+//                MessageObject msg = new MessageObject(tutor.firstName(), "Can you meet here? I've got a table reserved: ", false, null);
+//                messageList.add(msg);
+//                adapter.notifyDataSetChanged();
+//
+//            }
+//        }, 3200);
+//
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // display locally
+//                LocationObject loc = new LocationObject(43.071394, -89.408676);
+//                MessageObject msg = new MessageObject(tutor.firstName(), "215 N Randall Ave, Madison, WI 53706" , false, loc);
+//                messageList.add(msg);
+//                adapter.notifyDataSetChanged();
+//            }
+//        }, 4000);
+//
+//
+//
+//
+//
+//    }
+//
 
 
 

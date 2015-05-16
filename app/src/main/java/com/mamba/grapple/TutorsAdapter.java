@@ -20,13 +20,13 @@ import java.util.ArrayList;
 /**
  * Created by vash on 4/2/15.
  */
-public class TutorsAdapter extends ArrayAdapter<TutorObject> {
+public class TutorsAdapter extends ArrayAdapter<UserObject> {
 
     private Location userLocation;
 
 
 
-    public TutorsAdapter(Context context, ArrayList<TutorObject> tutors) {
+    public TutorsAdapter(Context context, ArrayList<UserObject> tutors) {
         super(context, 0, tutors);
 
     }
@@ -34,7 +34,7 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         // get the data item for this position
-        TutorObject tutor = getItem(position);
+        UserObject tutor = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if(convertView == null){
@@ -49,14 +49,14 @@ public class TutorsAdapter extends ArrayAdapter<TutorObject> {
         RatingBar tutorRating = (RatingBar) convertView.findViewById(R.id.ratingBar);
 
         // populate the data into the list item template
-        tutorName.setText(tutor.firstName + " " + tutor.lastName);
+        tutorName.setText(tutor.firstName() + " " + tutor.firstName());
         tutorDistance.setText(tutor.getDistance(userLocation) + " mi");
-        tutorPrice.setText("$" + String.valueOf(tutor.session.price));
-        tutorRating.setRating(tutor.rating);
+        tutorPrice.setText("$" + String.valueOf(tutor.getPrice()));
+        tutorRating.setRating(tutor.getRating());
 
 
         // TEMP DUMMY TUTORS
-        switch (tutor.firstName){
+        switch (tutor.firstName()){
             case "Jess": tutorPic.setImageResource(R.drawable.jess);
                 break;
             case "Eric": tutorPic.setImageResource(R.drawable.eric);

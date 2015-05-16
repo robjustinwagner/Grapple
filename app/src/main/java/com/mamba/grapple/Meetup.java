@@ -65,7 +65,7 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
-    private TutorObject tutor;
+    private UserObject tutor;
 
     // service related variables
     private boolean mBound = false;
@@ -122,7 +122,7 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
         super.onPause();
         // Unbind from the service
         if (mBound){
-            Log.v("Unbinding Service", "Results Activity");
+            Log.v("Unbinding Service", "Meetup Activity");
             unbindService(mConnection);
             mBound = false;
         }
@@ -217,10 +217,10 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
 
     // enters the chat with the tutor
     public void grappleTutor(View view) {
-        Log.v("grappleEvent", "tutor id = " + tutor.id);
-        mService.startGrapple(tutor.id);
+        Log.v("grappleEvent", "tutor id = " + tutor.getID());
+        mService.startGrapple(tutor.getID());
         Intent intent = new Intent(this, Chat.class);
-        intent.putExtra("selectedTutor", tutor);
+        intent.putExtra("user", tutor);
         startActivity(intent);
     }
 
@@ -239,17 +239,17 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
             ImageView tutorPic = (ImageView) findViewById(R.id.imageView);
 
 
-            String fullName = tutor.firstName + " " + tutor.lastName;
+
 
             // populate the data
-            tutorName.setText(fullName);
+            tutorName.setText(tutor.getName());
             tutorDistance.setText(tutor.getDistance(mLastLocation) + " mi");
-            tutorPrice.setText("$" + String.valueOf(tutor.session.price));
-            tutorRating.setRating(tutor.rating);
+            tutorPrice.setText("$" + String.valueOf(tutor.getPrice()));
+            tutorRating.setRating(tutor.getRating());
 
 
             // TEMP DUMMY TUTORS
-            switch (tutor.firstName) {
+            switch (tutor.firstName()) {
                 case "Jess":
                     tutorPic.setImageResource(R.drawable.jess);
                     break;
@@ -315,7 +315,7 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
     @Override
     public void onMapReady(GoogleMap map) {
         Log.v("Google Map Ready", "Adding tutor marker");
-        LatLng tutorLoc = new LatLng(tutor.location.xPos, tutor.location.yPos);
+        LatLng tutorLoc = new LatLng(tutor.getLatitude(), tutor.getLongitude());
         int zoom;
         gMap = map;
         map.setMyLocationEnabled(true);
@@ -406,8 +406,8 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
         // we will treat it as though the meeting point is the way point between the tutor and student
         double originLat = mLastLocation.getLatitude();
         double originLong = mLastLocation.getLongitude();
-        double destLat = tutor.location.xPos;
-        double destLong = tutor.location.yPos;
+        double destLat = tutor.getLatitude();
+        double destLong = tutor.getLongitude();
 
         // Origin of route
         String str_origin = "origin=" + originLat + "," + originLong;
@@ -628,7 +628,7 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
             TextView tutorName = (TextView) myContentsView.findViewById(R.id.tutorName);
             ImageView profilePic = (ImageView) myContentsView.findViewById(R.id.profilePic);
 
-            tutorName.setText(tutor.firstName + " " + tutor.lastName);
+            tutorName.setText(tutor.getName());
             int x = R.drawable.jess;
             profilePic.setImageResource(x);
             return myContentsView;

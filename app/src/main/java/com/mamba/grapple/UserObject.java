@@ -23,34 +23,37 @@ public class UserObject implements Parcelable {
     private int rating;
     private String profilePic;
     private float distance;
+    private boolean tutoring;
     private LocationObject location;
     private TutorSession session;
+
 
 
     // rounds to two decimal places
     DecimalFormat twoDeci = new DecimalFormat("##.00");
 
+
+
     // constructor
-    public UserObject(String firstName, String lastName, String id, String email, String profilePic){
+    public UserObject(String firstName, String lastName, String id, String email, String profilePic, LocationObject location,  TutorSession session){
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
         this.email = email;
         this.profilePic = profilePic;
+        this.location = location;
+
+        if(session != null){
+            this.session = session;
+            this.tutoring = true;
+        }
+
         Log.v("Created User: ", firstName + " " + lastName);
     }
 
 
 
-    public void setTravelDistance(float distance){
-        this.distance = distance;
-    }
-
-    public float travelDistance(){
-        return this.distance;
-    }
-
-
+    /********************************************************************** Getters and Setters ****************************************************************************************/
 
     public String getDistance(Location userLocation){
 
@@ -81,9 +84,7 @@ public class UserObject implements Parcelable {
         return twoDeci.format(dist);
     }
 
-    public String getName(){
-        return this.firstName + " " + this.lastName;
-    }
+
 
     public String getDistance(LatLng location){
 
@@ -106,6 +107,51 @@ public class UserObject implements Parcelable {
     public String getId() {
         return this.id;
     }
+    public void setTravelDistance(float distance){
+        this.distance = distance;
+    }
+
+    public float travelDistance(){
+        return this.distance;
+    }
+
+    public String firstName(){ return this.firstName; }
+
+    public String getName(){
+        return this.firstName + " " + this.lastName;
+    }
+
+    public int getRating(){
+        return this.rating;
+    }
+
+    public int getPrice(){
+        return this.session.price;
+    }
+
+    public int sessionLength(){
+        return this.session.maxLength;
+    }
+
+    public void setId(String ID){
+        this.id = ID;
+    }
+
+
+    public String getID(){
+        return this.id;
+    }
+
+    public double getLatitude(){
+        return this.location.xPos;
+    }
+
+    public double getLongitude(){
+        return this.location.yPos;
+    }
+
+
+   /************************************  Helpers   ***************************************************************************/
 
     // conversions
     private double deg2rad(double deg) {
@@ -118,13 +164,19 @@ public class UserObject implements Parcelable {
     }
 
 
-    public String toString(){
-        return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
-                " rating=" + rating + " distance" + distance +
-                " location=" + location.xPos + "," + location.yPos + "]" +
-                " session= {price: " + session.price + ", minLength: " + session.maxLength + " }]";
-    }
+//    public String toString(){
+//        return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
+//                " rating=" + rating + " distance" + distance +
+//                " location=" + location.xPos + "," + location.yPos + "]" +
+//                " session= {price: " + session.price + ", minLength: " + session.maxLength + " }]";
+//    }
+//
 
+
+
+
+
+    /********************************* Parcel Code  *************************************************************************/
 
     protected UserObject(Parcel in){
         id = in.readString();

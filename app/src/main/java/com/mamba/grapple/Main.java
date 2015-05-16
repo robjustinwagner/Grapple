@@ -42,7 +42,9 @@ public class Main extends FragmentActivity {
     LoginManager session;
     UserObject currentUser;
 
-    private BroadcastReceiver responseReceiver = new BroadcastReceiver(){
+
+    // receiver intended for this activity
+    private BroadcastReceiver mainReceiver = new BroadcastReceiver(){
 
         @Override
         public void onReceive(Context context, Intent intent){
@@ -57,6 +59,24 @@ public class Main extends FragmentActivity {
             }
         }
     };
+
+    // receiver intended for multicasts
+    private BroadcastReceiver multicastReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // intent can contain any data
+            Bundle extras = intent.getExtras();
+
+            if(extras != null){
+                String responseType = extras.getString("responseType");
+                Log.v("responseType", responseType);
+                Log.v("Main Activity", "received multicast: " + responseType);
+
+            }
+
+        }
+    };
+
 
 
     public void onCreate(Bundle savedInstanceState){
@@ -89,9 +109,14 @@ public class Main extends FragmentActivity {
 
         session = new LoginManager(getApplicationContext());
 
-        // register broadcast receiver for grapple
-        LocalBroadcastManager.getInstance(this).registerReceiver(responseReceiver,
+        // register broadcast receiver for activity
+        LocalBroadcastManager.getInstance(this).registerReceiver(mainReceiver,
                 new IntentFilter("mainReceiver"));
+
+        // register global broadcast receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(multicastReceiver,
+                new IntentFilter("multicastReceiver"));
+
     }
 
     // check login status every time the activity gets shown
@@ -113,7 +138,11 @@ public class Main extends FragmentActivity {
             unbindService(mConnection);
             mBound = false;
         }
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(multicastReceiver);
     }
+
+
 
     // handles the result of login/registration
     protected void onActivityResult(int requestCode, int resultCode, Intent data){

@@ -66,9 +66,9 @@ public class PostSession extends Activity {
             TutorObject tutor = extras.getParcelable("tutor");
             // TEMP DUMMY TUTORS
 
-            rateTutor.setText("Rate " + tutor.firstName + ":");
+            rateTutor.setText("Rate " + tutor.firstName() + ":");
 
-            switch (tutor.firstName){
+            switch (tutor.firstName()){
                 case "Jess": tutorPic.setImageResource(R.drawable.jess);
                     tutor.setId("0");
                     break;

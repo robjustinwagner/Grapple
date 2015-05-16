@@ -59,7 +59,7 @@ public class InSession extends Activity {
             tutor = extras.getParcelable("tutor");
 
             // convert to long in ms
-            long sessionLength = MS_IN_MIN * (long) tutor.session.maxLength;
+            long sessionLength = MS_IN_MIN * (long) tutor.sessionLength();
             if (sessionLength > sessionRemaining) {
                 sessionRemaining = sessionLength;
             }
