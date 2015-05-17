@@ -69,11 +69,11 @@ public class TutorObject implements Parcelable {
     }
 
     public double getLatitude(){
-        return this.location.xPos;
+        return this.location.lat;
     }
 
     public double getLongitude(){
-        return this.location.yPos;
+        return this.location.lon;
     }
 
 
@@ -92,8 +92,8 @@ public class TutorObject implements Parcelable {
             lon1 = -89.412487;
         }
 
-        double lat2 = this.location.xPos;
-        double lon2 = this.location.yPos;
+        double lat2 = this.location.lat;
+        double lon2 = this.location.lon;
 
         Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
 
@@ -110,8 +110,8 @@ public class TutorObject implements Parcelable {
 
         double lat1 = location.latitude;
         double lon1 = location.longitude;
-        double lat2 = this.location.xPos;
-        double lon2 = this.location.yPos;
+        double lat2 = this.location.lat;
+        double lon2 = this.location.lon;
 
         Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
 
@@ -139,7 +139,7 @@ public class TutorObject implements Parcelable {
     public String toString(){
         return "[id=" + id + " firstName=" + firstName + " lastName=" + lastName +
                 " rating=" + rating + " distance" + distance +
-                " location=" + location.xPos + "," + location.yPos + "]" +
+                " location=" + location.lat + "," + location.lon + "]" +
                 " session= {price: " + session.price + ", minLength: " + session.maxLength + " }]";
     }
 

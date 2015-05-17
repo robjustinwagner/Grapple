@@ -70,8 +70,8 @@ public class UserObject implements Parcelable {
         }
 
 
-        double lat2 = this.location.xPos;
-        double lon2 = this.location.yPos;
+        double lat2 = this.location.lat;
+        double lon2 = this.location.lon;
 
         Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
 
@@ -90,8 +90,8 @@ public class UserObject implements Parcelable {
 
         double lat1 = location.latitude;
         double lon1 = location.longitude;
-        double lat2 = this.location.xPos;
-        double lon2 = this.location.yPos;
+        double lat2 = this.location.lat;
+        double lon2 = this.location.lon;
 
         Log.v("Calculating distance", "(" + lat1 + "," + lon1 + ") & " + "(" + lat2 + "," + lon2 + ")" );
 
@@ -143,11 +143,11 @@ public class UserObject implements Parcelable {
     }
 
     public double getLatitude(){
-        return this.location.xPos;
+        return this.location.lat;
     }
 
     public double getLongitude(){
-        return this.location.yPos;
+        return this.location.lon;
     }
 
 

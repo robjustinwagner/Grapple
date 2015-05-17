@@ -157,13 +157,13 @@ public class Meetup extends FragmentActivity implements OnMapReadyCallback, Conn
             final LocationObject meetingPoint = extras.getParcelable("meetingPoint");
             if (meetingPoint != null) {
                 Log.v("Tutor View", "Meeting Point Found");
-                final LatLng mP = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+                final LatLng mP = new LatLng(meetingPoint.lat, meetingPoint.lon);
                 gMap.addMarker(new MarkerOptions()
                         .position(mP)
                         .title("Meeting Point")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-                addRoute(meetingPoint.xPos, meetingPoint.yPos);
+                addRoute(meetingPoint.lat, meetingPoint.lon);
 
 
                 // grab dynamic layout items

@@ -79,7 +79,7 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
     // service connection event handler
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private ServiceConnection mConnection = new ServiceConnection(){
         public void onServiceConnected(ComponentName className, IBinder service) {
             DBService.LocalBinder binder = (DBService.LocalBinder) service;
             mService = binder.getService();
@@ -206,9 +206,10 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
     @Override
     protected void onPause(){
+        super.onPause();
         // Unbind from the service
         if (mBound){
-            Log.v("Unbinding Service", "Meetup Activity");
+            Log.v("Unbinding Service", "Chat Activity");
             unbindService(mConnection);
             mBound = false;
         }
@@ -226,6 +227,10 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
 
     public void retrieveInfo(){
@@ -276,10 +281,10 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
                 // get the selected location
                 selectedLocation = locationList.get(position);
-                if(selectedLocation.xPos == 0.0 || selectedLocation.yPos == 0.0){
+                if(selectedLocation.lat == 0.0 || selectedLocation.lon == 0.0){
                     selectedLocation.geoCode(getApplicationContext());
                 }
-                Log.v("Selected Location", String.valueOf(selectedLocation.xPos) + "," + String.valueOf(selectedLocation.yPos));
+                Log.v("Selected Location", String.valueOf(selectedLocation.lat) + "," + String.valueOf(selectedLocation.lon));
 
             }
         });

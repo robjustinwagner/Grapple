@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapDialog extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private GoogleMap meetMap;
-    private TutorObject tutor;
+    private UserObject tutor;
     private Location mLastLocation;
     private GoogleApiClient mGoogleApiClient;
     private MapFragment mapFragment;
@@ -101,7 +101,7 @@ public class MapDialog extends FragmentActivity implements OnMapReadyCallback, G
     public void onMapReady(GoogleMap map){
         Log.v("Google Map Ready", "Adding tutor marker");
         LatLng tutorLoc = new LatLng(tutorLat, tutorLon);
-        LatLng meetPoint = new LatLng(meetingPoint.xPos, meetingPoint.yPos);
+        LatLng meetPoint = new LatLng(meetingPoint.lat, meetingPoint.lon);
         int zoom;
         meetMap = map;
         map.setMyLocationEnabled(true);

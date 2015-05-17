@@ -9,12 +9,12 @@ import android.os.Parcelable;
 
 
 public class TutorLocation implements Parcelable {
-    public double xPos;
-    public double yPos;
+    public double lat;
+    public double lon;
 
     protected TutorLocation(Parcel in) {
-        xPos = in.readDouble();
-        yPos = in.readDouble();
+        lat = in.readDouble();
+        lon = in.readDouble();
     }
 
     @Override
@@ -24,8 +24,8 @@ public class TutorLocation implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(xPos);
-        dest.writeDouble(yPos);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
     }
 
 

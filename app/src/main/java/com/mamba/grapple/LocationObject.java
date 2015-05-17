@@ -15,23 +15,23 @@ import java.util.Locale;
  */
 
 public class LocationObject implements Parcelable {
-    public double xPos;
-    public double yPos;
+    public double lat;
+    public double lon;
     private String address;
     private String name;
 
 
     public LocationObject(double lat, double lon){
-        this.xPos = lat;
-        this.yPos = lon;
+        this.lat = lat;
+        this.lon = lon;
     }
 
 
     public LocationObject(double lat, double lon, String name, String address){
         this.name =  name;
         this.address = address;
-        this.xPos = lat;
-        this.yPos = lon;
+        this.lat = lat;
+        this.lon = lon;
     }
 
 
@@ -46,8 +46,8 @@ public class LocationObject implements Parcelable {
 
 
     protected LocationObject(Parcel in) {
-        xPos = in.readDouble();
-        yPos = in.readDouble();
+        lat = in.readDouble();
+        lon = in.readDouble();
         name = in.readString();
         address = in.readString();
     }
@@ -67,8 +67,8 @@ public class LocationObject implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags){
-        dest.writeDouble(xPos);
-        dest.writeDouble(yPos);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
         dest.writeString(name);
         dest.writeString(address);
     }
@@ -82,9 +82,9 @@ public class LocationObject implements Parcelable {
             fromLocationName = geocoder.getFromLocationName(this.address,   1);
             if (fromLocationName != null && fromLocationName.size() > 0) {
                 Address a = fromLocationName.get(0);
-                this.xPos =  a.getLatitude();
-                this.yPos =  a.getLongitude();
-                Log.v(this.address+ " coordinates:" , xPos + "," + yPos);
+                this.lat =  a.getLatitude();
+                this.lon =  a.getLongitude();
+                Log.v(this.address+ " coordinates:" , lat + "," + lon);
             }
         }catch(java.io.IOException e){
 
@@ -107,40 +107,6 @@ public class LocationObject implements Parcelable {
         }
     };
 
-
-
-//    public void geocode(Context c, String add){
-//        final Context context = c;
-//
-//
-//        Thread thread = new Thread(new Runnable(){
-//            @Override
-//            public void run(){
-//
-//                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-//                List<Address> fromLocationName = null;
-//
-//                // get the latitude and longitude from an address TODO: Put in separate thread
-//                try{
-//                    fromLocationName = geocoder.getFromLocationName(address,   1);
-//                    if (fromLocationName != null && fromLocationName.size() > 0) {
-//                        Address a = fromLocationName.get(0);
-//                        xPos =  a.getLatitude();
-//                        yPos =  a.getLongitude();
-//                        Log.v(address+ " coordinates:" , xPos + "," + yPos);
-//                    }
-//                }catch(java.io.IOException e){
-//
-//                }
-//
-//
-//            }
-//        });
-//
-//
-//        thread.start();
-//
-//    }
 
 
 }
