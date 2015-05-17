@@ -105,8 +105,11 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
                 Log.v("responseType", responseType);
                 Log.v("Chat Activity", "received response: " + responseType);
 
+                // if there's a new message add it to the list and display
                 if(responseType == "message"){
-
+                    MessageObject msg = extras.getParcelable("msg");
+                    messageList.add(msg);
+                    adapter.notifyDataSetChanged();
                 }
             }
         }
@@ -139,13 +142,16 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
             public void onClick(View v){
 
                 // display locally
-                String msgText = chatInput.getText().toString();
-                // create message object with params: first name, message text, senderID, recipID, isSelf, loc
-                MessageObject msg = new MessageObject(currentUser.firstName(), msgText , currentUser.getId(), recipient.getId(), true, null);
-                messageList.add(msg);
-                adapter.notifyDataSetChanged();
 
-                // TODO: send message to server
+                // create message object with params: first name, message text, senderID, recipID, isSelf, loc
+//                MessageObject msg = new MessageObject(currentUser.firstName(), msgText , currentUser.getId(), recipient.getId(), true, null);
+//                messageList.add(msg);
+//                adapter.notifyDataSetChanged();
+
+                // get message from input field
+                String msgText = chatInput.getText().toString();
+
+                // send message to server
                 mService.sendMessage(currentUser.firstName(), currentUser.getId(), recipient.getId(), msgText);
 
                 // clear input field
@@ -218,17 +224,17 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
 
 
     @Override
-    protected void onStart() {
+    protected void onStart(){
         super.onStart();
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop(){
         super.onStop();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onDestroy(){
         super.onDestroy();
     }
 
@@ -297,9 +303,14 @@ public class Chat extends Activity implements GoogleApiClient.ConnectionCallback
             public void onClick(View v) {
                 alert.cancel();
                 if(selectedLocation != null){
-                    MessageObject msg = new MessageObject(currentUser.firstName(), selectedLocation.getAddress(), currentUser.getId(),  recipient.getId(), true,  selectedLocation);
-                    messageList.add(msg);
-                    adapter.notifyDataSetChanged();
+
+                    mService.sendMessage(currentUser.firstName(), currentUser.getId(), recipient.getId(), selectedLocation.getAddress(), selectedLocation.lat, selectedLocation.lon);
+
+                      // client side update
+//                    MessageObject msg = new MessageObject(currentUser.firstName(), selectedLocation.getAddress(), currentUser.getId(),  recipient.getId(), true,  selectedLocation);
+//                    messageList.add(msg);
+//                    adapter.notifyDataSetChanged();
+
                 }
             }
         });

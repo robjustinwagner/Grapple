@@ -218,8 +218,9 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
         try{
             JSONObject messageData = new JSONObject();
-            messageData.put("recipID", recipID);
+            messageData.put("senderName", senderName);
             messageData.put("senderID", senderID);
+            messageData.put("recipID", recipID);
             messageData.put("message", message);
             Log.v("Emitting..", "Message");
             socket.emit("message" , messageData);
@@ -236,6 +237,7 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
 
         try{
             JSONObject messageData = new JSONObject();
+            messageData.put("senderName", senderName);
             messageData.put("senderID", senderID);
             messageData.put("recipID", recipID);
             messageData.put("message", message);
@@ -281,13 +283,37 @@ public class DBService extends Service implements LocationListener, GoogleApiCli
         public void call(final Object... args) {
             JSONObject data = (JSONObject) args[0];
             // parse data and create message object
+            try{
+                Log.v("Emit Received..", "Message" + data.toString());
+
+                String message = data.getString("message");
+                String senderID = data.getString("senderID");
+                String recipID = data.getString("recipID");
+                String senderName = data.getString("senderName");
+                Boolean isSelf  = senderID.equals(currentUser.getId());
+                LocationObject location = null;
+                Log.v("Message Received" , message );
 
 
+                // check if location message
+                if(data.has("lat")  && data.has("lon")){
+                    location = new LocationObject(Double.parseDouble(data.getString("lat")), Double.parseDouble(data.getString("lon")));
+                }
 
-            // broadcast to chat
-            Intent intent = new Intent("chatReciever");
-            intent.putExtra("responseType", "message");
-            clientBroadcast(intent);
+
+                MessageObject messageObject = new MessageObject(senderName, message, senderID, recipID, isSelf, location);
+
+                // broadcast to chat
+                Intent intent = new Intent("chatReceiver");
+                intent.putExtra("responseType", "message");
+                intent.putExtra("msg", messageObject);
+                clientBroadcast(intent);
+
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+
 
 
         }

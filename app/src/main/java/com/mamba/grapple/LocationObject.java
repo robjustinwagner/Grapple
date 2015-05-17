@@ -21,6 +21,7 @@ public class LocationObject implements Parcelable {
     private String name;
 
 
+
     public LocationObject(double lat, double lon){
         this.lat = lat;
         this.lon = lon;
